@@ -1,0 +1,22 @@
+{
+  "name": "crud-men",
+  "version": "1.0.0",
+  "description": "test mongo express node",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Forz70043/crud-men.git"
+  },
+  "author": "Forz",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Forz70043/crud-men/issues"
+  },
+  "homepage": "https://github.com/Forz70043/crud-men#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
