@@ -18,5 +18,8 @@
   "homepage": "https://github.com/Forz70043/crud-men#readme",
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
