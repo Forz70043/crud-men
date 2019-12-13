@@ -7,12 +7,8 @@ const app = express();
  * Req for request & res for response
  */
 app.get('/',(req,res)=>{
-	res.send('Himotherfuckerrrr');
-	console.log(__dirname);
+	res.sendFile(__dirname+'/index.html');
 });
-
-
-
 
 
 
@@ -26,5 +22,4 @@ app.listen(3000, function(){
 	console.log('listening 3000');
 });
 */
-
 
