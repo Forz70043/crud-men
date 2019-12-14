@@ -6,7 +6,6 @@ const app = express();
 var db;
 
 app.set('view engine', 'ejs');
-
 //req from body
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -23,26 +22,30 @@ MongoClient.connect('mongodb://127.0.0.1:27017',(err,client)=>{
 
 /*
  * Req for request & res for response
+ * get data
  */
 app.get('/',(req,res)=>{
 	res.sendFile(__dirname+'/index.html');
 	var cursor = db.collection('quotes').find();
 	db.collection('quotes').find().toArray(function(err,results){
-		console.log(results);
+		//console.log(results);
+		if(err) return console.log(err);
+		res.render('index.ejs',{quotes: results });
 	});
 });
 
-//for req
+//req save
 app.post('/quotes', (req,res)=>{
 	//console.log(req.body);
 	//collection().save()deprecated			<= !!!!!!!!!!!!!!!!!
 	db.collection('quotes').save(req.body, (err,result)=>{
 		if(err) return console.log(err);
-
-		console.log('saved into db');
+		//console.log('saved into db');
 		res.redirect('/');
 	});
 });
+
+
 
 //ES6
 //app.listen(3000,()=>{
