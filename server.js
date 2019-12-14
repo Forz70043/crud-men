@@ -5,9 +5,12 @@ const MongoClient = require('mongodb').MongoClient;
 const app = express();
 var db;
 
+//temp engine
 app.set('view engine', 'ejs');
 //req from body
 app.use(bodyParser.urlencoded({extended: true}));
+//view part
+app.use(express.static('public'));
 
 //mongoConnection
 MongoClient.connect('mongodb://127.0.0.1:27017',(err,client)=>{
