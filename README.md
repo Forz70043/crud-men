@@ -1,9 +1,11 @@
 # crud-men
-mongo express node
+mongo - express - node
 
-* npm init => package.json
-* npm i nodemon --save-dev
-* npm i express --save
-* npm i body-parser --save
-* npm i mongodb --save
+* `npm init` => package.json
+* `npm i nodemon --save-dev`
+* `npm i express --save`
+* `npm i body-parser --save`
+* `npm i mongodb --save`
+
+OR just clone or fork this project and then run `npm install`
 
