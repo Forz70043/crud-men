@@ -2,7 +2,7 @@
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
 
-console.log(update);
+console.log(del);
 
 update.addEventListener('click',function(){
 	console.log('event listener');
@@ -10,29 +10,32 @@ update.addEventListener('click',function(){
 	  method: 'put',
 	  headers: {'Content-Type': 'application/json'},
 	  body: JSON.stringify({
-	    'name': 'XXX Hi MotherFucker',
-	    'quote': 'I\'ll kill you!'
+	    'name': 'XXX',
+	    'quote': 'YYY'
 	  })
 	}).then(response=>{
 	  if(response.ok) return response.json();
 	}).then(data=>{
 	  console.log(data);
+	  window.location.reload();
 	});
 });
 
-del.addEventListener('click', function () {
+del.addEventListener('click',function() {
+	console.log('delete');
   fetch('quotes', {
     method: 'delete',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      'name': 'Darth Vader'
+      'name': 'XXX',
+      'quote': 'Hi MotherFucker I\'ll kill you!'
     })
-  }).then(function (response) {
-    window.location.reload()
+  }).then(function(response) {
+    window.location.reload();
   })
-})
+});
 
 
 

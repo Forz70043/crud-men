@@ -11,24 +11,27 @@ MongoClient.connect('mongodb://127.0.0.1:27017',(err,client)=>{
 	if(err) return console.log(err);
 	db = client.db('crud-men');     //<= db 
 
-	app.listen(process.env.PORT|| 3000, ()=>{
+	app.listen(process.env.PORT || 3000, ()=>{
 		console.log('listening on 3000');
 	});
 });
 
 //temp engine
 app.set('view engine', 'ejs');
+
 //req from body
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //view part
-app.use(express.static(__dirname+'/public',{
+/*app.use(express.static(__dirname+'/public',{
 	index: false,
 	immutable: true,
 	cacheControl: true,
 	maxAge: "15g"
 }));
+*/
+app.use(express.static('public'));
 
 /*
  * Req for request & res for response
@@ -46,7 +49,7 @@ app.get('/',(req,res)=>{
 
 //req save
 app.post('/quotes', (req,res)=>{
-	//collection().save()deprecated			<= !!!!!!!!!!!!!!!!!
+	//collection().save()       deprecated			<= !!!!!!!!!!!!!!!!!
 	db.collection('quotes').save(req.body, (err,result)=>{
 		if(err) return console.log(err);
 		//console.log('saved into db');
@@ -55,7 +58,7 @@ app.post('/quotes', (req,res)=>{
 });
 
 app.put('/quotes',(req,res)=>{
-	db.collection('quotes').findOneAndUpdate({name: 'XXX Hi Guys'},{ 
+	db.collection('quotes').findOneAndUpdate({name: 'XXX Hi MotherFucker I\'ll kill you!'},{ 
 		$set:
 			{ 
 			  name: req.body.name,
@@ -65,15 +68,15 @@ app.put('/quotes',(req,res)=>{
 		{ sort: {_id: -1},
 		  upsert: true
 		},(err,result)=>{
-		if(err) return res.send(err);
-		res.send(result);
+			if(err) return res.send(err);
+			res.send(result);
 		});
 });
 
 app.delete('/quotes',(req,res)=>{
 	db.collection('quotes').findOneAndDelete({name: req.body.name},(err,result)=>{
 		if(err){
-			console.log(err);
+			console.log(err);  //<==
 			return res.send(500,err);
 		} 
 		res.send('deleted');
