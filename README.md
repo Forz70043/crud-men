@@ -7,5 +7,5 @@ mongo - express - node
 * `npm i body-parser --save`
 * `npm i mongodb --save`
 
-OR just clone or fork this project and then run `npm install`
+OR just fork this project and then run `npm install`
 
