@@ -4,8 +4,9 @@
   <%- include('head'); %>
 </head>
 <body>
-  Node - Express - Mongo
-
+  <%- include('navbar'); %>	
+	Node - Express - Mongo
+  <div class="container quotes">
   <ul class="quotes">
   <% for(var i=0; i<quotes.length; i++) {%>
     <li class="quote">
@@ -14,7 +15,7 @@
     </li>
   <% } %>
   </ul>
-
+  </div>
   <form action="/quotes" method="POST">
 	  <input type="text" placeholder="name" name="name"></br>
 	  <input type="text" placeholder="quote" name="quote"></br>
