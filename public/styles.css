@@ -1,3 +1,15 @@
 * {
 	align: center;
 }
+
+body {
+ text-align: center;
+}
+
+ul > li {
+ text-align: left;
+}
+
+div {
+ display: inline;
+}

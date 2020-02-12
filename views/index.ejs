@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>MY APP</title>
-  <link rel="stylesheet" href="styles.css">  
-  <link rel="stylesheet" href="bootstrap-4.3.1/dist/css/bootstrap.min.css">
+  <%- include('head'); %>
 </head>
 <body>
   Node - Express - Mongo
@@ -25,16 +21,13 @@
           <button type="submit">Submit</button>
   </form>
   <div>
-	  <h2>Replace last quote </h2>
+	  <h3>Replace last quote </h3>
 	  <button id="update"> Replace </button>
   </div>
   <div>
-  	<h2>Delete first quote</h2>
+  	<h3>Delete first quote</h3>
   	<button id="delete"> Delete first quote </button>
   </div>
-  <script type="application/javascript" src="main.js"></script>
-  <script type="application/javascript" src="jQuery/jQuery.js">
-  <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script type="application/javascript" src="bootstrap-4.3.1/dist/js/bootstrap.min.js"></script>
+  <%- include('lib-script'); %>
 </body>
 </html>
