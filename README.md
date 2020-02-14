@@ -10,3 +10,4 @@ mongo - express - node
 
 OR just fork this project and then run `npm install`
 
+for run : `npm test`
