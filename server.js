@@ -16,7 +16,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017',(err,client)=>{
 	});
 });
 
-//temp engine
+//template engine
 app.set('view engine', 'ejs');
 
 //req from body
@@ -50,6 +50,11 @@ app.get('/',(req,res)=>{
 //req save
 app.post('/quotes', (req,res)=>{
 	//collection().save()       deprecated			<= !!!!!!!!!!!!!!!!!
+	/*	METODO INSERT ONE
+	 * insertOne(req.body, (err,result)=>{
+		if(err) return console.log(err);
+		res.redirect('/');
+	});*/
 	db.collection('quotes').save(req.body, (err,result)=>{
 		if(err) return console.log(err);
 		//console.log('saved into db');

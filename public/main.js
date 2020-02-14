@@ -1,11 +1,9 @@
-//window.onload = function(){
+
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
 
-console.log(del);
-
 update.addEventListener('click',function(){
-	console.log('event listener');
+	//console.log('event listener');
 	fetch('quotes', {
 	  method: 'put',
 	  headers: {'Content-Type': 'application/json'},
@@ -16,7 +14,7 @@ update.addEventListener('click',function(){
 	}).then(response=>{
 	  if(response.ok) return response.json();
 	}).then(data=>{
-	  console.log(data);
+	  //console.log(data);
 	  window.location.reload();
 	});
 });
@@ -36,9 +34,5 @@ del.addEventListener('click',function() {
     window.location.reload();
   })
 });
-
-
-
-//}
 
 
