@@ -6,7 +6,7 @@ const app = express();
 var db;
 
 //mongoConnection
-MongoClient.connect('mongodb://127.0.0.1:27017',(err,client)=>{
+MongoClient.connect('mongodb://127.0.0.1:27017',{useUnifiedTopology: true},(err,client)=>{
 	//start mongo server
 	if(err) return console.log(err);
 	db = client.db('crud-men');     //<= db 
@@ -49,6 +49,7 @@ app.get('/',(req,res)=>{
 
 //req save
 app.post('/quotes', (req,res)=>{
+<<<<<<< HEAD
 	//collection().save()       deprecated			<= !!!!!!!!!!!!!!!!!
 	/*	METODO INSERT ONE
 	 * insertOne(req.body, (err,result)=>{
@@ -56,10 +57,17 @@ app.post('/quotes', (req,res)=>{
 		res.redirect('/');
 	});*/
 	db.collection('quotes').save(req.body, (err,result)=>{
+=======
+	//collection().save()       deprecated			<= !!!!!!!!!
+	db.collection('quotes').insertOne(req.body,(err,result)=>{
+			if(err) return console.log(err);
+			res.redirect('/');
+	});/*.save(req.body, (err,result)=>{
+>>>>>>> devel
 		if(err) return console.log(err);
 		//console.log('saved into db');
 		res.redirect('/');
-	});
+	});*/
 });
 
 app.put('/quotes',(req,res)=>{
