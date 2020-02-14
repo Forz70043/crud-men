@@ -1,8 +1,5 @@
-//window.onload = function(){
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
-
-console.log(del);
 
 update.addEventListener('click',function(){
 	console.log('event listener');
@@ -17,7 +14,7 @@ update.addEventListener('click',function(){
 	  if(response.ok) return response.json();
 	}).then(data=>{
 	  console.log(data);
-	  window.location.reload();
+	  //window.location.reload();
 	});
 });
 
@@ -36,9 +33,5 @@ del.addEventListener('click',function() {
     window.location.reload();
   })
 });
-
-
-
-//}
 
 
