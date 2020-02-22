@@ -38,8 +38,6 @@ app.use(express.static('public'));
  * get data
  */
 app.get('/',(req,res)=>{
-	//res.sendFile(__dirname+'/index.html');
-	//var cursor = db.collection('quotes').find();   //<=NON UTILIZZO?
 	db.collection('quotes').find().toArray(function(err,results){
 		//console.log(results);
 		if(err) return console.log(err);
@@ -49,25 +47,10 @@ app.get('/',(req,res)=>{
 
 //req save
 app.post('/quotes', (req,res)=>{
-<<<<<<< HEAD
-	//collection().save()       deprecated			<= !!!!!!!!!!!!!!!!!
-	/*	METODO INSERT ONE
-	 * insertOne(req.body, (err,result)=>{
-		if(err) return console.log(err);
-		res.redirect('/');
-	});*/
-	db.collection('quotes').save(req.body, (err,result)=>{
-=======
-	//collection().save()       deprecated			<= !!!!!!!!!
 	db.collection('quotes').insertOne(req.body,(err,result)=>{
 			if(err) return console.log(err);
 			res.redirect('/');
-	});/*.save(req.body, (err,result)=>{
->>>>>>> devel
-		if(err) return console.log(err);
-		//console.log('saved into db');
-		res.redirect('/');
-	});*/
+	});	
 });
 
 app.put('/quotes',(req,res)=>{
