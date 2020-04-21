@@ -6,7 +6,7 @@ const app = express();
 var db;
 
 //mongoConnection
-MongoClient.connect('mongodb://127.0.0.1:27017',(err,client)=>{
+MongoClient.connect('mongodb://127.0.0.1:27017',{useUnifiedTopology: true},(err,client)=>{
 	//start mongo server
 	if(err) return console.log(err);
 	db = client.db('crud-men');     //<= db 
@@ -38,8 +38,6 @@ app.use(express.static('public'));
  * get data
  */
 app.get('/',(req,res)=>{
-	//res.sendFile(__dirname+'/index.html');
-	//var cursor = db.collection('quotes').find();   //<=NON UTILIZZO?
 	db.collection('quotes').find().toArray(function(err,results){
 		//console.log(results);
 		if(err) return console.log(err);
@@ -49,17 +47,10 @@ app.get('/',(req,res)=>{
 
 //req save
 app.post('/quotes', (req,res)=>{
-	//collection().save()       deprecated			<= !!!!!!!!!!!!!!!!!
-	/*	METODO INSERT ONE
-	 * insertOne(req.body, (err,result)=>{
-		if(err) return console.log(err);
-		res.redirect('/');
-	});*/
-	db.collection('quotes').save(req.body, (err,result)=>{
-		if(err) return console.log(err);
-		//console.log('saved into db');
-		res.redirect('/');
-	});
+	db.collection('quotes').insertOne(req.body,(err,result)=>{
+			if(err) return console.log(err);
+			res.redirect('/');
+	});	
 });
 
 app.put('/quotes',(req,res)=>{

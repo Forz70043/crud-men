@@ -1,4 +1,3 @@
-
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
 
@@ -14,8 +13,8 @@ update.addEventListener('click',function(){
 	}).then(response=>{
 	  if(response.ok) return response.json();
 	}).then(data=>{
-	  //console.log(data);
-	  window.location.reload();
+	  console.log(data);
+	  //window.location.reload();
 	});
 });
 
