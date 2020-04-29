@@ -1,20 +1,29 @@
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
 
+$(document).ready(function () {
+    $('[data-toggle=collapse-side]').click(function (e) {
+		console.log('onclick');
+        $('.side-collapse').toggleClass('in');
+    });
+});
+
+
+
 update.addEventListener('click',function(){
 	//console.log('event listener');
 	fetch('quotes', {
 	  method: 'put',
 	  headers: {'Content-Type': 'application/json'},
 	  body: JSON.stringify({
-	    'name': 'XXX',
-	    'quote': 'YYY'
+	    'name': 'replace',
+	    'quote': 'quote'
 	  })
 	}).then(response=>{
 	  if(response.ok) return response.json();
 	}).then(data=>{
 	  console.log(data);
-	  //window.location.reload();
+	  window.location.reload();
 	});
 });
 
@@ -26,11 +35,11 @@ del.addEventListener('click',function() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      'name': 'XXX',
-      'quote': 'Hi MotherFucker I\'ll kill you!'
+      'name': 'replace',
+      'quote': 'quote'
     })
   }).then(function(response) {
-    window.location.reload();
+    //window.location.reload();
   })
 });
 
