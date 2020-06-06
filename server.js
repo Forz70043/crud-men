@@ -2,19 +2,36 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const mysql = require('mysql');
 const app = express();
+const port=3000;
 var db;
+var connection = mysql.createConnection({
+	host:'localhost',
+	user:'forz',
+	password:'x1y2z3t4e5',
+	database:'AMBROGIO'
+});
 
+connection.connect(function(err){
+	if(err) throw err;
+	console.log("Connected");
+	app.listen(process.env.PORT || 3000,function(){
+		console.log("app listen on 3000");
+	});
+});
 //mongoConnection
-MongoClient.connect('mongodb://127.0.0.1:27017',{useUnifiedTopology: true},(err,client)=>{
+/*MongoClient.connect('mongodb://127.0.0.1:27017',{useUnifiedTopology: true},(err,client)=>{
 	//start mongo server
 	if(err) return console.log(err);
 	db = client.db('crud-men');     //<= db 
 
-	app.listen(process.env.PORT || 3000, ()=>{
+	app.listen(process.env.PORT|| 3000, ()=>{
 		console.log('listening on 3000');
 	});
 });
+*/
+
 
 //template engine
 app.set('view engine', 'ejs');
@@ -37,11 +54,18 @@ app.use(express.static('public'));
  * Req for request & res for response
  * get data
  */
-app.get('/',(req,res)=>{
-	db.collection('quotes').find().toArray(function(err,results){
+app.get('/',function(req,res){
+/*	db.collection('quotes').find().toArray(function(err,results){
 		//console.log(results);
 		if(err) return console.log(err);
 		res.render('index.ejs',{quotes: results });
+	});
+*/
+	connection.query("SELECT * FROM SYSLOG",function(err,result){
+		if(err) throw err;
+		console.log(result);
+		obj = {quotes:result};
+		res.render('index.ejs',obj);
 	});
 });
 
