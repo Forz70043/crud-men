@@ -1,6 +1,8 @@
 # crud-men
-mongo - express - node
+mysql - express - node
 
-just clone or fork this project and then run `npm install`
+just clone or fork this project 
 
-run devel with nodemon : `npm test`
+then run `npm install`
+
+run dev with nodemon : `npm test`
