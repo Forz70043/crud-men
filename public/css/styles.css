@@ -5,7 +5,10 @@
 body {
     text-align: center;
 }
-
+/*********** UTILS ****************/
+.v-none {
+    visibility: hidden;
+}
 /*********** NAVBAR ***************/
 
 /* pulsante hamburger navbar sempre visibile */
@@ -25,7 +28,9 @@ div.navbar-collapse.collapse.show {
     top: 0;
     z-index: 800!important;
 }
-
+#sidebarCol.col-2 {
+    padding-left:0;
+}
 div.container-fluid>div.row>div.col-3 {
     padding: 0;
 }

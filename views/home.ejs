@@ -16,20 +16,49 @@
 <div class="container">
   <div class="card">
     <div class="card-header">
-      Featured
+      <%= links %>
     </div>
     <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      
-      <ul class="list-group">
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
-      </ul>
-
+      <% if(results) { %>
+        <%= results %>
+      <% } %>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <!--<th scope="col">#</th>-->
+            <th scope="col">Nome</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Comprato</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if(rows) { %>
+            <% rows.forEach(function(row) { %> 
+              <tr>
+                <!--<th scope="row">1</th>-->
+                <td><a class="primary font-weight-bold" href="<%= row.id %>"><%= row.name %></a></td>
+                <td><a class="primary" href="<%= row.type_id %>"><%= row.type %></a></td>
+                <td>
+                  <% if(row.bought==='no'){ %>
+                    <span class="badge badge-danger"><%= row.bought %></span>
+                  <% }else{ %>
+                    <span class="badge badge-success"><%= row.bought %>></span>
+                  <% } %>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-warning" type="button" >
+                    <span class="fa fa-edit"></span>
+                  </button>
+                  <button class="btn btn-sm btn-danger" type="button">
+                    <span class="fas fa-trash-alt"></span>
+                  </button>
+                </td>
+              </tr>
+            <% }); %>
+          <% } %>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

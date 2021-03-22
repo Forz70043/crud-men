@@ -2,6 +2,13 @@ const env = require('dotenv').config();
 const mysql = require('mysql');
 //const MongoClient = require('mongodb').MongoClient;
 
+/*	db.collection('quotes').find().toArray(function(err,results){
+		//console.log(results);
+		if(err) return console.log(err);
+		res.render('index.ejs',{quotes: results });
+	});
+*/
+
 /*
 var connection = mysql.createConnection({
 	host:     'localhost',//process.env.DB_HOST,//'localhost',
@@ -20,13 +27,96 @@ const pool = mysql.createPool({
 });
 */
 
+
+ /*
+    pool.getConnection((err, connection)=>{
+        return new Promise((resolve, reject) => {
+            if (err) {
+                if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+                    reject('Database connection was closed.');
+                }
+                if (err.code === 'ER_CON_COUNT_ERROR') {
+                    reject('Database has too many connections.');
+                }
+                if (err.code === 'ECONNREFUSED') {
+                    reject('Database connection was refused.');
+                }
+            }
+            if (connection) connection.release()
+            resolve();
+        });
+    });
+*/
+
+/* Promisify DB */
+class Database {
+
+    constructor(){
+        this.connection = mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_NAME,
+            port: 3306
+        });
+    }
+
+    /*
+        Connessione Implicita
+    */
+    doQuery(query, args){
+        return new Promise((resolve, reject)=>{
+            this.connection.query(query, args, (err, rows, fields)=>{
+                if(err){
+                    return reject(new Error(err));
+                }
+                //resolve({rows,fields});
+                resolve(rows);
+            });
+        });
+    }
+
+    close(){
+        return new Promise((resolve,reject)=>{
+            this.connection.end((err)=>{
+                if(err) reject(new Error(err));
+                resolve();
+            });
+        });
+    }
+
+    getTypes(){
+        this.doQuery('SELECT id, name FROM TYPE')
+        .then((obj)=>{
+            console.log(obj);
+            console.log(JSON.parse(JSON.stringify(obj)));
+
+            return JSON.parse(JSON.stringify(obj));
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    getGrocery(){
+        return new Promise((resolve, reject)=>{
+            this.doQuery('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id')
+                .then((obj)=>{
+                    console.log(obj);
+                    console.log(JSON.parse(JSON.stringify(obj)));
+                    resolve(obj);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    reject(new Error(err));
+                })
+        });
+    }
+
+};
+
 const pool = mysql.createPool({
     connectionLimit: 100,
-	/*
-        connectTimeout  : 60 * 60 * 1000,
-        acquireTimeout  : 60 * 60 * 1000,
-        timeout         : 60 * 60 * 1000,
-    */
 	debug: true,
     host: process.env.DB_HOST,//'127.0.0.1',
     user: process.env.DB_USER,//'app',
@@ -60,8 +150,7 @@ const pool = mysql.createPool({
         });
     });
 */
-
-
+/*
 exports.getTypes = () => {
     pool.getConnection((err, connection) => {
         if(err){
@@ -77,46 +166,10 @@ exports.getTypes = () => {
         });
     });
 }
+*/
 
+/*
 exports.getGrocery = () => {
-    /*
-    pool.getConnection((err, connection)=>{
-        return new Promise((resolve, reject) => {
-            if (err) {
-                if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                    reject('Database connection was closed.');
-                }
-                if (err.code === 'ER_CON_COUNT_ERROR') {
-                    reject('Database has too many connections.');
-                }
-                if (err.code === 'ECONNREFUSED') {
-                    reject('Database connection was refused.');
-                }
-            }
-            if (connection) connection.release()
-            resolve();
-        });
-    });
-    */
-
-    /*connection.connect(function(err){
-        if(err) throw err;
-        console.log("Connected");
-
-        console.log(connection);
-        connection.query('SELECT * FROM GROCERY', (err, results, fields)=>{
-            if(err){
-                console.log("error: ");
-                console.log(err);
-                throw err;
-            }
-            console.log(results);
-
-            console.log("fields"); console.log(fields);
-            return results;
-        });
-    });
-    */
 
     pool.getConnection((err, connection) => {
         if(err){
@@ -124,24 +177,15 @@ exports.getGrocery = () => {
 			throw err;
 		}
         //console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id', (err, rows) => {
+        connection.query('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id', (err, rows, fields) => {
             connection.release(); // return the connection to pool
             if(err) throw err;
             console.log('The data from table are: \n', rows);
+            //console.log('The fields from table are: \n', fields);
+            console.log(JSON.stringify(rows));
             return rows;
         });
     });
 }
-
-	//mongoConnection
-/*
-	MongoClient.connect('mongodb://127.0.0.1:27017',{useUnifiedTopology: true},(err,client)=>{
-		//start mongo server
-		if(err) return console.log(err);
-		db = client.db('crud-men');     //<= db 
-
-		app.listen(process.env.PORT|| 3000, ()=>{
-			console.log('listening on 3000');
-		});
-	});
 */
+module.exports = Database;
