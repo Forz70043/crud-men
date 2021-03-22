@@ -1,0 +1,25 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <% if(links){ %>
+
+        <% links.forEach(function(link) { %> 
+          
+          <li class="breadcrumb-item active" aria-current="page">
+            <a class="primary" href="/<%= link %>"> 
+              <% capitalLink=link[0].toUpperCase() + link.substring(1); %>
+              <%= capitalLink %>
+            </a>
+          </li>
+
+        <% }); %>
+   
+      <% } %>
+      <!--<li class="breadcrumb-item active" aria-current="page">
+        Home
+        
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Home
+      </li>-->
+    </ol>
+  </nav>

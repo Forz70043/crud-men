@@ -1,15 +1,8 @@
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
 
-$(document).ready(function () {
-    $('[data-toggle=collapse-side]').click(function (e) {
-		console.log('onclick');
-        $('.side-collapse').toggleClass('in');
-    });
-});
 
-
-
+/*
 update.addEventListener('click',function(){
 	//console.log('event listener');
 	fetch('quotes', {
@@ -42,5 +35,5 @@ del.addEventListener('click',function() {
     //window.location.reload();
   })
 });
-
+*/
 
