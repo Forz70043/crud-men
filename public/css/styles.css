@@ -36,4 +36,6 @@ div.container-fluid>div.row>div.col-3 {
 }
 
 /****************************************/
-
+.card-body {
+    padding: 0;
+}
