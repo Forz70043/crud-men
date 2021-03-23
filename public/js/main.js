@@ -1,7 +1,6 @@
 var update= document.getElementById('update');
 var del = document.getElementById('delete');
 
-
 /*
 update.addEventListener('click',function(){
 	//console.log('event listener');

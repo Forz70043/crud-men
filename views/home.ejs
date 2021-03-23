@@ -1,18 +1,40 @@
-<div class="container quotes">
-
-    <br/> 
-      <form action="/quotes" method="POST" class="was-validate">
-          <div class="form-group">
-            <label for="name">Name:</label>
-              <input type="text" placeholder="name" name="name"></br>
-              <label for="quote">Quote:</label>
-            <input type="text" placeholder="quote" name="quote"></br>
-        <button class="btn btn-primary" type="submit">Submit</button>
+<div class="container mb-2">
+  <div class="card">
+    <div class="card-header">
+      Add new Element
+    </div>
+    <div class="card-body">
+      <form action="/home" method="POST" class="was-validate pt-3">
+        <div class="form-row">
+          <div class="form-group col-4">
+            <label for="name" class="col-form-label">Name</label>
+              <input type="text" placeholder="Pizza" name="name" class="form-control" required/>
+          </div>
+          <div class="form-group col">
+            <label for="type_id" class="col-form-label">Tipo</label>
+            <select name="type_id" class="form-control custom-select" required>
+              <option value=""></option>
+              <% if(types) { %>
+                <% types.forEach(function(type) { %> 
+                  <option value="<%= type.id%>"><%= type.name%></option>
+                  <% }) %>
+              <% } %>
+            </select>
+          </div>
+          <div class="form-group col">
+            <!--<label for="bought" class="col-form-label">Comprato</label>-->
+            <!--<input type="text" name="bought" />-->
+            <div class="custom-control custom-switch"></br>
+              <input type="checkbox" class="custom-control-input" id="bought" />
+              <label class="custom-control-label" for="bought">Comprato</label>
+            </div>
+          </div>
         </div>
+          <button class="btn btn-primary" type="submit">Submit</button>
       </form>
-
-
-</div>
+    </div>
+  </div>
+</div></br>
 <div class="container">
   <div class="card">
     <div class="card-header">

@@ -7,18 +7,15 @@
 
   <%- include('navbar'); %>	
 
+    <%- include('sidebar'); %>
+  
     <div class="container-fluid">
         <div class="row">
-            <div id="sidebarCol" class="col-2 v-none">
-                <%- include('sidebar'); %>
-            </div>
-            <div class="col-8">
+            <div class="col">
               <% if (links) { %>
-
                 <div class="row">
                   <%- include('breadcrumb'); %>
                 </div>
-
               <% } %>
 
               <% if (login) { %>
