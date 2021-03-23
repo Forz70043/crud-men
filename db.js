@@ -68,7 +68,7 @@ class Database {
         return new Promise((resolve, reject)=>{
             this.connection.query(query, args, (err, rows, fields)=>{
                 if(err){
-                    return reject(new Error(err));
+                    reject(new Error(err));
                 }
                 //resolve({rows,fields});
                 resolve(rows);
@@ -86,15 +86,18 @@ class Database {
     }
 
     getTypes(){
-        this.doQuery('SELECT id, name FROM TYPE')
-        .then((obj)=>{
-            console.log(obj);
-            console.log(JSON.parse(JSON.stringify(obj)));
+        return new Promise((resolve, reject)=>{
+            this.doQuery('SELECT id, name FROM TYPE')
+            .then((obj)=>{
+                //console.log(obj);
+                //console.log(JSON.parse(JSON.stringify(obj)));
 
-            return JSON.parse(JSON.stringify(obj));
-        })
-        .catch((err)=>{
-            console.log(err);
+                resolve(JSON.parse(JSON.stringify(obj)));
+            })
+            .catch((err)=>{
+                console.log(err);
+                reject(new Error(err));
+            })
         })
     }
 
@@ -102,9 +105,10 @@ class Database {
         return new Promise((resolve, reject)=>{
             this.doQuery('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id')
                 .then((obj)=>{
-                    console.log(obj);
-                    console.log(JSON.parse(JSON.stringify(obj)));
-                    resolve(obj);
+                    //console.log(obj);
+                    //console.log(JSON.parse(JSON.stringify(obj)));
+                    resolve(JSON.parse(JSON.stringify(obj)));
+                    //return JSON.parse(JSON.stringify(obj));
                 })
                 .catch((err)=>{
                     console.log(err);
