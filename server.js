@@ -6,7 +6,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const Database = require('./db');
-console.log(Database);
+//console.log(Database);
 var database = new Database();
 
 const app = express();
@@ -40,35 +40,39 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/
 app.get('/',function(req,res){
 
 	//inserire logica se già auth
-	/*
-	pool.getConnection((err, connection) => {
-        if(err){
-			console.log(err);
-			throw err;
-		}
-        console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT * FROM GROCERY', (err, rows) => {
-            connection.release(); // return the connection to pool
-            if(err) throw err;
-            console.log('The data from users table are: \n', rows);
-        });
-    });
-	*/
-	
-	//obj = {};
 	res.render(app.get('templateIndex'),{login: 1,links: ['home']});
-
 });
 
 app.get('/home',function(req,res){
-	
-	database.getGrocery().then((obj)=>{
-		console.log(obj);	
-		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:obj,results:false } );
+	console.log("inizio");
+
+	let rows,types;
+	database.getGrocery()
+	.then((obj)=>{
+		console.log("prima query");
+		console.log(obj);
+		rows=obj;
+		return database.getTypes();
+	})
+	.then((obj)=>{
+		console.log("seconda query");
+		//console.log(rows);
+		console.log(obj);
+		types=obj;
+		console.log(types);
+		return database.close();
+	}).then(()=>{
+		console.log("chiudo db");
+		console.log(rows,types);
+		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
 	})
 	.catch((err)=>{
+		console.log(err);
 		return false;
-	});
+	})
+
+	console.log("fine ??");
+
 });
 
 //req save
