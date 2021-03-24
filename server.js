@@ -44,7 +44,6 @@ app.get('/',function(req,res){
 });
 
 app.get('/home',function(req,res){
-	console.log("inizio");
 
 	let rows,types;
 	database.getGrocery()
@@ -56,34 +55,35 @@ app.get('/home',function(req,res){
 	})
 	.then((obj)=>{
 		console.log("seconda query");
-		//console.log(rows);
-		console.log(obj);
 		types=obj;
-		console.log(types);
-		return database.close();
-	}).then(()=>{
+		console.log(rows,types);
+		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
+		//return database.close();
+	})/*.then(()=>{
 		console.log("chiudo db");
 		console.log(rows,types);
 		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
-	})
+	})*/
 	.catch((err)=>{
 		console.log(err);
 		return false;
 	})
 
-	console.log("fine ??");
-
 });
 
 //req save
-/*
-app.post('/quotes', (req,res)=>{
-	db.collection('quotes').insertOne(req.body,(err,result)=>{
-			if(err) return console.log(err);
-			res.redirect('/');
-	});	
+
+app.post('/home', (req,res)=>{
+	console.log(req);
+	console.log(res);
+
+
+	let rows,tyupes;
+	rows,types=false
+	
+	res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
 });
-*/
+
 /*
 app.put('/quotes',(req,res)=>{
 	db.collection('quotes').findOneAndUpdate({name: 'XXX Hi MotherFucker I\'ll kill you!'},{ 
