@@ -1,7 +1,7 @@
 {
   "name": "crud-men",
   "version": "1.0.0",
-  "description": "test mongo express node",
+  "description": "test mysql express node",
   "main": "server.js",
   "scripts": {
     "test": "nodemon server.js"
@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/Forz70043/crud-men#readme",
   "devDependencies": {
-    "mocha": "^8.3.2",
     "nodemon": "^2.0.2"
   },
   "dependencies": {
