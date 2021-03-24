@@ -27,6 +27,10 @@ const pool = mysql.createPool({
 });
 */
 
+/* db.collection('quotes').insertOne(req.body,(err,result)=>{
+    if(err) return console.log(err);
+    res.redirect('/');
+}); */
 
  /*
     pool.getConnection((err, connection)=>{
@@ -64,9 +68,9 @@ class Database {
     /*
         Connessione Implicita
     */
-    doQuery(query, args){
+    doQuery(sql, args){
         return new Promise((resolve, reject)=>{
-            this.connection.query(query, args, (err, rows, fields)=>{
+            this.connection.query(sql, args, (err, rows, fields)=>{
                 if(err){
                     reject(new Error(err));
                 }
@@ -116,6 +120,35 @@ class Database {
                 })
         });
     }
+
+    insertGrocery(values){
+        return new Promise((resolve, reject)=>{
+            this.doQuery("INSER INTO GROCERY VALUES ?", values)
+            .then((result)=>{
+                console.log(result);
+                resolve(result);
+            })
+            .catch((err)=>{
+                console.log(err);
+                reject(new Error(err));
+            })
+        })
+    }
+
+    inserType(values){
+        return new Promise((resolve, reject)=>{
+            this.doQuery()
+            .then((result)=>{
+                console.log(result);
+                resolve(result);
+            })
+            .catch((err)=>{
+                console.log(err);
+                reject(new Error(err));
+            })
+        })
+    }
+
 
 };
 
