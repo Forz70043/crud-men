@@ -22,10 +22,8 @@
             </select>
           </div>
           <div class="form-group col">
-            <!--<label for="bought" class="col-form-label">Comprato</label>-->
-            <!--<input type="text" name="bought" />-->
             <div class="custom-control custom-switch"></br>
-              <input type="checkbox" class="custom-control-input" id="bought" />
+              <input type="checkbox" class="custom-control-input" id="bought" name="bought"/>
               <label class="custom-control-label" for="bought">Comprato</label>
             </div>
           </div>
@@ -44,7 +42,6 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <!--<th scope="col">#</th>-->
             <th scope="col">Nome</th>
             <th scope="col">Tipo</th>
             <th scope="col">Comprato</th>
@@ -55,21 +52,21 @@
           <% if(rows) { %>
             <% rows.forEach(function(row) { %> 
               <tr>
-                <!--<th scope="row">1</th>-->
+                
                 <td><a class="primary font-weight-bold" href="<%= row.id %>"><%= row.name %></a></td>
                 <td><a class="primary" href="<%= row.type_id %>"><%= row.type %></a></td>
                 <td>
                   <% if(row.bought==='no'){ %>
                     <span class="badge badge-danger"><%= row.bought %></span>
                   <% }else{ %>
-                    <span class="badge badge-success"><%= row.bought %>></span>
+                    <span class="badge badge-success"><%= row.bought %></span>
                   <% } %>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-warning" type="button" >
+                  <button class="btn btn-sm btn-warning" type="button" onclick="">
                     <span class="fa fa-edit"></span>
                   </button>
-                  <button class="btn btn-sm btn-danger" type="button">
+                  <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenter">
                     <span class="fas fa-trash-alt"></span>
                   </button>
                 </td>
@@ -81,3 +78,5 @@
     </div>
   </div>
 </div>
+
+<%- include('modal'); %>
