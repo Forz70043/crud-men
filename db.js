@@ -71,6 +71,7 @@ class Database {
     doQuery(sql, args){
         return new Promise((resolve, reject)=>{
             this.connection.query(sql, args, (err, rows, fields)=>{
+                console.log(sql);
                 if(err){
                     reject(new Error(err));
                 }
@@ -123,7 +124,10 @@ class Database {
 
     insertGrocery(values){
         return new Promise((resolve, reject)=>{
-            this.doQuery("INSER INTO GROCERY VALUES ?", values)
+            console.log(values);
+
+            if(!values) reject(new Error('DB Insert Error: value not defined'));
+            this.doQuery("INSERT INTO GROCERY(name,type_id,bought) VALUES (?,?,?)", values)
             .then((result)=>{
                 console.log(result);
                 resolve(result);
@@ -137,7 +141,8 @@ class Database {
 
     inserType(values){
         return new Promise((resolve, reject)=>{
-            this.doQuery()
+            if(!values) reject(new Error('DB Insert Error: value not defined'));
+            this.doQuery("INSERT INTO TYPE(name) VALUES (?)",values)
             .then((result)=>{
                 console.log(result);
                 resolve(result);
@@ -149,6 +154,23 @@ class Database {
         })
     }
 
+    deleteGrocery(values){
+        console.log("values");
+        console.log(values);
+        if(!values) reject(new Error('DB Delete Error: values not defined'));
+
+        return new Promise((resolve, reject)=>{
+            this.doQuery('DELETE FROM GROCERY WHERE id IN (?)',values)
+            .then((result)=>{
+                console.log(result);
+                resolve(result);
+            })
+            .catch((err)=>{
+                console.log(new Error(err));
+                reject(err);
+            })
+        })
+    }
 
 };
 

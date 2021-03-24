@@ -6,6 +6,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const Database = require('./db');
+const { data } = require('jquery');
 //console.log(Database);
 var database = new Database();
 
@@ -38,27 +39,20 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/
  * get data
  */
 app.get('/',function(req,res){
-
 	//inserire logica se già auth
 	res.render(app.get('templateIndex'),{login: 1,links: ['home']});
 });
 
 app.get('/home',function(req,res){
-
 	let rows,types;
 	database.getGrocery()
 	.then((obj)=>{
-		console.log("prima query");
-		console.log(obj);
 		rows=obj;
 		return database.getTypes();
 	})
 	.then((obj)=>{
-		console.log("seconda query");
 		types=obj;
-		console.log(rows,types);
-		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
-		//return database.close();
+		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
 	})/*.then(()=>{
 		console.log("chiudo db");
 		console.log(rows,types);
@@ -71,18 +65,77 @@ app.get('/home',function(req,res){
 
 });
 
+app.get('/types', (req,res)=>{
+	let types;
+	database.getTypes()
+	.then((obj)=>{
+		types = obj;
+		res.render(app.get('templateIndex'),{login:0,filename:'types',links:['type'],types:types })
+	})
+	.catch((err)=>{
+		console.log(err);
+		return false;
+	})
+
+})
+
 //req save
 
 app.post('/home', (req,res)=>{
-	console.log(req);
-	console.log(res);
+	console.log(req.body);
+	//console.log(res);
+	let rows,types;
 
+	database.insertGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
+	.then((result)=>{
+		console.log("result");
+		console.log(result);
+		return database.getGrocery();
+	})
+	.then((obj)=>{
+		rows = obj;
+		return database.getTypes();
+	})
+	.then((obj)=>{
+		types = obj;
+		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
+	})
+	.catch((err)=>{
+		console.log(new Error(err));
+		return false;
+	})
 
-	let rows,tyupes;
-	rows,types=false
-	
-	res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
 });
+
+app.delete('/home', (req,res)=>{
+	console.log("home delete");
+	console.log(req.body);
+	let rows, types;
+
+	database.deleteGrocery([req.body.id])
+	.then((result)=>{
+		console.log(result);
+		
+		return res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
+		//return database.getGrocery();
+	})/*
+	.then((obj)=>{
+		rows = obj;
+		return database.getTypes();
+	})
+	.then((obj)=>{
+		types = obj;
+		console.log("ZZZZZ");
+		return res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
+		console.log("XXXXXXXXXXX");
+	})*/
+	.catch((err)=>{
+		console.log(err);
+		return false;
+	})
+
+})
+
 
 /*
 app.put('/quotes',(req,res)=>{
@@ -112,18 +165,6 @@ app.delete('/quotes',(req,res)=>{
 	});
 });
 */
-
-//ES6
-//app.listen(3000,()=>{
-//	console.log('listening 3000');
-//});
-
-/* ES5
-app.listen(3000, function(){
-	console.log('listening 3000');
-});
-*/
-
 
 app.listen(process.env.PORT,function(){
 	console.log(`app listen on: http://localhost:${process.env.PORT}`);
