@@ -5,4 +5,4 @@ just clone or fork this project
 
 then run `npm install`
 
-run dev with nodemon : `npm test`
+run dev with nodemon : `npm start`
