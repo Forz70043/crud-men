@@ -12,4 +12,5 @@ CREATE TABLE `TYPE`(
     `name` varchar(64) NOT NULL,
     PRIMARY KEY(`id`)
 );
+
 ALTER TABLE `GROCERY` ADD FOREIGN KEY(`type_id`) REFERENCES `TYPE`(`id`);
