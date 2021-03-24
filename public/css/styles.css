@@ -46,6 +46,12 @@ div.navbar-collapse.collapse.show {
 
 }
 
+#sidebarCol button.closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
 
 #sidebarCol a.closebtn {
     position: absolute;
@@ -104,13 +110,19 @@ div.collapsing.width {
     font-weight: 700 !important;
 }
 
+/**************************************************/
 
-  /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
 @media screen and (max-height: 450px) {
-    .overlay a {font-size: 20px}
+    div.overlay-content a { font-size: 20px }
     #sidebarCol a.closebtn {
       font-size: 40px;
       top: 15px;
       right: 35px;
+    }
+    #sidebarCol button.closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
     }
   }
