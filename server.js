@@ -166,6 +166,6 @@ app.delete('/quotes',(req,res)=>{
 });
 */
 
-app.listen(process.env.PORT,function(){
+module.exports = app.listen(process.env.PORT,function(){
 	console.log(`app listen on: http://localhost:${process.env.PORT}`);
 });
