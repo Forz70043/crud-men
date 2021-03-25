@@ -1,0 +1,58 @@
+<div class="container mb-2">
+    <div class="card">
+        <div class="card-header">
+            Add new Type
+        </div>
+        <div class="card-body">
+            <form action="/types" method="POST" class="was-validate pt-3">
+                <div class="form-row">
+                    <div class="form-group col"></div>
+                    <div class="form-group col">
+                        <label for="name" class="col-form-label">Name</label>
+                        <input type="text" placeholder="Food" name="name" class="form-control" required/>
+                    </div>
+                    <div class="form-group col"></div>
+                </div>
+                <button class="btn btn-primary mb-2" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div></br>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <%= links %>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Typo</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(types) { %>
+                    <% types.forEach(function(type) { %> 
+                        <tr>
+                            <td><a class="primary font-weight-bold" href="<%= type.id %>"><%= type.name %></a></td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" type="button" onclick="">
+                                    <span class="fa fa-edit"></span>
+                                </button>
+
+                                <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(type)%>);" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <span class="fas fa-trash-alt"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include('modal'); %>
