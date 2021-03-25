@@ -94,20 +94,6 @@ div.overlay-content a:hover, div.overlay-content a:focus {
     color: #ffffff;
 }
 
-
-
-
-/* div.container-fluid>div.row>div.col-3 {
-    padding: 0;
-}
-
-div.collapsing.width {
-    -webkit-transition-property: width, visibility;
-    transition-property: width, visibility;
-    width: 0;
-    height: auto;
-    z-index: 1710 !important;
-} */
 /****************************************/
 .card-body {
     padding: 0;
