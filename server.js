@@ -79,13 +79,25 @@ app.get('/types', (req,res)=>{
 
 })
 
-//req save
+app.post('/types',(req,res)=>{
+	console.log(req.body);
+	let types;
+	database.inserType(req.body.name)
+	.then((result)=>{
+		console.log(result);
+		res.redirect('types');
+	})
+	.catch((err)=>{
+		console.log(err);
+	})
+})
 
+//req save
 app.post('/home', (req,res)=>{
 	console.log(req.body);
 	//console.log(res);
 	let rows,types;
-
+	if(!(req.body.name && req.body.type_id)) res.render('home');
 	database.insertGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
 	.then((result)=>{
 		console.log("result");

@@ -126,7 +126,7 @@ class Database {
         return new Promise((resolve, reject)=>{
             console.log(values);
 
-            if(!values) reject(new Error('DB Insert Error: value not defined'));
+            if(!values || !(values.name && values.type_id) ) reject(new Error('DB Insert Error: value not defined'));
             this.doQuery("INSERT INTO GROCERY(name,type_id,bought) VALUES (?,?,?)", values)
             .then((result)=>{
                 console.log(result);
@@ -144,7 +144,6 @@ class Database {
             if(!values) reject(new Error('DB Insert Error: value not defined'));
             this.doQuery("INSERT INTO TYPE(name) VALUES (?)",values)
             .then((result)=>{
-                console.log(result);
                 resolve(result);
             })
             .catch((err)=>{
