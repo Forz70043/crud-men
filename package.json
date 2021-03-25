@@ -4,7 +4,7 @@
   "description": "test mysql express node",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
     "test": "jest"
   },
   "jest": {
