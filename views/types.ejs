@@ -7,7 +7,7 @@
             <form action="/types" method="POST" class="was-validate pt-3">
                 <div class="form-row">
                     <div class="form-group col"></div>
-                    <div class="form-group col">
+                    <div class="form-group col-10">
                         <label for="name" class="col-form-label">Name</label>
                         <input type="text" placeholder="Food" name="name" class="form-control" required/>
                     </div>
@@ -41,7 +41,7 @@
                                 <button class="btn btn-sm btn-warning" type="button" onclick="">
                                     <span class="fa fa-edit"></span>
                                 </button>
-
+                                <% type.action='/types'; %>
                                 <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(type)%>);" data-toggle="modal" data-target="#exampleModalCenter">
                                     <span class="fas fa-trash-alt"></span>
                                 </button>
@@ -55,4 +55,4 @@
     </div>
 </div>
 
-<%- include('modal'); %>
+<%- include('modal') %> 

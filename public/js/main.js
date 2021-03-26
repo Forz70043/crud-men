@@ -1,5 +1,12 @@
-var update= document.getElementById('update');
-var del = document.getElementById('delete');
+
+function restoreValueBought(){
+	var idElem=document.getElementById('id_update').value;
+	el=document.getElementById('bought_'+idElem);
+	console.log(el);
+	if(el.checked) el.checked=false;
+	else el.checked=true;
+
+}
 
 function pushInfoElement(e){
 	console.log(e);
@@ -7,47 +14,21 @@ function pushInfoElement(e){
 	document.getElementById('textModal').innerText='Are you sure to delete '+e.name+' ?';
 	console.log(document.getElementById('id'));
 	document.getElementById('id').value=e.id;
+	document.getElementById('modalForm').action=e.action;
+	console.log(document.getElementById('modalForm'));
 }
 
-/*
-update.addEventListener('click',function(){
-	//console.log('event listener');
-	fetch('quotes', {
-	  method: 'put',
-	  headers: {'Content-Type': 'application/json'},
-	  body: JSON.stringify({
-	    'name': 'replace',
-	    'quote': 'quote'
-	  })
-	}).then(response=>{
-	  if(response.ok) return response.json();
-	}).then(data=>{
-	  console.log(data);
-	  window.location.reload();
-	});
-});
-*/
-
-del.addEventListener('click',function() {
-	console.log('delete');
-	id=document.getElementById('id').value;
-	fetch('home', {
-		method: 'delete',
-		headers: {
-		'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({'id': id})
-	}).then(function(response) {
-		console.log("response");
-		console.log(response);
-		//window.location=
-		window.location.href=window.location;
-		//return true;
-		//window.location.reload();
-	})
-	.catch((err)=>{
-		console.log(err);
-	})
-});
-
-
+function updateBought(e){
+	console.log(e);
+	var boughtEl = document.getElementById('bought_'+e.id);
+	console.log(boughtEl);
+	document.getElementById('exampleModalCenterUpdateTitle').innerText="Update "+e.name;
+	var stringText='Vuoi segnare '+e.name+' come ';
+	stringText+=(boughtEl.checked) ? 'comprato ?' : 'non comprato ?';
+	document.getElementById('textModalUpdate').innerText=stringText;
+	document.getElementById('id_update').value=e.id;
+	document.getElementById('bought_update').value=(boughtEl.checked)?'yes':'no';
+	document.getElementById('modalFormUpdate').action=e.action;
+	//$('#modalFormUpdate').append(boughtEl);
+	console.log(document.getElementById('modalFormUpdate'));
+}

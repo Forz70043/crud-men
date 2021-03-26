@@ -6,11 +6,12 @@
     <div class="card-body">
       <form action="/home" method="POST" class="was-validate pt-3">
         <div class="form-row">
-          <div class="form-group col-4">
+          <div class="form-group col"></div>
+          <div class="form-group col-5">
             <label for="name" class="col-form-label">Name</label>
               <input type="text" placeholder="Pizza" name="name" class="form-control" required/>
           </div>
-          <div class="form-group col">
+          <div class="form-group col-5">
             <label for="type_id" class="col-form-label">Tipo</label>
             <select name="type_id" class="form-control custom-select" required>
               <option value=""></option>
@@ -21,14 +22,9 @@
               <% } %>
             </select>
           </div>
-          <div class="form-group col">
-            <div class="custom-control custom-switch"></br>
-              <input type="checkbox" class="custom-control-input" id="bought" name="bought"/>
-              <label class="custom-control-label" for="bought">Comprato</label>
-            </div>
-          </div>
+          <div class="form-group col"></div>
         </div>
-          <button class="btn btn-primary" type="submit">Submit</button>
+          <button class="btn btn-primary mb-2" type="submit">Submit</button>
       </form>
     </div>
   </div>
@@ -50,17 +46,18 @@
         </thead>
         <tbody>
           <% if(rows) { %>
-            <% rows.forEach(function(row) { %> 
+            <% rows.forEach(function(row) { %>
+              <% row.action='/home'; %>
               <tr>
-                
-                <td><a class="primary font-weight-bold" href="<%= row.id %>"><%= row.name %></a></td>
-                <td><a class="primary" href="<%= row.type_id %>"><%= row.type %></a></td>
+                <td><a class="primary font-weight-bold" href="home/<%= row.id %>"><%= row.name %></a></td>
+                <td><a class="primary" href="types/<%= row.type_id %>"><%= row.type %></a></td>
                 <td>
-                  <% if(row.bought==='no'){ %>
-                    <span class="badge badge-danger"><%= row.bought %></span>
-                  <% }else{ %>
-                    <span class="badge badge-success"><%= row.bought %></span>
-                  <% } %>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" onclick="updateBought(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
+                    class="custom-control-input" id="bought_<%=row.id%>" name="bought_<%=row.id%>" 
+                    <% if(row.bought==='yes'){ %> checked <% } %>/>
+                    <label class="custom-control-label" for="bought_<%=row.id%>"></label>
+                  </div>
                 </td>
                 <td>
                   <button class="btn btn-sm btn-warning" type="button" onclick="">
@@ -79,4 +76,5 @@
   </div>
 </div>
 
+<%- include('modal_update') %> 
 <%- include('modal'); %>

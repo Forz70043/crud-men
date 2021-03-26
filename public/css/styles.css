@@ -8,7 +8,7 @@ body {
 
 .footer {
     margin-top: auto;
-    position: bottom;
+    position: inherit;
     bottom: 0;
     width: 100%;
     height: 60px;
