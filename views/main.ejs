@@ -8,32 +8,33 @@
         </div>
 
         <div class="card">
-            <div class="card-header">Log In</div>
+            <div class="card-header">
+                <span class="fas fa-sign-in-alt"></span>
+                <span class="fa fa-lock"></span>
+                Social Authentication
+            </div>
             <div class="card-body">
-                <form class="mt-1" method="post">
-                    <div class="form-row">
-                        <div class="form-group col"></div>
-                        <div class="form-group col-10">
-                            <label for="exampleInputEmail1" class="font-weight-bold">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group col"></div>
+                <div class="form-row">
+                    <div class="form-group col"></div>
+                    <div class="form-group col-10 mt-3">
+                        <a href="/login/google" class="btn btn-danger"><span class="fab fa-google"></span> SignIn with Google</a>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col"></div>
-                        <div class="form-group col-10">
-                            <label for="exampleInputPassword1" class="font-weight-bold">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
-                        </div>
-                        <div class="form-group col"></div>
+                    <div class="form-group col"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col"></div>
+                    <div class="form-group col-10">
+                        <a href="/login/github" class="btn btn-dark"><span class="fab fa-github"></span> SignIn with GitHub </a>
                     </div>
-                        <!--<div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>-->
-                    <button type="submit" class="btn btn-primary mb-2" name="submit" value="submit">Submit</button>
-                </form>
+                    <div class="form-group col"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col"></div>
+                    <div class="form-group col-10">
+                        <a href="/login/facebook" class="btn btn-primary"><span class="fab fa-facebook"></span> SignIn with Facebook</a>
+                    </div>
+                    <div class="form-group col"></div>
+                </div>
             </div>
             <div class="card-footer text-muted"></div>
         </div>
