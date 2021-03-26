@@ -1,56 +1,5 @@
 const env = require('dotenv').config();
 const mysql = require('mysql');
-//const MongoClient = require('mongodb').MongoClient;
-
-/*	db.collection('quotes').find().toArray(function(err,results){
-		//console.log(results);
-		if(err) return console.log(err);
-		res.render('index.ejs',{quotes: results });
-	});
-*/
-
-/*
-var connection = mysql.createConnection({
-	host:     'localhost',//process.env.DB_HOST,//'localhost',
-	user:     process.env.DB_USER,//'forz',
-	password: process.env.DB_PASS,//'admin',
-	database: process.env.DB_NAME,//'TEST'
-});
-*/
-/*
-const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: 'localhost',
-    user: 'app',
-    password: 'admin',
-    database: 'TEST'
-});
-*/
-
-/* db.collection('quotes').insertOne(req.body,(err,result)=>{
-    if(err) return console.log(err);
-    res.redirect('/');
-}); */
-
- /*
-    pool.getConnection((err, connection)=>{
-        return new Promise((resolve, reject) => {
-            if (err) {
-                if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                    reject('Database connection was closed.');
-                }
-                if (err.code === 'ER_CON_COUNT_ERROR') {
-                    reject('Database has too many connections.');
-                }
-                if (err.code === 'ECONNREFUSED') {
-                    reject('Database connection was refused.');
-                }
-            }
-            if (connection) connection.release()
-            resolve();
-        });
-    });
-*/
 
 /* Promisify DB */
 class Database {
@@ -122,11 +71,8 @@ class Database {
         });
     }
 
-    insertGrocery(values){
+    addGrocery(values){
         return new Promise((resolve, reject)=>{
-            console.log(values);
-
-            if(!values || !(values.name && values.type_id) ) reject(new Error('DB Insert Error: value not defined'));
             this.doQuery("INSERT INTO GROCERY(name,type_id,bought) VALUES (?,?,?)", values)
             .then((result)=>{
                 console.log(result);
@@ -139,7 +85,7 @@ class Database {
         })
     }
 
-    inserType(values){
+    addType(values){
         return new Promise((resolve, reject)=>{
             if(!values) reject(new Error('DB Insert Error: value not defined'));
             this.doQuery("INSERT INTO TYPE(name) VALUES (?)",values)
@@ -171,8 +117,38 @@ class Database {
         })
     }
 
-};
+    deleteType(values){
+        if(!values) reject(new Error('DB Delete Error: values not defined'));
+        return new Promise((resolve,reject)=>{
+            this.doQuery('DELETE FROM TYPE WHERE id IN (?)',values)
+            .then((result)=>{
+                console.log(result);
+                resolve(result);
+            })
+            .catch((err)=>{
+                console.log(new Error(err));
+                reject((err));
+            })
+        })
+    }
 
+    updateGrocery(values){
+        console.log("update");
+        console.log(values);
+        return new Promise((resolve, reject)=>{
+            this.doQuery('update GROCERY SET bought=? WHERE id IN (?)',values)
+            .then((result)=>{
+                console.log(result);
+                resolve(result);
+            })
+            .catch((err)=>{
+                reject(err);
+            })
+        })
+    }
+
+};
+/*
 const pool = mysql.createPool({
     connectionLimit: 100,
 	debug: true,
@@ -182,7 +158,7 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,//'TEST',
 	port: 3306
 });
-
+*/
 /*
     connection.connect((err)=>{
         if(err) throw err;

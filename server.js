@@ -12,7 +12,7 @@ var database = new Database();
 
 const app = express();
 
-app.set('appName','crud-men');
+app.set('appName','Shopping List');
 //template engine
 app.set('view engine', 'ejs');
 
@@ -62,8 +62,16 @@ app.get('/home',function(req,res){
 		console.log(err);
 		return false;
 	})
-
 });
+
+app.get('/home/:id',(req,res)=>{
+	console.log(req.body);
+})
+
+app.put('/home',(req,res)=>{
+	console.log(req.body);
+
+})
 
 app.get('/types', (req,res)=>{
 	let types;
@@ -82,23 +90,83 @@ app.get('/types', (req,res)=>{
 app.post('/types',(req,res)=>{
 	console.log(req.body);
 	let types;
-	database.inserType(req.body.name)
-	.then((result)=>{
-		console.log(result);
-		res.redirect('types');
-	})
-	.catch((err)=>{
-		console.log(err);
-	})
+	if(!req.body.send){
+		database.addType(req.body.name)
+		.then((result)=>{
+			console.log(result);
+			res.redirect('types');
+		})
+		.catch((err)=>{
+			console.log(err);
+		})
+	}
+	else if(req.body.send==='delete'){
+		database.deleteType([req.body.id])
+		.then((result)=>{
+			console.log(result);
+			res.redirect('types');
+		})
+		.catch((err)=>{
+			console.log(err);
+			return false;
+		})
+	}
 })
 
 //req save
 app.post('/home', (req,res)=>{
+	console.log("post");
 	console.log(req.body);
 	//console.log(res);
-	let rows,types;
-	if(!(req.body.name && req.body.type_id)) res.render('home');
-	database.insertGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
+	//let rows,types;
+	//if(!(req.body.name && req.body.type_id)) res.render('home');
+	if(!req.body.send){
+		database.addGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
+		.then((result)=>{
+			console.log("result");
+			console.log(result);
+			res.redirect('home');
+			//return database.getGrocery();
+		})
+		.catch((err)=>{
+			console.log(new Error(err));
+			return false;
+		})
+	}
+	else if(req.body.send==='delete'){
+		database.deleteGrocery([req.body.id])
+		.then((result)=>{
+			console.log(result);
+			res.redirect('home');
+			//return res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
+			//return database.getGrocery();
+		})
+		.catch((err)=>{
+			console.log(err);
+			return false;
+		})
+	}
+	else if(req.body.send==='update'){
+		if(!req.body.bought){
+			for(key in req.body){
+				console.log(req.body[key]);
+				console.log(key);
+				if(key==='bought_'+req.body.id){
+					req.body.bought=(req.body[key]==='on')?'yes':'no';
+				}
+			}
+		}
+		database.updateGrocery([req.body.bought,req.body.id])
+		.then((result)=>{
+			console.log(result);
+			res.redirect('home');
+		})
+		.catch((err)=>{
+			console.log(err);
+		})
+	}
+
+	/*database.addGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
 	.then((result)=>{
 		console.log("result");
 		console.log(result);
@@ -116,6 +184,7 @@ app.post('/home', (req,res)=>{
 		console.log(new Error(err));
 		return false;
 	})
+	*/
 
 });
 
@@ -148,6 +217,23 @@ app.delete('/home', (req,res)=>{
 
 })
 
+app.delete('/types',(req,res)=>{
+	console.log("types delete");
+	console.log(req.body);
+	//let rows, types;
+
+	database.deleteType([req.body.id])
+	.then((result)=>{
+		console.log(result);
+		
+		return res.render(app.get('templateIndex'),{login:0,filename: 'types',links: ['tipi'],rows:rows,types:types});
+		//return database.getGrocery();
+	})
+	.catch((err)=>{
+		console.log(err);
+		return false;
+	})
+})
 
 /*
 app.put('/quotes',(req,res)=>{
