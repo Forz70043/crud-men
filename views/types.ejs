@@ -25,6 +25,7 @@
             <%= links %>
         </div>
         <div class="card-body">
+            <% if(types && types.length>0) { %>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -33,7 +34,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if(types) { %>
                     <% types.forEach(function(type) { %> 
                         <tr>
                             <td><a class="primary font-weight-bold" href="<%= type.id %>"><%= type.name %></a></td>
@@ -48,9 +48,11 @@
                             </td>
                         </tr>
                     <% }); %>
-                    <% } %>
                 </tbody>
             </table>
+            <% }else{ %>
+                <%- include('nodata') %> 
+            <% } %>
         </div>
     </div>
 </div>

@@ -14,3 +14,15 @@ CREATE TABLE `TYPE`(
 );
 
 ALTER TABLE `GROCERY` ADD FOREIGN KEY(`type_id`) REFERENCES `TYPE`(`id`);
+
+
+
+CREATE TABLE `SYSLOG` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `remote_ip` varchar(15) NOT NULL,
+  `forward_ip` varchar(15) NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `action` varchar(512) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
