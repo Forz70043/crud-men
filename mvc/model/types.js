@@ -5,11 +5,9 @@ class Types extends Entity {
         super();
         this.TBL= 'TYPE';
         this.setFields({
-            'id':{required:false},
             'name':{required:true}
         });
     }
-
 
     get(){
         this.getEntity()
@@ -21,18 +19,27 @@ class Types extends Entity {
         })
     }
 
-
     async getAll(){
         var result = await this.find();
         console.log("GET ALL :",result);
         return result;
     } 
 
-    addType(params){
-        console.log(params);
+    async add(params){		
+		console.log(" ADD ",params);
+		console.log(Object.keys(params).length);
 
-    }
-    
+		var objKeys = Object.keys(params);
+		if(objKeys.length>0){
+			console.log("params >0");
+			var result = await this.insertQuery(params);
+			console.log(" ADD: ",result);
+			return result;
+		}
+		else console.log("params <0");
+	}
+
+
     delete(params){
 
     }
