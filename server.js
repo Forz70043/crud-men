@@ -1,10 +1,13 @@
 const env = require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const http = require('http');
-//deprecato da express v>4.16
-//const bodyParser = require('body-parser');
+
 const Database = require('./db');
+var database = new Database();
+
+var typesRouter = require('./routes/types');
+var groceryRoute = require('./routes/grocery');
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
@@ -13,11 +16,14 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 var Types = require('./mvc/model/types');
 var types = new Types();
 
+console.log(Object.getOwnPropertyNames(types));
+
 var Grocery = require('./mvc/model/grocerylist');
+const { access } = require('fs');
 var grocery = new Grocery();
 
 var userProfile;
-var database = new Database();
+
 const app = express();
 
 app.set('appName','Shopping List');
@@ -32,7 +38,10 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-//servers static files js,css
+
+/**
+ * 	servers static files js,css
+ */
 app.use('/public',express.static(path.join(__dirname, 'public/css')));
 app.use('/public',express.static(path.join(__dirname, 'public/js')));
 app.use('/public',express.static(path.join(__dirname, 'public/')));
@@ -42,6 +51,16 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 app.use('/css', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd')));
+
+
+/**
+ * ROUTES
+ */
+app.use('/types', typesRouter);
+app.use('/home', groceryRoute);
+
+
+
 
 
 passport.serializeUser(function(user, cb) {
@@ -71,7 +90,9 @@ passport.use(new GitHubStrategy({
     callbackURL: process.env.GITHUB_REDIRECT_url//"http://127.0.0.1:3000/auth/github/"
   },
   function(accessToken, refreshToken, profile, done) {
-    //User.findOrCreate({ githubId: profile.id }, function (err, user) {
+    
+	console.log(accessToken, refreshToken)
+	//User.findOrCreate({ githubId: profile.id }, function (err, user) {
     userProfile = profile;  
 	return done(null, userProfile);
     //});
@@ -107,7 +128,8 @@ app.get('/login/google',
 app.get('/auth/google', 
 	passport.authenticate('google', { failureRedirect: '/error' }),
   	function(req, res) {
-    	// Successful authentication, redirect success.
+		console.log(req,res);
+		// Successful authentication, redirect success.
     	res.redirect('/success');
   	}
 );
@@ -123,6 +145,8 @@ app.get('/login/github',
 app.get('/auth/github', 
   	passport.authenticate('github', { failureRedirect: '/error' }),
   	function(req, res) {
+		console.log("REQ: ",req);
+		  console.log("RES: ",res.query,res.rawHeaders);
     	res.redirect('/success');
   	}
 );
@@ -141,12 +165,18 @@ app.get('/login/facebook',
 app.get('/auth/facebook', 
   	passport.authenticate('facebook', { failureRedirect: '/error' }),
   	function(req, res) {
+		  console.log(req)
     	res.redirect('/success');
   	}
 );
 
 app.get('/success', (req, res) => res.send(userProfile));
 app.get('/error', (req, res) => res.send("error logging in"));
+
+
+
+
+
 
 /*
  * Req for request & res for response
@@ -157,157 +187,15 @@ app.get('/',function(req,res){
 	res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
 });
 
-app.get('/home',async (req,res)=>{
-	let rows,tipi;
-	tipi = await types.getAll();
-	rows = await grocery.getAll();
-
-	res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:tipi});
-	
-	/* database.getGrocery()
-	.then((obj)=>{
-		rows=obj;
-		return database.getTypes();
-	})
-	.then((obj)=>{
-		types=obj;
-		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
-	}) .then(()=>{
-		console.log("chiudo db");
-		console.log(rows,types);
-		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
-	})
-	.catch((err)=>{
-		console.log(err);
-		return false;
-	})*/
-});
-
-app.get('/home/:id',async(req,res)=>{
-	console.log("home/id");
-	console.log(req.body);
-	
-})
-
-
-app.get('/types',async (req,res)=>{
-	let tipi = await types.getAll();
-	//console.log("XXXXX", types);
-
-	res.render(app.get('templateIndex'),{login:0,filename:'types',links:['types'],types:tipi })
-
-	/* database.getTypes()
-	.then((obj)=>{
-		types = obj;
-		
-	})
-	.catch((err)=>{
-		console.log(err);
-		return false;
-	}) */
-
-})
-
-app.post('/types', async (req,res)=>{
-	console.log(req.body);
-	var params = req.body;
-	if(!req.body.send){
-		var result = await types.add(params);
-		if(result.insertId){
-			res.redirect('types');
-		}
-	}
-	else if(req.body.send==='delete'){
-		
-		/* database.deleteType([req.body.id])
-		.then((result)=>{
-			console.log(result);
-			res.redirect('types');
-		})
-		.catch((err)=>{
-			console.log(err);
-			return false;
-		}) */
-	}
-})
-
-//req save
-app.post('/home', (req,res)=>{
-	console.log("post");
-	console.log(req.body);
-	//console.log(res);
-	//let rows,types;
-	//if(!(req.body.name && req.body.type_id)) res.render('home');
-	if(!req.body.send){
-		database.addGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
-		.then((result)=>{
-			console.log("result");
-			console.log(result);
-			res.redirect('home');
-			//return database.getGrocery();
-		})
-		.catch((err)=>{
-			console.log(new Error(err));
-			return false;
-		})
-	}
-	else if(req.body.send==='delete'){
-		database.deleteGrocery([req.body.id])
-		.then((result)=>{
-			console.log(result);
-			res.redirect('home');
-			//return res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
-			//return database.getGrocery();
-		})
-		.catch((err)=>{
-			console.log(err);
-			return false;
-		})
-	}
-	else if(req.body.send==='update'){
-		if(!req.body.bought){
-			for(key in req.body){
-				console.log(req.body[key]);
-				console.log(key);
-				if(key==='bought_'+req.body.id){
-					req.body.bought=(req.body[key]==='on')?'yes':'no';
-				}
-			}
-		}
-		database.updateGrocery([req.body.bought,req.body.id])
-		.then((result)=>{
-			console.log(result);
-			res.redirect('home');
-		})
-		.catch((err)=>{
-			console.log(err);
-		})
-	}
-
-	/*database.addGrocery([req.body.name,req.body.type_id,(req.body.bought==='on')?'yes':'no'])
-	.then((result)=>{
-		console.log("result");
-		console.log(result);
-		return database.getGrocery();
-	})
-	.then((obj)=>{
-		rows = obj;
-		return database.getTypes();
-	})
-	.then((obj)=>{
-		types = obj;
-		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
-	})
-	.catch((err)=>{
-		console.log(new Error(err));
-		return false;
-	})
-	*/
-
-});
 
 
 
-module.exports = app.listen(process.env.PORT,function(){
+
+
+app.listen(process.env.PORT,function(){
 	console.log(`app listen on: http://localhost:${process.env.PORT}`);
 });
+
+
+
+module.exports = app;

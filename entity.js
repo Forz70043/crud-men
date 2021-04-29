@@ -5,9 +5,15 @@ class Entity extends Database{
     
     constructor(){
         super();
-        this.TBL='';
+        this.TBL = '';
+        this.TBLJOIN = ''
         this.fields={};
         this.data=[];
+        this.data['indexTemplate']='index';    
+    }
+
+    getIndexTemplate(){
+        return this.data.indexTemplate;
     }
 
     setData(data){
@@ -18,8 +24,23 @@ class Entity extends Database{
         return this.data;
     }
 
+    getViewTable(){
+        if(this.TBLJOIN){
+            //console.log(Object.getOwnPropertyNames(this));
+            return this.TBL +=this.TBLJOIN;
+        }
+    }
+
     setTblname(name){
         this.TBL = name;
+    }
+    
+    getTblJoin(){
+        return this.TBLJOIN;
+    }
+
+    setTblJoin(tblJoin){
+        this.TBLJOIN = tblJoin;
     }
 
     getTblname(){
@@ -31,28 +52,25 @@ class Entity extends Database{
     }
 
     getFields(required=false){
-        var myFields = [];
-
         if(required){
             this.fields.filter((field)=>{
-                //console.log(field);
                 if(field.required){
                     return field;
                 }
             })
         }
-        return this.fields;
+        return Object.keys(this.fields);
     }
 
-    async findWhere(where=false,fields=false){
-        var sql = this.queryString(this.getTblname(),'SELECT',(where)?where:false,false,false,false,fields)
+    /* async findWhere(where=false,fields=false){
+        var sql = this.queryString(this.getTblname(),'SELECT',where,fields)
         console.log(sql)
 
         var rows = await this.doQuery(sql);
-    }
+    } */
 
     async find(where=false, fields=false){
-        var sql=this.queryString(this.getTblname(),'SELECT',(where)?where:false,false,false,false,fields);
+        var sql=this.queryString(this.getTblname(),'SELECT',where,fields);
         //console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
         //console.log("XXX",rows);
@@ -84,17 +102,21 @@ class Entity extends Database{
 
     async insertQuery(params){
         console.log("ENTITY INSERT QUERY: ",params)
-        
-        var result = await this.insertQueryString_(params,this.getTblname());
-        
-        //console.log("SQL: ",sql);
-        //var result = await this.doQuery(sql,);
+        var result = await this._insertQuery(params,this.getTblname());
         console.log("XXX ",result);
         return result;
     }
 
-}
+    async deleteFromId(id){
 
+        console.log(id);
+        var condition = 'WHERE id='+id;
+        var result = await this._deleteQuery(condition,this.getTblname());
+        return result;
+    }
+
+
+};
 
 
 module.exports = Entity;
