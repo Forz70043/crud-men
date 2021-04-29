@@ -192,7 +192,7 @@ app.get('/home/:id',async(req,res)=>{
 
 app.get('/types',async (req,res)=>{
 	let tipi = await types.getAll();
-	console.log("XXXXX", types);
+	//console.log("XXXXX", types);
 
 	res.render(app.get('templateIndex'),{login:0,filename:'types',links:['types'],types:tipi })
 
@@ -208,21 +208,18 @@ app.get('/types',async (req,res)=>{
 
 })
 
-app.post('/types',(req,res)=>{
+app.post('/types', async (req,res)=>{
 	console.log(req.body);
-	let types;
+	var params = req.body;
 	if(!req.body.send){
-		database.addType(req.body.name)
-		.then((result)=>{
-			console.log(result);
+		var result = await types.add(params);
+		if(result.insertId){
 			res.redirect('types');
-		})
-		.catch((err)=>{
-			console.log(err);
-		})
+		}
 	}
 	else if(req.body.send==='delete'){
-		database.deleteType([req.body.id])
+		
+		/* database.deleteType([req.body.id])
 		.then((result)=>{
 			console.log(result);
 			res.redirect('types');
@@ -230,7 +227,7 @@ app.post('/types',(req,res)=>{
 		.catch((err)=>{
 			console.log(err);
 			return false;
-		})
+		}) */
 	}
 })
 
