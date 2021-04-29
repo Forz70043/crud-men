@@ -47,41 +47,61 @@ class Database {
         })
     }
 
-
-    doQuerySinc(sql,args){
-        var result=[];
-        this.connection.query(sql, args, (err, rows, fields)=>{
-            console.log("SQL DOQUERY_2: ",sql)
-            if(err){
-                console.log("NEW: ",new Error(err));
-            }
-            console.log("DB ROWS: ",rows);
-            result=JSON.parse(JSON.stringify(rows));
-            console.log("DB RES: ",result);
-            return result;
-        })
-        console.log("FINE XXXX");
-        
-    }
-    
-    
-    
     /*
         Connessione Implicita
     */
+
     doQuery(sql, args){
         return new Promise((resolve, reject)=>{
             this.connection.query(sql, args, (err, rows, fields)=>{
-                if(process.env.MYSQL_DEBUG){
-                    console.log("DB SQL: ",sql);
-                    //console.log("Rows: ",rows);
-                    //console.log("Err: ",err);
+                console.log(sql);
+                if(err){
+                    reject(new Error(err));
                 }
-
-                if(err){ reject(new Error(err)); }
-                var rowsParsed = JSON.parse(JSON.stringify(rows))
-                resolve(rowsParsed);
+                //resolve({rows,fields});
+                resolve(rows);
             });
+        });
+    }
+
+    close(){
+        return new Promise((resolve,reject)=>{
+            this.connection.end((err)=>{
+                if(err) reject(new Error(err));
+                resolve();
+            });
+        });
+    }
+
+    getRoles(){
+        return new Promise((resolve, reject)=>{
+            this.doQuery('SELECT id, name FROM ROLE')
+            .then((obj)=>{
+                //console.log(obj);
+                //console.log(JSON.parse(JSON.stringify(obj)));
+
+                resolve(JSON.parse(JSON.stringify(obj)));
+            })
+            .catch((err)=>{
+                console.log(err);
+                reject(new Error(err));
+            })
+        })
+    }
+
+    getUsers(){
+        return new Promise((resolve, reject)=>{
+            this.doQuery('SELECT u.id, u.name, u.surname, u.email, u.role_id as role_id, r.name as role FROM USERS u LEFT JOIN ROLE r ON r.id=u.role_id')
+                .then((obj)=>{
+                    //console.log(obj);
+                    //console.log(JSON.parse(JSON.stringify(obj)));
+                    resolve(JSON.parse(JSON.stringify(obj)));
+                    //return JSON.parse(JSON.stringify(obj));
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    reject(new Error(err));
+                })
         });
     }
 
@@ -217,21 +237,9 @@ class Database {
         return sql;
     }
 
-
-    close(){
-        return new Promise((resolve,reject)=>{
-            this.connection.end((err)=>{
-                if(err) reject(new Error(err));
-                resolve();
-            });
-        });
-    }
-
     checkInsertParamsFields(params,fields){
 
     }
-
-    
 
     insertQueryString(tblname,params,fields){
         
@@ -255,115 +263,48 @@ class Database {
             }
         }
     }
+    /*
+        params = { fields: valore}
+    */
+    async insertQueryString_(params,tblname){
+        
+        console.log("INSERT DB");
+        console.log(params,tblname);
+        console.log(typeof(params));
 
-  /*   getTypes(){
-        return new Promise((resolve, reject)=>{
-            this.doQuery('SELECT id, name FROM TYPE')
-            .then((obj)=>{
-                //console.log(obj);
-                //console.log(JSON.parse(JSON.stringify(obj)));
+        if(typeof(params)==='object'){
+            //console.log("dentro obj");
+            var objKeys = Object.keys(params);
+            //console.log("CHIAVI: ",objKeys);
+            //console.log("LENGTH: ",objKeys.length);
+            var q1 = ''; 
+            var q2 = '';
+            var fields = [];
+            for(var i=0; i<objKeys.length; i++){
+                //console.log("FOR obj",objKeys[i]);
+                q1 += objKeys[i];
+                q2 +='?';
+                
+                //console.log(q1, q2);
+                //console.log(i,objKeys.length);
+                if(i!==(objKeys.length-1)){
+                    //console.log("diversi");
+                    q1 += ',';
+                    q2 += ',';
+                }
+                fields.push(params[objKeys[i]]);
+            }
+        }
+        //console.log(q1);
+        var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
+        console.log("INSERT SQL: ",sql);
+        console.log("INSERT FIELDS: ",fields);
 
-                resolve(JSON.parse(JSON.stringify(obj)));
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
-    } */
-
-/*     getGrocery(){
-        return new Promise((resolve, reject)=>{
-            this.doQuery('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id')
-                .then((obj)=>{
-                    //console.log(obj);
-                    //console.log(JSON.parse(JSON.stringify(obj)));
-                    resolve(JSON.parse(JSON.stringify(obj)));
-                    //return JSON.parse(JSON.stringify(obj));
-                })
-                .catch((err)=>{
-                    console.log(err);
-                    reject(new Error(err));
-                })
-        });
+        var result = await this.doQuery(sql,fields);  
+        console.log("RESULT INSERT: ",result);
+        return result;
     }
- */
-/*     addGrocery(values){
-        return new Promise((resolve, reject)=>{
-            this.doQuery("INSERT INTO GROCERY(name,type_id,bought) VALUES (?,?,?)", values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
-    } */
-
-   /*  addType(values){
-        return new Promise((resolve, reject)=>{
-            if(!values) reject(new Error('DB Insert Error: value not defined'));
-            this.doQuery("INSERT INTO TYPE(name) VALUES (?)",values)
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
-    } */
-
-    /* deleteGrocery(values){
-        console.log("values");
-        console.log(values);
-        if(!values) reject(new Error('DB Delete Error: values not defined'));
-
-        return new Promise((resolve, reject)=>{
-            this.doQuery('DELETE FROM GROCERY WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject(err);
-            })
-        })
-    }
-
-    deleteType(values){
-        if(!values) reject(new Error('DB Delete Error: values not defined'));
-        return new Promise((resolve,reject)=>{
-            this.doQuery('DELETE FROM TYPE WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject((err));
-            })
-        })
-    } */
-/* 
-    updateGrocery(values){
-        console.log("update");
-        console.log(values);
-        return new Promise((resolve, reject)=>{
-            this.doQuery('update GROCERY SET bought=? WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                reject(err);
-            })
-        })
-    } */
 
 };
 
-module.exports = Database;
+module.exports = Database ;
