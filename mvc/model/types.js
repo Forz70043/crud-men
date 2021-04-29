@@ -1,3 +1,4 @@
+const { isNumeric } = require('jquery');
 const Entity = require('../../entity');
 
 class Types extends Entity {
@@ -39,8 +40,16 @@ class Types extends Entity {
 		else console.log("params <0");
 	}
 
+    async delete(params){
+        console.log("DEL: ",params);
+        if(params!=undefined){
+            var result = await this.deleteFromId(params)
+            return result;
+        }
+    }
 
-    delete(params){
+    update(params){
+        console.log("UPD: ",params);
 
     }
 
