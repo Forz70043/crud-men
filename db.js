@@ -14,21 +14,209 @@ class Database {
         });
     }
 
+    startTransaction(){
+        return new Promise((resolve, reject)=>{
+            this.connection.query("START TRANSACTION",(err, result)=>{
+                if(err) reject(new Error(err));
+                
+                console.log(result);
+                resolve(result);
+            })
+        })
+    }
+
+    commit(){
+        return new Promise((resolve, reject)=>{
+            this.connection.query("COMMIT",(err, result)=>{
+                if(err) reject(new Error(err));
+
+                console.log(result);
+                resolve(result);
+            })
+        })
+    }
+
+    rollBack(){
+        return newPromise((resolve, reject)=>{
+            this.connection.query("ROLLBACK",(err, result)=>{
+                if(err) reject(new Error(err));
+
+                console.log(result);
+                resolve(result);
+            })
+        })
+    }
+
+
+    doQuerySinc(sql,args){
+        var result=[];
+        this.connection.query(sql, args, (err, rows, fields)=>{
+            console.log("SQL DOQUERY_2: ",sql)
+            if(err){
+                console.log("NEW: ",new Error(err));
+            }
+            console.log("DB ROWS: ",rows);
+            result=JSON.parse(JSON.stringify(rows));
+            console.log("DB RES: ",result);
+            return result;
+        })
+        console.log("FINE XXXX");
+        
+    }
+    
+    
+    
     /*
         Connessione Implicita
     */
     doQuery(sql, args){
         return new Promise((resolve, reject)=>{
             this.connection.query(sql, args, (err, rows, fields)=>{
-                console.log(sql);
-                if(err){
-                    reject(new Error(err));
+                if(process.env.MYSQL_DEBUG){
+                    console.log("DB SQL: ",sql);
+                    //console.log("Rows: ",rows);
+                    //console.log("Err: ",err);
                 }
-                //resolve({rows,fields});
-                resolve(rows);
+
+                if(err){ reject(new Error(err)); }
+                var rowsParsed = JSON.parse(JSON.stringify(rows))
+                resolve(rowsParsed);
             });
         });
     }
+
+    checkOpWhereConditions(op,value=false){
+        if(typeof(op)==='string'){
+            var sql ='';
+            switch(op){
+                case '=':
+                    sql += ' =';
+                    break;
+                case 'LIKE':
+                    if(value!=false){
+                        sql +=' LIKE %'+value+'% ';
+                    }
+                    sql +=' LIKE %';
+                    break;
+                case '>':
+                    sql +=' >';
+                    break;
+                case '>=':
+                    sql +=' >=';
+                    break;
+                case '<':
+                    sql +=' <';
+                break;
+                case '<=':
+                    sql +=' <=';
+                    break;
+            }
+            return sql;
+        }
+    }
+
+    whereFields(fields){
+        var sql='';
+        if(typeof(fields)==='object'){
+            for(var i=0; i<fields.length; i++){
+                console.log(fields[i]);
+                sql+=fields[i];
+                if(i!=fields.length-1) sql+=',';
+            }
+        }
+        console.log("sql fields: ",sql);
+        return sql;
+    }
+
+    /**
+     * 
+     * @param {*obj : {field, op, value} } where 
+     * @param {*} bool 
+     * @returns 
+     */
+    whereCriteria(where,bool=' AND '){
+        console.log("CONDITION");
+        var condition='';
+
+        if(where.length<=0) return condition;
+
+        if(indexOf(where)==='object'){
+            var objKeys = where.keys();
+            console.log("OBJ KEY: ",objKeys)
+            for(var i=0; i<where.length; i++){
+                condition+=''+where[i].field;
+                condition+= this.checkOpWhereConditions(where[i].op)+' '+where[i].value;
+                
+                if(i!=objKeys.length-1) condition += bool;
+            }
+        }
+        console.log("condition: ",condition);
+        return condition;
+        
+    }
+
+    describe(tblname){
+        console.log("describe DB")
+            
+        if(tblname===false || tblname==='') reject(new Error("DB Error: tblname empty!"));
+        
+        if(typeof(tblname)==='string'){
+
+            this.doQuery("DESCRIBE "+tblname)
+            .then((result)=>{
+                //console.log(result);
+                return result ;
+            })
+            .catch((err)=>{
+                console.log(err);
+                return new Error(err);
+            })
+        }
+    }
+
+    queryString(tblname, type='SELECT', where=false, order=false, limit=false, offset=false, fields=false, orderBy=false){
+        console.log("QUERY STRING: ",tblname, where)
+        var sql='';
+
+        switch(type){
+            case 'SELECT':
+                sql='SELECT ';
+                if(fields!==false){
+                    sql+=this.whereFields(fields);
+                }
+                else sql+=' *';
+                 
+                break;
+
+            case 'DELETE':
+                sql='DELETE ';
+                break;
+        }
+
+        sql+=' FROM '+tblname;
+        console.log("SQL: ",sql);
+
+        if(where){
+            if(typeof(where)==='string'){
+                sql+=' '+where;
+            }
+            else sql=''+this.whereCriteria(where);
+        }
+
+        if(type==='SELECT'){
+
+            if(limit!==false){
+                if(offset!==false){ sql+=offset+','+limit; }
+                else sql+=' LIMIT '+limit;
+            }
+
+            if(orderBy!==false){ sql+=' '+orderBy; }
+
+        }
+        console.log("SQL END: ",sql);
+        return sql;
+    }
+
 
     close(){
         return new Promise((resolve,reject)=>{
@@ -39,7 +227,36 @@ class Database {
         });
     }
 
-    getTypes(){
+    checkInsertParamsFields(params,fields){
+
+    }
+
+    
+
+    insertQueryString(tblname,params,fields){
+        
+        if(typeof(tblname)==='string' && typeof(params)==='object'){
+            if(tblname.length>0){
+                var q1,q2='';
+                for(var i=0; i<params.length; i++){
+                    console.log(params[i]);
+                    if(fields.includes(params[i].field)){
+                        q1+=params.field;
+                        if(i!=params.length-1) q1+=',';
+                    }
+                    
+                    q2+=params[i].value;
+                    if(i!=params.length-1) q2+=',';
+                }
+                console.log("Q1: ",q1,"Q2: ",q2);
+                var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
+                console.log("SQL insert: ",sql)
+                return sql;
+            }
+        }
+    }
+
+  /*   getTypes(){
         return new Promise((resolve, reject)=>{
             this.doQuery('SELECT id, name FROM TYPE')
             .then((obj)=>{
@@ -53,9 +270,9 @@ class Database {
                 reject(new Error(err));
             })
         })
-    }
+    } */
 
-    getGrocery(){
+/*     getGrocery(){
         return new Promise((resolve, reject)=>{
             this.doQuery('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id')
                 .then((obj)=>{
@@ -70,8 +287,8 @@ class Database {
                 })
         });
     }
-
-    addGrocery(values){
+ */
+/*     addGrocery(values){
         return new Promise((resolve, reject)=>{
             this.doQuery("INSERT INTO GROCERY(name,type_id,bought) VALUES (?,?,?)", values)
             .then((result)=>{
@@ -83,9 +300,9 @@ class Database {
                 reject(new Error(err));
             })
         })
-    }
+    } */
 
-    addType(values){
+   /*  addType(values){
         return new Promise((resolve, reject)=>{
             if(!values) reject(new Error('DB Insert Error: value not defined'));
             this.doQuery("INSERT INTO TYPE(name) VALUES (?)",values)
@@ -97,9 +314,9 @@ class Database {
                 reject(new Error(err));
             })
         })
-    }
+    } */
 
-    deleteGrocery(values){
+    /* deleteGrocery(values){
         console.log("values");
         console.log(values);
         if(!values) reject(new Error('DB Delete Error: values not defined'));
@@ -130,8 +347,8 @@ class Database {
                 reject((err));
             })
         })
-    }
-
+    } */
+/* 
     updateGrocery(values){
         console.log("update");
         console.log(values);
@@ -145,81 +362,8 @@ class Database {
                 reject(err);
             })
         })
-    }
+    } */
 
 };
-/*
-const pool = mysql.createPool({
-    connectionLimit: 100,
-	debug: true,
-    host: process.env.DB_HOST,//'127.0.0.1',
-    user: process.env.DB_USER,//'app',
-    password: process.env.DB_PASS,//'admin',
-    database: process.env.DB_NAME,//'TEST',
-	port: 3306
-});
-*/
-/*
-    connection.connect((err)=>{
-        if(err) throw err;
-        console.log("Connected");
-    });
-*/
-/*
-    pool.getConnection((err, connection)=>{
-        return new Promise((resolve, reject) => {
-            if (err) {
-                if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                    reject('Database connection was closed.');
-                }
-                if (err.code === 'ER_CON_COUNT_ERROR') {
-                    reject('Database has too many connections.');
-                }
-                if (err.code === 'ECONNREFUSED') {
-                    reject('Database connection was refused.');
-                }
-            }
-            if (connection) connection.release()
-            resolve();
-        });
-    });
-*/
-/*
-exports.getTypes = () => {
-    pool.getConnection((err, connection) => {
-        if(err){
-			console.log(err);
-			throw err;
-		}
-        //console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT id, name FROM TYPE', (err, rows) => {
-            connection.release(); // return the connection to pool
-            if(err) throw err;
-            console.log('The data from table are: \n', rows);
-            return rows;
-        });
-    });
-}
-*/
 
-/*
-exports.getGrocery = () => {
-
-    pool.getConnection((err, connection) => {
-        if(err){
-			console.log(err);
-			throw err;
-		}
-        //console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id', (err, rows, fields) => {
-            connection.release(); // return the connection to pool
-            if(err) throw err;
-            console.log('The data from table are: \n', rows);
-            //console.log('The fields from table are: \n', fields);
-            console.log(JSON.stringify(rows));
-            return rows;
-        });
-    });
-}
-*/
 module.exports = Database;

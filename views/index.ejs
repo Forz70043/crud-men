@@ -9,7 +9,7 @@
 
     <%- include('sidebar'); %>
   
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col">
               <% if (links) { %>
@@ -20,7 +20,7 @@
 
               <% if (login) { %>
                 <%- include('main'); %>
-              <%} else { %>
+              <%} else if(filename !=false) { %>
                 <%- include(filename); %>
               <% } %> 
             </div>

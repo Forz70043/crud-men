@@ -4,14 +4,17 @@ const path = require('path');
 const http = require('http');
 //deprecato da express v>4.16
 //const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const Database = require('./db');
-//const { data } = require('jquery');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-//const GitHubStrategy = require('passport-github2').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+
+var Types = require('./mvc/model/types');
+var types = new Types();
+
+var Grocery = require('./mvc/model/grocerylist');
+var grocery = new Grocery();
 
 var userProfile;
 var database = new Database();
@@ -20,7 +23,6 @@ const app = express();
 app.set('appName','Shopping List');
 //template engine
 app.set('view engine', 'ejs');
-
 app.set('port',process.env.PORT);
 app.set('templateIndex','index');
 
@@ -97,11 +99,11 @@ passport.use(new FacebookStrategy({
     return cb(null, profile);
   }));
 
-
+//richiesta per google
 app.get('/login/google', 
 	passport.authenticate('google', { scope : ['profile', 'email'] })
 );
-
+//risposta da google
 app.get('/auth/google', 
 	passport.authenticate('google', { failureRedirect: '/error' }),
   	function(req, res) {
@@ -109,7 +111,7 @@ app.get('/auth/google',
     	res.redirect('/success');
   	}
 );
-//richiesta per login
+//richiesta per login github
 app.get('/login/github',
 	passport.authenticate('github', { scope: [ 'user:email' ] }),
   	function(req, res){
@@ -124,7 +126,7 @@ app.get('/auth/github',
     	res.redirect('/success');
   	}
 );
-
+//login fb
 app.get('/login/facebook',
   passport.authenticate('facebook'));
 /*
@@ -143,8 +145,6 @@ app.get('/auth/facebook',
   	}
 );
 
-
-
 app.get('/success', (req, res) => res.send(userProfile));
 app.get('/error', (req, res) => res.send("error logging in"));
 
@@ -154,12 +154,17 @@ app.get('/error', (req, res) => res.send("error logging in"));
  */
 app.get('/',function(req,res){
 	//inserire logica se già auth
-	res.render(app.get('templateIndex'),{login: 1,links: ['home']});
+	res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
 });
 
-app.get('/home',function(req,res){
-	let rows,types;
-	database.getGrocery()
+app.get('/home',async (req,res)=>{
+	let rows,tipi;
+	tipi = await types.getAll();
+	rows = await grocery.getAll();
+
+	res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:tipi});
+	
+	/* database.getGrocery()
 	.then((obj)=>{
 		rows=obj;
 		return database.getTypes();
@@ -167,35 +172,39 @@ app.get('/home',function(req,res){
 	.then((obj)=>{
 		types=obj;
 		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
-	})/*.then(()=>{
+	}) .then(()=>{
 		console.log("chiudo db");
 		console.log(rows,types);
 		res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types,results:false } );
-	})*/
+	})
 	.catch((err)=>{
 		console.log(err);
 		return false;
-	})
+	})*/
 });
 
-app.get('/home/:id',(req,res)=>{
+app.get('/home/:id',async(req,res)=>{
 	console.log("home/id");
 	console.log(req.body);
-	res.send("ok")
+	
 })
 
 
-app.get('/types', (req,res)=>{
-	let types;
-	database.getTypes()
+app.get('/types',async (req,res)=>{
+	let tipi = await types.getAll();
+	console.log("XXXXX", types);
+
+	res.render(app.get('templateIndex'),{login:0,filename:'types',links:['types'],types:tipi })
+
+	/* database.getTypes()
 	.then((obj)=>{
 		types = obj;
-		res.render(app.get('templateIndex'),{login:0,filename:'types',links:['type'],types:types })
+		
 	})
 	.catch((err)=>{
 		console.log(err);
 		return false;
-	})
+	}) */
 
 })
 
@@ -299,82 +308,6 @@ app.post('/home', (req,res)=>{
 	*/
 
 });
-
-app.get('/auth/google', (req,res)=>{
-	console.log("request");console.log(req);
-
-	console.log("response"); console.log(res);
-})
-
-app.post('/auth/google', (req,res)=>{
-	console.log("post");
-	console.log("request");console.log(req);
-
-	console.log("response"); console.log(res);
-})
-
-
-app.get('/auth/github', (req,res)=>{
-	console.log("request");console.log(req);
-
-	console.log("response"); console.log(res);
-})
-
-app.post('/auth/github', (req,res)=>{
-	console.log("post");
-	console.log("request");console.log(req);
-
-	console.log("response"); console.log(res);
-
-})
-
-
-app.delete('/home', (req,res)=>{
-	console.log("home delete");
-	console.log(req.body);
-	let rows, types;
-
-	database.deleteGrocery([req.body.id])
-	.then((result)=>{
-		console.log(result);
-		
-		return res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
-		//return database.getGrocery();
-	})/*
-	.then((obj)=>{
-		rows = obj;
-		return database.getTypes();
-	})
-	.then((obj)=>{
-		types = obj;
-		console.log("ZZZZZ");
-		return res.render(app.get('templateIndex'),{login:0,filename: 'home',links: ['grocery list'],rows:rows,types:types});
-		console.log("XXXXXXXXXXX");
-	})*/
-	.catch((err)=>{
-		console.log(err);
-		return false;
-	})
-
-})
-
-app.delete('/types',(req,res)=>{
-	console.log("types delete");
-	console.log(req.body);
-	//let rows, types;
-
-	database.deleteType([req.body.id])
-	.then((result)=>{
-		console.log(result);
-		
-		return res.render(app.get('templateIndex'),{login:0,filename: 'types',links: ['tipi'],rows:rows,types:types});
-		//return database.getGrocery();
-	})
-	.catch((err)=>{
-		console.log(err);
-		return false;
-	})
-})
 
 
 
