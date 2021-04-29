@@ -57,14 +57,10 @@ router.post('/', async (req,res)=>{
 				}
 			}
 		}
-		database.updateGrocery([req.body.bought,req.body.id])
-		.then((result)=>{
-			console.log(result);
-			res.redirect('home');
-		})
-		.catch((err)=>{
-			console.log(err);
-		})
+		var result = grocery.updateBought({'bought':req.body.bought},req.body.id)
+        if(result){
+            res.redirect('/home');
+        }
 	}
 
 });

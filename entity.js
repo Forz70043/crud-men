@@ -62,13 +62,6 @@ class Entity extends Database{
         return Object.keys(this.fields);
     }
 
-    /* async findWhere(where=false,fields=false){
-        var sql = this.queryString(this.getTblname(),'SELECT',where,fields)
-        console.log(sql)
-
-        var rows = await this.doQuery(sql);
-    } */
-
     async find(where=false, fields=false){
         var sql=this.queryString(this.getTblname(),'SELECT',where,fields);
         //console.log("FIND ",sql);
@@ -108,10 +101,16 @@ class Entity extends Database{
     }
 
     async deleteFromId(id){
-
         console.log(id);
         var condition = 'WHERE id='+id;
         var result = await this._deleteQuery(condition,this.getTblname());
+        return result;
+    }
+
+
+    async update(params,where){
+        var result = await this._updateQuery(this.getTblname(),params,where);
+        console.log(result);
         return result;
     }
 

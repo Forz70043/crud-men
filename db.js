@@ -106,6 +106,8 @@ class Database {
                 case '<=':
                     sql +=' <=';
                     break;
+                case 'IN':
+                        break;
             }
             return sql;
         }
@@ -257,10 +259,70 @@ class Database {
      */
     async _insertQuery(params,tblname){
         
-        var res = this.insertQueryString(tblname,params)
+        var res = this._insertQueryString(tblname,params)
 
         var result = await this.doQuery(res[0],res[1]);  
         console.log("RESULT INSERT: ",result);
+        return result;
+    }
+
+    quoteFields(field){
+        var str ='`'+field+'`';
+        return str;
+    }
+
+    quoteValue(value){
+        if(typeof(value)==='string') var val ="'"+value+"'";
+        else val = value;
+
+        return val;
+    }
+
+    sanitizeUpdateParams(params){
+        console.log("XXXXX params" ,params);
+        var fields='';
+        
+        if(typeof(params)==='object'){
+            console.log("XXX >0")
+            var objKey = Object.keys(params);
+            for(var i=0; i<objKey.length;i++){
+                console.log("XXXXXXXXXXXXXX")
+                fields += this.quoteFields(objKey[i])+'='+this.quoteValue(params[objKey[i]])+' ';
+                if(i!=objKey.length-1) fields+=',';
+            }
+            console.log("UPD fields: ",fields);
+
+            return fields;
+        }
+    }
+
+    /**
+     * 
+     * @param {* string TBL } tblname 
+     * @param {* oggetto {nome_fields:valore}} params 
+     * @param {* string condition (ex id=3)} where 
+     */
+    updateQueryString(tblname,params,where=false){
+        console.log("UPDATE ")
+        var condition='';
+        if(where!=false){
+            console.log("where vero")
+            if(typeof(where)==='string'){
+                var condition = where;
+            }else condition = where;
+        }
+        var fields = this.sanitizeUpdateParams(params)
+        console.log(fields)
+        var sql='UPDATE '+tblname+' SET '+fields+' WHERE '+condition;
+        console.log("UPDATE SQL: ",sql);
+        return sql;
+    }
+
+    async _updateQuery(tblname, params, where){
+        var sql = this.updateQueryString(tblname,params,where);
+
+        var result = await this.doQuery(sql);
+        console.log(result);
         return result;
     }
 

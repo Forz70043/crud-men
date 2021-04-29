@@ -33,6 +33,13 @@ CREATE TABLE `ROLE`(
     PRIMARY KEY(`id`)
 );
 
+CREATE TABLE `AUTH`(
+    `cod_id` int(21) unsigned not null,
+    `user_id` int(21) unsigned not null,
+    PRIMARY KEY(`cod_id`),
+    UNIQUE KEY`cod_id` (`cod_id`),
+    FOREIGN KEY `user_id` REFERENCES `USERS`(`id`)
+);
 
 CREATE TABLE `USERS`(
     `id` int(21) unsigned AUTO_INCREMENT not null,

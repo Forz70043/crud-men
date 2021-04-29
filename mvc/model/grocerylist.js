@@ -64,8 +64,14 @@ class Grocery extends Entity {
         }
 	}
 
-    async update(params){
+    async updateBought(params,where){
+        console.log(params);
+        console.log(where);
+        var condition='id='+where;
 
+        var result = await this.update(params,condition);
+        console.log(result);
+        return result;
     }
 
     async delete(params){
@@ -74,56 +80,6 @@ class Grocery extends Entity {
             var result = await this.deleteFromId(params)
             return result;
         }
-    }
-
-    addGrocery(values){
-        
-        if(values===false || values.length<3) return new Error("No values sended");
-
-        return new Promise((resolve, reject)=>{
-            this.doQuery("INSERT INTO "+this.TBL+"(name,type_id,bought) VALUES (?,?,?)", values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
-    }
-    
-    deleteGrocery(values){
-        console.log("values");
-        console.log(values);
-        if(!values) reject(new Error('DB Delete Error: values not defined'));
-
-        return new Promise((resolve, reject)=>{
-            this.doQuery('DELETE FROM '+this.TBL+' WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject(err);
-            })
-        })
-    }
-
-    updateGrocery(values){
-        console.log("update");
-        console.log(values);
-        return new Promise((resolve, reject)=>{
-            this.doQuery('update GROCERY SET bought=? WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                reject(err);
-            })
-        })
     }
 
 };
