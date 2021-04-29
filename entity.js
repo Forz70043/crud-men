@@ -35,7 +35,7 @@ class Entity extends Database{
 
         if(required){
             this.fields.filter((field)=>{
-                console.log(field);
+                //console.log(field);
                 if(field.required){
                     return field;
                 }
@@ -44,12 +44,18 @@ class Entity extends Database{
         return this.fields;
     }
 
+    async findWhere(where=false,fields=false){
+        var sql = this.queryString(this.getTblname(),'SELECT',(where)?where:false,false,false,false,fields)
+        console.log(sql)
 
-    async find(where=false){
-        var sql=this.queryString(this.getTblname(),'SELECT',(where)?where:false);
-        console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
-        console.log("XXX",rows);
+    }
+
+    async find(where=false, fields=false){
+        var sql=this.queryString(this.getTblname(),'SELECT',(where)?where:false,false,false,false,fields);
+        //console.log("FIND ",sql);
+        var rows = await this.doQuery(sql);
+        //console.log("XXX",rows);
         return rows;
     }
 
@@ -77,9 +83,14 @@ class Entity extends Database{
     }
 
     async insertQuery(params){
-        var sql = this.insertQueryString(this.getTblname(),params,this.getFields());
-
-        var result = await this.doQuery(sql);
+        console.log("ENTITY INSERT QUERY: ",params)
+        
+        var result = await this.insertQueryString_(params,this.getTblname());
+        
+        //console.log("SQL: ",sql);
+        //var result = await this.doQuery(sql,);
+        console.log("XXX ",result);
+        return result;
     }
 
 }
