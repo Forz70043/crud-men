@@ -9,19 +9,19 @@ class Role extends Entity {
 
     async get(){
         var result = await this.find(false,false);
-        console.log("GET ALL :",result);
+        //console.log("GET ALL :",result);
         return result;
     }
 
     async add(params){
-        console.log(" ADD ",params);
-		console.log(Object.keys(params).length);
+        //console.log(" ADD ",params);
+		//console.log(Object.keys(params).length);
 
 		var objKeys = Object.keys(params);
 		if(objKeys.length>0){
-			console.log("params >0");
+			//console.log("params >0");
 			var result = await this.insertQuery(params);
-			console.log(" ADD: ",result);
+			//console.log(" ADD: ",result);
 			return result;
 		}
 		else console.log("params <0");

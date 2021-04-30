@@ -10,31 +10,25 @@ class Types extends Entity {
         });
     }
 
-    get(){
-        this.getEntity()
-        .then((result)=>{    
-            return result;
-        })
-        .catch((err)=>{
-            return err;
-        })
+    async get(){
+        return await this.getAll();
     }
 
     async getAll(){
         var result = await this.find();
-        console.log("GET ALL :",result);
+        //console.log("GET ALL :",result);
         return result;
     } 
 
     async add(params){		
-		console.log(" ADD ",params);
-		console.log(Object.keys(params).length);
+		//console.log(" ADD ",params);
+		//console.log(Object.keys(params).length);
 
 		var objKeys = Object.keys(params);
 		if(objKeys.length>0){
-			console.log("params >0");
+			//console.log("params >0");
 			var result = await this.insertQuery(params);
-			console.log(" ADD: ",result);
+			//console.log(" ADD: ",result);
 			return result;
 		}
 		else console.log("params <0");
