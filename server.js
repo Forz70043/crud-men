@@ -13,11 +13,6 @@ var groceryRoute = require('./routes/grocery');
 var authRoute = require('./routes/auth');
 var loginRoute = require('./routes/login');
 
-/* const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GitHubStrategy = require('passport-github2').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
- */
 /**
  * REQUIRE MODEL CLASS
  */
@@ -27,16 +22,14 @@ var Grocery = require('./mvc/model/grocerylist');
 var grocery = new Grocery();
 var Role = require('./mvc/model/role');
 var role = new Role();
-console.log(role.get());
+//console.log(role.get());
 
 var Auth = require('./mvc/model/auth');
 var auth = new Auth();
 
+//console.log(Object.getOwnPropertyNames(types));
 
-
-console.log(Object.getOwnPropertyNames(types));
-
-var userProfile;
+//var userProfile;
 
 const app = express();
 
@@ -80,8 +73,8 @@ auth.deserialize();
 
 
 app.get('/success', (req, res) =>{
-	console.log(req)
-	res.send(userProfile);
+	console.log("SUSSES: ",req.user)
+	res.send(req.user);
 });
 app.get('/error', (req, res) => res.send("error logging in"));
 

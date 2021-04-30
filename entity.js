@@ -2,7 +2,6 @@ const Database = require('./db');
 
 
 class Entity extends Database{
-    
     constructor(){
         super();
         this.TBL = '';
@@ -14,6 +13,10 @@ class Entity extends Database{
 
     getIndexTemplate(){
         return this.data.indexTemplate;
+    }
+
+    addToData(data){
+        this.data.push(data);
     }
 
     setData(data){
@@ -63,10 +66,11 @@ class Entity extends Database{
     }
 
     async find(where=false, fields=false){
+        console.log("WHERE FIND: ",where);
         var sql=this.queryString(this.getTblname(),'SELECT',where,fields);
         //console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
-        //console.log("XXX",rows);
+        console.log("XXX",JSON.parse(JSON.stringify(rows)));
         return rows;
     }
 
@@ -78,42 +82,29 @@ class Entity extends Database{
         })
     } */
 
-    getAll(where=false){
-        return new Promise((resolve, reject)=>{
-            var sql = this.queryString(this.getTblname(),'SELECT',(where)?where:false);
-            console.log("GET ENTITY SQL: ",sql);
-            this.doQuery(sql)
-            .then((result)=>{
-                //console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                reject(err);
-            })
-        })
+    async getAll(where=false){    
+        var sql = this.queryString(this.getTblname(),'SELECT',(where)?where:false);
+        return await this.doQuery(sql);         
     }
-
+    
     async insertQuery(params){
         console.log("ENTITY INSERT QUERY: ",params)
         var result = await this._insertQuery(params,this.getTblname());
-        console.log("XXX ",result);
+        //console.log("XXX ",result);
         return result;
     }
 
     async deleteFromId(id){
-        console.log(id);
         var condition = 'WHERE id='+id;
         var result = await this._deleteQuery(condition,this.getTblname());
         return result;
     }
 
-
     async update(params,where){
         var result = await this._updateQuery(this.getTblname(),params,where);
-        console.log(result);
+        //console.log(result);
         return result;
     }
-
 
 };
 
