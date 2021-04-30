@@ -25,8 +25,15 @@ var Types = require('./mvc/model/types');
 var types = new Types();
 var Grocery = require('./mvc/model/grocerylist');
 var grocery = new Grocery();
+var Role = require('./mvc/model/role');
+var role = new Role();
+console.log(role.get());
+
 var Auth = require('./mvc/model/auth');
 var auth = new Auth();
+
+
+
 console.log(Object.getOwnPropertyNames(types));
 
 var userProfile;

@@ -5,28 +5,73 @@ class Users extends Entity {
     constructor(){
         super();
         this.TBL='USERS';
+        this.setFields({
+            'id':{
+                as: 'u.id',
+                required:true },
+            'name':{
+                as: 'u.name',
+                required:true },
+            'surname':{ 
+                as:'u.surname',
+                required:true },
+            'email': {
+                as: 'u.bought',
+                required: false },
+            'password': {
+                as: 'u.password',
+                required: false },
+            'phone': {
+                as: 'u.cod_id',
+                required: false },
+            'role_id': {
+                    as: 'u.role_id',
+                    required: false },
+            'address': {
+                as: 'u.address',
+                required: false },
+            }
+        );
     }
 
-
-    getUsers(){
-        return new Promise((resolve, reject)=>{
-            databases.doQuery("SELECT * FROM "+this.getTblname()+" ")
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject(err);
-            })
-        })
+    async add(params){
+        console.log("ADD USER: ",params);
+        var objKeys = Object.keys(params);
+		if(objKeys.length>0){
+			console.log("params >0");
+			var result = await this.insertQuery(params);
+			console.log(" ADD: ",result);
+			return result;
+		}
+		else console.log("params <0");    
     }
 
-    addUser($params){
-        return new Promise((resolve, reject)=>{
-            databases.doQuery("INSERT INTO "+this.getTblname)
-        })
+    async getFromCode(code){
+        console.log(code);
+        var result = await this.find();
+        console.log("GET ALL :",result);
+        return result;
     }
+
+    async get(){
+        var result = await this.find();
+        console.log("GET ALL :",result);
+        return result;
+    }
+
+    async add(params){		
+		console.log(" ADD ",params);
+		console.log(Object.keys(params).length);
+
+		var objKeys = Object.keys(params);
+		if(objKeys.length>0){
+			console.log("params >0");
+			var result = await this.insertQuery(params);
+			console.log(" ADD: ",result);
+			return result;
+		}
+		else console.log("params <0");
+	}
 
 }
 

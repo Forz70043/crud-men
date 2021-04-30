@@ -108,7 +108,7 @@ class Auth extends Entity {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: process.env.GOOGLE_REDIRECT_URL//"http://localhost:3000/auth/google/"
+                callbackURL: /*process.env.GOOGLE_REDIRECT_URL*/"http://localhost:3000/auth/google/"
             },
             function(accessToken, refreshToken, profile, done) {
                 console.log(accessToken, refreshToken)

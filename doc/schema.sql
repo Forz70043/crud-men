@@ -6,16 +6,13 @@ CREATE TABLE `GROCERY`(
     `bought` ENUM('yes','no') DEFAULT 'no',
     PRIMARY KEY(`id`)
 );
+ALTER TABLE `GROCERY` ADD FOREIGN KEY(`type_id`) REFERENCES `TYPE`(`id`);
 
 CREATE TABLE `TYPE`(
     `id` INT(6) NOT NULL AUTO_INCREMENT,
     `name` varchar(64) NOT NULL,
     PRIMARY KEY(`id`)
 );
-
-ALTER TABLE `GROCERY` ADD FOREIGN KEY(`type_id`) REFERENCES `TYPE`(`id`);
-
-
 
 CREATE TABLE `SYSLOG` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -41,6 +38,20 @@ CREATE TABLE `AUTH`(
     FOREIGN KEY `user_id` REFERENCES `USERS`(`id`)
 );
 
+CREATE TABLE `LIST_GROUP`(
+    `grocery_grp_id` int(21) unsigned not null,
+    `user_id` int(21) unsigned not null,
+    PRIMARY KEY(`grocery_grp_id`),
+    FOREIGN KEY `user_id` REFERENCES `USERS`(`id`),
+    FOREIGN KEY `grocery_grp_id` REFERENCES `GROCERY_GRP`(`id`),
+);
+
+CREATE TABLE `GROCERY_GRP`(
+    `id` int(21) unsigned AUTO_INCREMENT not null,
+    `name` varchar(256) NOT NULL,
+    PRIMARY KEY(`id`)
+);
+
 CREATE TABLE `USERS`(
     `id` int(21) unsigned AUTO_INCREMENT not null,
     `name` varchar(256) not null,
@@ -50,11 +61,10 @@ CREATE TABLE `USERS`(
     `photo` text default null,
     `gender` tinyint(0),
     `yearOfBirth` DATE not null,
-    `cod_id` varchar(256) DEFAULT NULL,
-    PRIMARY KEY(`id`),
+    PRIMARY KEY(`id`)
 );
 
-CREATE TABLE `COUNTRY` (
+CREATE TABLE `COUNTRY`(
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `iso_3166` char(2) DEFAULT '',

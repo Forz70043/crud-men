@@ -14,12 +14,11 @@ router.get('/github', GitHub.authenticate(),
   	}
 );
 
-
 //richiesta per google
 router.get('/google', Google.authenticate());
 
 //login fb
-router.get('/facebook', Facebook.authenticate('facebook'));
+router.get('/facebook', Facebook.authenticate());
 /*
 router.get('/login/facebook',
 	passport.authenticate('facebook', { scope: [ 'user:email' ] }),

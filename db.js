@@ -67,7 +67,7 @@ class Database {
                     console.log("DB ERR: ",err);
                     reject(new Error(err));
                 }
-                resolve(rows);
+                resolve(JSON.parse(JSON.stringify(rows)));
             });
         });
     }
@@ -183,7 +183,7 @@ class Database {
         console.log("SQL: ",sql);
 
         if(where){
-            if(typeof(where)==='string') sql+=' '+where;
+            if(typeof(where)==='string') sql+=' WHERE '+where;
             else sql=''+this.whereCriteria(where);
         }
 
