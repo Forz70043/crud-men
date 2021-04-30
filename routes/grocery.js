@@ -8,9 +8,12 @@ var Grocery = require('../mvc/model/grocerylist');
 var grocery = new Grocery();
 
 /**
- * get types
+ * get types & grocery
  */
 router.get('/',async (req,res)=>{
+    if(req.user){
+        console.log("VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
+    }
     let rows,tipi;
 	tipi = await types.getAll();
 	rows = await grocery.getAll();

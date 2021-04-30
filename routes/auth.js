@@ -9,9 +9,10 @@ var Facebook = new Auth('facebook');
 router.get('/google', 
 	Google.authenticateCallBack(),
   	function(req, res) {
-		console.log(req,res);
+		console.log(req.user); 
+		//console.log(res);
 		// Successful authentication, redirect success.
-    	res.redirect('/success');
+    	res.redirect('/home');
   	}
 );
 
@@ -19,16 +20,16 @@ router.get('/google',
 router.get('/github', 
   	GitHub.authenticateCallBack(),
   	function(req, res) {
-		//console.log("REQ: ",req);
-		//console.log("RES: ",res.query,res.rawHeaders);
-    	res.redirect('/success');
+		console.log("REQ: ",req.user);
+
+		res.redirect('/home');
   	}
 );
-
+//FB callback
 router.get('/facebook', Facebook.authenticateCallBack(),
   	function(req, res) {
-		console.log(req)
-    	res.redirect('/success');
+		//console.log(req.user)
+    	res.redirect('/home');
   	}
 );
 
