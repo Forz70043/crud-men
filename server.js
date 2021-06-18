@@ -2,9 +2,6 @@ const env = require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
-//const Database = require('./db');
-//var database = new Database();
-
 /**
  * REQUIRE ROUTES
  */
@@ -18,18 +15,21 @@ var loginRoute = require('./routes/login');
  */
 var Types = require('./mvc/model/types');
 var types = new Types();
-var Grocery = require('./mvc/model/grocerylist');
+/* var Grocery = require('./mvc/model/grocerylist');
 var grocery = new Grocery();
 var Role = require('./mvc/model/role');
-var role = new Role();
-//console.log(role.get());
+var role = new Role(); */
 
 var Auth = require('./mvc/model/auth');
 var auth = new Auth();
 
-//console.log(Object.getOwnPropertyNames(types));
+const { I18n } = require('i18n');
+const i18n = new I18n({
+	locales: ['en','it'],
+	directory: path.join(__dirname, 'locales')
+});
 
-//var userProfile;
+//console.log(Object.getOwnPropertyNames(types));
 
 const app = express();
 
@@ -43,6 +43,7 @@ app.set('templateIndex','index');
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
+app.use(i18n.init);
 app.use(auth.init());
 app.use(auth.session());
 
