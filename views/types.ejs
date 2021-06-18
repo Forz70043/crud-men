@@ -1,25 +1,25 @@
 <div class="container mb-2">
     <div class="card">
         <div class="card-header">
-            Add new Type
+            <%= __('Add new Type') %>
         </div>
         <div class="card-body">
             <form action="/types" method="POST" class="was-validate pt-3">
                 <div class="form-row">
                     <div class="form-group col"></div>
                     <div class="form-group col-10">
-                        <label for="name" class="col-form-label">Name</label>
+                        <label for="name" class="col-form-label"><%= __('Name') %></label>
                         <input type="text" placeholder="Food" name="name" class="form-control" required/>
                     </div>
                     <div class="form-group col"></div>
                 </div>
-                <button class="btn btn-primary mb-2" type="submit">Submit</button>
+                <button class="btn btn-primary mb-2" type="submit"><%= __('Submit') %></button>
             </form>
         </div>
     </div>
 </div></br>
 
-<div class="container">
+<div class="container mb-5">
     <div class="card">
         <div class="card-header">
             <%= links %>
@@ -28,7 +28,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Typo</th>
+                        <th scope="col"><%= __('Type') %></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
