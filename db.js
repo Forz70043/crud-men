@@ -209,7 +209,6 @@ class Database {
         return await this.doQuery(sql);
     }
 
-<<<<<<< HEAD
     addUser(values){
         console.log("ADD USER");
         console.log(values);
@@ -400,8 +399,8 @@ class Database {
         console.log("INSERT DB");
         
         console.log(params,tblname);
+    }
 
-=======
     /**
      * 
      * @param {*} tblname 
@@ -411,7 +410,6 @@ class Database {
     _insertQueryString(tblname,params){
         console.log("INSERT DB");
         console.log(params,tblname);
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
         console.log(typeof(params));
 
         if(typeof(params)==='object'){
@@ -423,31 +421,22 @@ class Database {
             var q2 = '';
             var fields = [];
             for(var i=0; i<objKeys.length; i++){
-<<<<<<< HEAD
     
-=======
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
                 //console.log("FOR obj",objKeys[i]);
                 q1 += objKeys[i];
                 q2 +='?';
                 
                 //console.log(q1, q2);
-<<<<<<< HEAD
 
                 //console.log(i,objKeys.length);
 
-=======
                 //console.log(i,objKeys.length);
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
                 if(i!==(objKeys.length-1)){
                     //console.log("diversi");
                     q1 += ',';
                     q2 += ',';
                 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
                 fields.push(params[objKeys[i]]);
             }
         }
@@ -455,10 +444,8 @@ class Database {
         var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
         console.log("INSERT SQL: ",sql);
         console.log("INSERT FIELDS: ",fields);
-<<<<<<< HEAD
 
-        var result = await this.doQuery(sql,fields);  
-=======
+        var result = this.doQuery(sql,fields);  
         var myArr = [sql,fields];
         return myArr;
     }
@@ -469,59 +456,15 @@ class Database {
      * @param {*} tblname 
      * @returns 
      */
-    async _insertQuery(params,tblname){
+    async insertQuery(params,tblname){
         
         var res = this._insertQueryString(tblname,params)
 
         var result = await this.doQuery(res[0],res[1]);  
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
         console.log("RESULT INSERT: ",result);
         return result;
     }
 
-<<<<<<< HEAD
-};
-
-/*
-exports.getTypes = () => {
-    pool.getConnection((err, connection) => {
-        if(err){
-			console.log(err);
-			throw err;
-		}
-        //console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT id, name FROM TYPE', (err, rows) => {
-            connection.release(); // return the connection to pool
-            if(err) throw err;
-            console.log('The data from table are: \n', rows);
-            return rows;
-        });
-    });
-}
-*/
-
-/*
-exports.getGrocery = () => {
-
-    pool.getConnection((err, connection) => {
-        if(err){
-			console.log(err);
-			throw err;
-		}
-        //console.log('connected as id ' + connection.threadId);
-        connection.query('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id', (err, rows, fields) => {
-            connection.release(); // return the connection to pool
-            if(err) throw err;
-            console.log('The data from table are: \n', rows);
-            //console.log('The fields from table are: \n', fields);
-            console.log(JSON.stringify(rows));
-            return rows;
-        });
-    });
-}
-*/
-module.exports = Database;
-=======
     quoteFields(field){
         var str ='`'+field+'`';
         return str;
@@ -585,4 +528,3 @@ module.exports = Database;
 };
 
 module.exports = Database ;
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
