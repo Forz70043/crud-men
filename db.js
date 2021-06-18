@@ -14,18 +14,60 @@ class Database {
         });
     }
 
-    /*
-        Connessione Implicita
-    */
+    startTransaction(){
+        return new Promise((resolve, reject)=>{
+            this.connection.query("START TRANSACTION",(err, result)=>{
+                if(err) reject(new Error(err));
+                
+                console.log(result);
+                resolve(result);
+            })
+        })
+    }
+
+    commit(){
+        return new Promise((resolve, reject)=>{
+            this.connection.query("COMMIT",(err, result)=>{
+                if(err) reject(new Error(err));
+
+                console.log(result);
+                resolve(result);
+            })
+        })
+    }
+
+    rollBack(){
+        return newPromise((resolve, reject)=>{
+            this.connection.query("ROLLBACK",(err, result)=>{
+                if(err) reject(new Error(err));
+
+                console.log(result);
+                resolve(result);
+            })
+        })
+    }
+
+    /**
+     * 
+     * @param {string sql} sql 
+     * @param {* array [ value, value2, value3,..]} args 
+     * @returns result query
+     */
     doQuery(sql, args){
         return new Promise((resolve, reject)=>{
             this.connection.query(sql, args, (err, rows, fields)=>{
-                console.log(sql);
+                console.log("DB SQL: ",sql);
                 if(err){
+                    if(err.errno==1451){//errore di foreign key
+                        reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
+                    }
+                    if(err.errno==1054){
+                        //errore di fields nella query
+                    }
+                    console.log("DB ERR: ",err);
                     reject(new Error(err));
                 }
-                //resolve({rows,fields});
-                resolve(rows);
+                resolve(JSON.parse(JSON.stringify(rows)));
             });
         });
     }
@@ -39,114 +81,135 @@ class Database {
         });
     }
 
-    getTypes(){
-        return new Promise((resolve, reject)=>{
-            this.doQuery('SELECT id, name FROM TYPE')
-            .then((obj)=>{
-                //console.log(obj);
-                //console.log(JSON.parse(JSON.stringify(obj)));
-
-                resolve(JSON.parse(JSON.stringify(obj)));
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
+    checkOpWhereConditions(op,value=false){
+        if(typeof(op)==='string'){
+            var sql ='';
+            switch(op){
+                case '=':
+                    sql += ' =';
+                    break;
+                case 'LIKE':
+                    if(value!=false){
+                        sql +=' LIKE %'+value+'% ';
+                    }
+                    sql +=' LIKE %';
+                    break;
+                case '>':
+                    sql +=' >';
+                    break;
+                case '>=':
+                    sql +=' >=';
+                    break;
+                case '<':
+                    sql +=' <';
+                break;
+                case '<=':
+                    sql +=' <=';
+                    break;
+                case 'IN':
+                        break;
+            }
+            return sql;
+        }
     }
 
-    getGrocery(){
-        return new Promise((resolve, reject)=>{
-            this.doQuery('SELECT g.id, g.name, g.type_id as type_id, t.name as type, g.bought FROM GROCERY g LEFT JOIN TYPE t ON t.id=g.type_id')
-                .then((obj)=>{
-                    //console.log(obj);
-                    //console.log(JSON.parse(JSON.stringify(obj)));
-                    resolve(JSON.parse(JSON.stringify(obj)));
-                    //return JSON.parse(JSON.stringify(obj));
-                })
-                .catch((err)=>{
-                    console.log(err);
-                    reject(new Error(err));
-                })
-        });
+    whereFields(fields){
+        var sql='';
+        if(typeof(fields)==='object'){
+            for(var i=0; i<fields.length; i++){
+                console.log(fields[i]);
+                sql+=fields[i];
+                if(i!=fields.length-1) sql+=',';
+            }
+        }
+        console.log("sql fields: ",sql);
+        return sql;
     }
 
-    addGrocery(values){
-        return new Promise((resolve, reject)=>{
-            this.doQuery("INSERT INTO GROCERY(name,type_id,bought) VALUES (?,?,?)", values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
+    /**
+     * 
+     * @param {*obj : {field, op, value} } where 
+     * @param {* LOGIC: AND | OR DEFAULT : AND} bool 
+     * @returns where condition string
+     */
+    whereCriteria(where,bool=' AND '){
+        console.log("CONDITION");
+        var condition='';
+
+        if(where.length<=0) return condition;
+
+        if(indexOf(where)==='object'){
+            var objKeys = where.keys();
+            console.log("OBJ KEY: ",objKeys)
+            for(var i=0; i<where.length; i++){
+                condition+=''+where[i].field;
+                condition+= this.checkOpWhereConditions(where[i].op)+' '+where[i].value;
+                
+                if(i!=objKeys.length-1) condition += bool;
+            }
+        }
+        console.log("condition: ",condition);
+        return condition;
+        
     }
 
-    addType(values){
-        return new Promise((resolve, reject)=>{
-            if(!values) reject(new Error('DB Insert Error: value not defined'));
-            this.doQuery("INSERT INTO TYPE(name) VALUES (?)",values)
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(err);
-                reject(new Error(err));
-            })
-        })
+    async describe(tblname){
+        console.log("describe DB")    
+        if(tblname===false || tblname==='') reject(new Error("DB Error: tblname empty!"));
+        if(typeof(tblname)==='string'){
+           var descr = await this.doQuery("DESCRIBE "+tblname)
+           return descr ; 
+        }
     }
 
-    deleteGrocery(values){
-        console.log("values");
-        console.log(values);
-        if(!values) reject(new Error('DB Delete Error: values not defined'));
+    queryString(tblname, type='SELECT', where=false, fields=false, order=false, limit=false, offset=false, orderBy=false){
+        console.log("QUERY STRING: ",tblname, where)
+        var sql='';
 
-        return new Promise((resolve, reject)=>{
-            this.doQuery('DELETE FROM GROCERY WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject(err);
-            })
-        })
+        switch(type){
+            case 'SELECT':
+                sql='SELECT ';
+                if(fields!==false){
+                    sql+=this.whereFields(fields);
+                }
+                else sql+=' * ';
+                break;
+            case 'DELETE':
+                sql='DELETE ';
+                break;
+        }
+
+        sql+=' FROM '+tblname;
+        console.log("SQL: ",sql);
+
+        if(where){
+            if(typeof(where)==='string') sql+=' WHERE '+where;
+            else sql=''+this.whereCriteria(where);
+        }
+
+        if(type==='SELECT'){
+            if(limit!==false){
+                if(offset!==false){ sql+=offset+','+limit; }
+                else sql+=' LIMIT '+limit;
+            }
+            if(orderBy!==false){ sql+=' '+orderBy; }
+        }
+        console.log("SQL END: ",sql);
+        return sql;
     }
 
-    deleteType(values){
-        if(!values) reject(new Error('DB Delete Error: values not defined'));
-        return new Promise((resolve,reject)=>{
-            this.doQuery('DELETE FROM TYPE WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject((err));
-            })
-        })
+    _deleteQueryString(tblname,where){
+        var sql = this.queryString(tblname,'DELETE',where);
+        console.log("DEL SQL: ",sql);
+        return sql;
     }
 
-    updateGrocery(values){
-        console.log("update");
-        console.log(values);
-        return new Promise((resolve, reject)=>{
-            this.doQuery('update GROCERY SET bought=? WHERE id IN (?)',values)
-            .then((result)=>{
-                console.log(result);
-                resolve(result);
-            })
-            .catch((err)=>{
-                reject(err);
-            })
-        })
+    async _deleteQuery(params,tblname){
+        var sql = this._deleteQueryString(tblname,params);
+        return await this.doQuery(sql);
     }
 
+<<<<<<< HEAD
     addUser(values){
         console.log("ADD USER");
         console.log(values);
@@ -338,6 +401,17 @@ class Database {
         
         console.log(params,tblname);
 
+=======
+    /**
+     * 
+     * @param {*} tblname 
+     * @param {*} params 
+     * @returns string sql
+     */
+    _insertQueryString(tblname,params){
+        console.log("INSERT DB");
+        console.log(params,tblname);
+>>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
         console.log(typeof(params));
 
         if(typeof(params)==='object'){
@@ -349,21 +423,31 @@ class Database {
             var q2 = '';
             var fields = [];
             for(var i=0; i<objKeys.length; i++){
+<<<<<<< HEAD
     
+=======
+>>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
                 //console.log("FOR obj",objKeys[i]);
                 q1 += objKeys[i];
                 q2 +='?';
                 
                 //console.log(q1, q2);
+<<<<<<< HEAD
 
                 //console.log(i,objKeys.length);
 
+=======
+                //console.log(i,objKeys.length);
+>>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
                 if(i!==(objKeys.length-1)){
                     //console.log("diversi");
                     q1 += ',';
                     q2 += ',';
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
                 fields.push(params[objKeys[i]]);
             }
         }
@@ -371,12 +455,31 @@ class Database {
         var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
         console.log("INSERT SQL: ",sql);
         console.log("INSERT FIELDS: ",fields);
+<<<<<<< HEAD
 
         var result = await this.doQuery(sql,fields);  
+=======
+        var myArr = [sql,fields];
+        return myArr;
+    }
+
+    /**
+     * 
+     * @param {*} params 
+     * @param {*} tblname 
+     * @returns 
+     */
+    async _insertQuery(params,tblname){
+        
+        var res = this._insertQueryString(tblname,params)
+
+        var result = await this.doQuery(res[0],res[1]);  
+>>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
         console.log("RESULT INSERT: ",result);
         return result;
     }
 
+<<<<<<< HEAD
 };
 
 /*
@@ -418,3 +521,68 @@ exports.getGrocery = () => {
 }
 */
 module.exports = Database;
+=======
+    quoteFields(field){
+        var str ='`'+field+'`';
+        return str;
+    }
+
+    quoteValue(value){
+        if(typeof(value)==='string') var val ="'"+value+"'";
+        else val = value;
+
+        return val;
+    }
+
+    sanitizeUpdateParams(params){
+        console.log("XXXXX params" ,params);
+        var fields='';
+        
+        if(typeof(params)==='object'){
+            console.log("XXX >0")
+            var objKey = Object.keys(params);
+            for(var i=0; i<objKey.length;i++){
+                console.log("XXXXXXXXXXXXXX")
+                fields += this.quoteFields(objKey[i])+'='+this.quoteValue(params[objKey[i]])+' ';
+                if(i!=objKey.length-1) fields+=',';
+            }
+            console.log("UPD fields: ",fields);
+
+            return fields;
+        }
+    }
+
+    /**
+     * 
+     * @param {* string TBL } tblname 
+     * @param {* oggetto {nome_fields:valore}} params 
+     * @param {* string condition (ex id=3)} where 
+     */
+    updateQueryString(tblname,params,where=false){
+        console.log("UPDATE ")
+        var condition='';
+        if(where!=false){
+            console.log("where vero")
+            if(typeof(where)==='string'){
+                var condition = where;
+            }else condition = where;
+        }
+        var fields = this.sanitizeUpdateParams(params)
+        console.log(fields)
+        var sql='UPDATE '+tblname+' SET '+fields+' WHERE '+condition;
+        console.log("UPDATE SQL: ",sql);
+        return sql;
+    }
+
+    async _updateQuery(tblname, params, where){
+        var sql = this.updateQueryString(tblname,params,where);
+
+        var result = await this.doQuery(sql);
+        console.log(result);
+        return result;
+    }
+
+};
+
+module.exports = Database ;
+>>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05

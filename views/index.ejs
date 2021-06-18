@@ -9,7 +9,7 @@
 
     <%- include('sidebar'); %>
   
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col">
               <% if (links) { %>
@@ -20,7 +20,7 @@
 
               <% if (login) { %>
                 <%- include('main'); %>
-              <%} else { %>
+              <%} else if(filename !=false) { %>
                 <%- include(filename); %>
               <% } %> 
             </div>
@@ -28,11 +28,7 @@
     </div>
 
 
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">&#169; 2021 Powered with &#10084; by <a target="_blank" href="https://www.linkedin.com/in/alfonsopisicchio/">Alfonso</a></span>
-      </div>
-    </footer>
+    <%- include('footer'); %>
   <%- include('lib-script'); %>
 </body>
 </html>
