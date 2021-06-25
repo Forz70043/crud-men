@@ -19,6 +19,9 @@ class Grocery extends Entity {
             'type_id':{ 
                 as:'g.type_id',
                 required:true },
+            'type':{ 
+                as:'t.name',
+                required:true },
             'bought': {
                 as: 'g.bought',
                 required: false } 
@@ -28,8 +31,10 @@ class Grocery extends Entity {
 
     async getAll(){
         //var fields = ['g.id', 'g.name','g.type_id as type_id',' t.name as type', 'g.bought'];
+        console.log("GROCERY FIELDS: ", this.getFields());
+
         var result = await this.find(false,this.getFields());
-        //console.log("GET ALL :",result);
+        console.log("GET ALL :", result);
         return result;
     }
 

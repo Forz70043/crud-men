@@ -1,4 +1,3 @@
-const { isNumeric } = require('jquery');
 const Entity = require('../../entity');
 
 class Types extends Entity {
@@ -21,7 +20,7 @@ class Types extends Entity {
     } 
 
     async add(params){		
-		//console.log(" ADD ",params);
+		console.log("TYPE ADD ",params);
 		//console.log(Object.keys(params).length);
 
 		var objKeys = Object.keys(params);

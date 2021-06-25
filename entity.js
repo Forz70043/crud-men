@@ -47,7 +47,8 @@ class Entity extends Database{
     }
 
     getTblname(){
-        return this.TBL;
+        if(this.TBLJOIN) return this.TBL+' '+this.TBLJOIN;
+        else return this.TBL;
     }
 
     setFields(fields){
@@ -55,42 +56,48 @@ class Entity extends Database{
     }
 
     getFields(required=false){
-        if(required){
-            this.fields.filter((field)=>{
-                if(field.required){
-                    return field;
-                }
-            })
+        let fields='';
+        console.log("getFields Entity: ", this.fields);
+        if(this.fields){
+            console.log("this.fields vera");
+            for(var i in this.fields){
+                console.log(i);
+                console.log(this.fields[i].as);
+                fields += this.fields[i].as+' as '+"'"+i+"',";
+                console.log("fff: ", fields);
+            }
+            fields = fields.slice(0,-1);
         }
-        return Object.keys(this.fields);
+        else fields = ' * ';
+    
+        return fields;
     }
 
+    /**
+     * 
+     * @param {String} where 
+     * @param {Object} fields 
+     * @returns 
+     */
     async find(where=false, fields=false){
         console.log("WHERE FIND: ",where);
-        var sql=this.queryString(this.getTblname(),'SELECT',where,fields);
-        //console.log("FIND ",sql);
+        console.log("where fields: ",fields);
+        var sql=this.queryString(this.getTblname(), 'SELECT', where, fields);
+        console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
         console.log("XXX",JSON.parse(JSON.stringify(rows)));
         return rows;
     }
 
-    /* getEntity(){
-        console.log("")
-        return new Promise((resolve, reject)=>{
-            var sql = this.queryString(this.getTblname(),'SELECT');
-            console.log("GET ENTITY ",sql);
-        })
-    } */
-
     async getAll(where=false){    
-        var sql = this.queryString(this.getTblname(),'SELECT',(where)?where:false);
+        var sql = this.queryString(this.getTblname(), 'SELECT', (where) ? where : false);
         return await this.doQuery(sql);         
     }
     
     async insertQuery(params){
         console.log("ENTITY INSERT QUERY: ",params)
         
-        var result = await this.insertQueryString_(params,this.getTblname());
+        var result = await this.insertQueryString_(params, this.getTblname());
         
         //console.log("SQL: ",sql);
         //var result = await this.doQuery(sql,);
