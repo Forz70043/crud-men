@@ -14,9 +14,8 @@ CREATE TABLE `TYPE`(
     PRIMARY KEY(`id`)
 );
 
-<<<<<<< HEAD
 ALTER TABLE `GROCERY` ADD FOREIGN KEY(`type_id`) REFERENCES `TYPE`(`id`);
-
+/*
 CREATE TABLE `U`(
     `id` INT(6) NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(128) NOT NULL,
@@ -34,8 +33,7 @@ CREATE TABLE `C_U`(
     PRIMARY KEY(`id`)
 );
 ALTER TABLE `C_U` ADD FOREIGN KEY(`user_id`) REFERENCES `U`(`id`);
-
-=======
+*/
 CREATE TABLE `SYSLOG` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `remote_ip` varchar(15) NOT NULL,
@@ -56,17 +54,17 @@ CREATE TABLE `AUTH`(
     `cod_id` int(21) unsigned not null,
     `user_id` int(21) unsigned not null,
     PRIMARY KEY(`cod_id`),
-    UNIQUE KEY`cod_id` (`cod_id`),
-    FOREIGN KEY `user_id` REFERENCES `USERS`(`id`)
+    UNIQUE KEY`cod_id` (`cod_id`)
 );
+ALTER TABLE `AUTH` ADD FOREIGN KEY(`user_id`) REFERENCES `USERS`(`id`);
 
 CREATE TABLE `LIST_GROUP`(
     `grocery_grp_id` int(21) unsigned not null,
     `user_id` int(21) unsigned not null,
-    PRIMARY KEY(`grocery_grp_id`),
-    FOREIGN KEY `user_id` REFERENCES `USERS`(`id`),
-    FOREIGN KEY `grocery_grp_id` REFERENCES `GROCERY_GRP`(`id`),
+    PRIMARY KEY(`grocery_grp_id`)
 );
+ALTER TABLE `LIST_GROUP` ADD FOREIGN KEY(`user_id`) REFERENCES `USERS`(`id`);
+ALTER TABLE `LIST_GROUP` ADD FOREIGN KEY(`grocery_grp_id`) REFERENCES `GROCERY_GRP`(`id`);
 
 CREATE TABLE `GROCERY_GRP`(
     `id` int(21) unsigned AUTO_INCREMENT not null,
@@ -83,6 +81,7 @@ CREATE TABLE `USERS`(
     `photo` text default null,
     `gender` tinyint(0),
     `yearOfBirth` DATE not null,
+    `params` varchar(512) default null,
     PRIMARY KEY(`id`)
 );
 
@@ -95,4 +94,3 @@ CREATE TABLE `COUNTRY`(
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `iso_3166` (`iso_3166`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
->>>>>>> 9ec51fd3daad6eaf0a4e698837982309471f7e05
