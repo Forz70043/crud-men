@@ -1,1 +1,21 @@
-{}
+{
+	"Home": "Home",
+	"Grocery List": "Grocery List",
+	"Types List": "Types List",
+	"We don't spend more time on security, so do not use your Bank password": "We don't spend more time on security, so do not use your Bank password",
+	"Social Authentication": "Social Authentication",
+	"SignIn with Google": "SignIn with Google",
+	"SignIn with GitHub": "SignIn with GitHub",
+	"SignIn with Facebook": "SignIn with Facebook",
+	"Add new Element": "Add new Element",
+	"Name": "Name",
+	"Type": "Type",
+	"Submit": "Submit",
+	"No data found!": "No data found!",
+	"You should addsome fields": "You should addsome fields",
+	"Delete": "Delete",
+	"Are you sure to delete": "Are you sure to delete",
+	"Close": "Close",
+	"Delete element": "Delete element",
+	"Add new Type": "Add new Type"
+}
