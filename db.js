@@ -394,12 +394,42 @@ class Database {
     /*
         params = { fields: valore}
     */
-    async insertQueryString_(params,tblname){
+        async insertQueryString_(params,tblname){
+            console.log("INSERT DB");
+            console.log(params,tblname);
+            console.log(typeof(params));
     
-        console.log("INSERT DB");
-        
-        console.log(params,tblname);
-    }
+            if(typeof(params)==='object'){
+                //console.log("dentro obj");
+                var objKeys = Object.keys(params);
+                //console.log("CHIAVI: ",objKeys);
+                //console.log("LENGTH: ",objKeys.length);
+                var q1 = ''; 
+                var q2 = '';
+                var fields = [];
+                for(var i=0; i<objKeys.length; i++){
+                    //console.log("FOR obj",objKeys[i]);
+                    q1 += objKeys[i];
+                    q2 +='?';
+                    //console.log(q1, q2);
+                    //console.log(i,objKeys.length);
+                    if(i!==(objKeys.length-1)){
+                        //console.log("diversi");
+                        q1 += ',';
+                        q2 += ',';
+                    }
+                    fields.push(params[objKeys[i]]);
+                }
+            }
+            //console.log(q1);
+            var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
+            console.log("INSERT SQL: ",sql);
+            console.log("INSERT FIELDS: ",fields);
+    
+            var result = await this.doQuery(sql,fields);  
+            console.log("RESULT INSERT: ",result);
+            return result;
+        }
 
     /**
      * 
@@ -453,7 +483,7 @@ class Database {
     /**
      * 
      * @param {*} params 
-     * @param {*} tblname 
+     * @tblname {*} String   
      * @returns 
      */
     async insertQuery(params,tblname){

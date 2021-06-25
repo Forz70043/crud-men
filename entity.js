@@ -89,8 +89,12 @@ class Entity extends Database{
     
     async insertQuery(params){
         console.log("ENTITY INSERT QUERY: ",params)
-        var result = await this._insertQuery(params,this.getTblname());
-        //console.log("XXX ",result);
+        
+        var result = await this.insertQueryString_(params,this.getTblname());
+        
+        //console.log("SQL: ",sql);
+        //var result = await this.doQuery(sql,);
+        console.log("XXX ",result);
         return result;
     }
 
