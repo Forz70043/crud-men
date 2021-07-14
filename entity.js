@@ -125,7 +125,7 @@ class Entity extends Database{
     }
 
     async deleteFromId(id){
-        var condition = 'WHERE id='+id;
+        var condition = ' id='+id;
         var result = await this._deleteQuery(condition,this.getTblname());
         return result;
     }
