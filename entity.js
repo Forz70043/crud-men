@@ -76,10 +76,10 @@ class Entity extends Database{
         if(this.fields){
             console.log("this.fields vera");
             for(var i in this.fields){
-                console.log(i);
-                console.log(this.fields[i].as);
+                /* console.log(i);
+                console.log(this.fields[i].as); */
                 fields += this.fields[i].as+' as '+"'"+i+"',";
-                console.log("fff: ", fields);
+                /* console.log("fff: ", fields); */
             }
             fields = fields.slice(0,-1);
         }
@@ -95,12 +95,12 @@ class Entity extends Database{
      * @returns 
      */
     async find(where=false, fields=false){
-        console.log("WHERE FIND: ",where);
-        console.log("where fields: ",fields);
+       /*  console.log("WHERE FIND: ",where);
+        console.log("where fields: ",fields); */
         var sql=this.queryString(this.getFullTblname(), 'SELECT', where, fields);
-        console.log("FIND ",sql);
+        //console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
-        console.log("XXX",JSON.parse(JSON.stringify(rows)));
+        //console.log("XXX",JSON.parse(JSON.stringify(rows)));
         return rows;
     }
 
@@ -114,13 +114,13 @@ class Entity extends Database{
      * @returns 
      */
     async insertQuery(params){
-        console.log("ENTITY INSERT QUERY: ",params)
+        //console.log("ENTITY INSERT QUERY: ",params)
         
         var result = await this.insertQueryString_(params, this.getTblname());
         
         //console.log("SQL: ",sql);
         //var result = await this.doQuery(sql,);
-        console.log("XXX ",result);
+        //console.log("XXX ",result);
         return result;
     }
 

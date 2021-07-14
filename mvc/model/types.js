@@ -20,9 +20,9 @@ class Types extends Entity {
     }
 
     async getWhere(where=false){
-        console.log("get where: ");
+        /* console.log("get where: "); */
         let result = await this.find(where,this.getFields());
-        console.log("GET where :", result);
+        /* console.log("GET where :", result); */
         return result;
     }
 
@@ -38,8 +38,8 @@ class Types extends Entity {
      * @returns 
      */
     async add(params){		
-		console.log("TYPE ADD ",params);
-		//console.log(Object.keys(params).length);
+		/* console.log("TYPE ADD ",params);
+		//console.log(Object.keys(params).length); */
 
 		var objKeys = Object.keys(params);
 		if(objKeys.length>0){
@@ -52,7 +52,7 @@ class Types extends Entity {
 	}
 
     async delete(params){
-        console.log("DEL: ",params);
+        //console.log("DEL: ",params);
         if(params!=undefined){
             var result = await this.deleteFromId(params)
             return result;
@@ -60,13 +60,13 @@ class Types extends Entity {
     }
 
     async updateType(params,where){
-        console.log("UPD: ",params);
-        console.log(where);
+        /* console.log("UPD: ",params);
+        console.log(where); */
         var condition='id='+where;
 
         var result = await this.update(params,condition);
         if(result){
-            console.log(result);
+            //console.log(result);
             return result;
         }
         else return false;

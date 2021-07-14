@@ -31,7 +31,7 @@
             <div class="custom-control custom-switch">
               <input type="checkbox" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
               class="custom-control-input" id="bought" name="bought" 
-              <% if(rows[0].bought==='yes'){ %> value="yes" checked <% } else { %> value="no" <% } %>/>
+              <% if(rows[0].bought==='yes'){ %> checked <% } else { %> <% } %>/>
               <label class="custom-control-label" for="bought"><%= __('Bought') %></label>
             </div>
           </div>

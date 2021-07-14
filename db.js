@@ -58,30 +58,21 @@ class Database {
             this.connection.query(sql, args, (err, rows, fields)=>{
                 console.log("DB SQL: ",sql);
                 if(err){
-                    switch(err.errno){
-                        case 1451:
-                            reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo");
-                            break;
-                        case 1054:
-                            reject('Error: ');
-                            break;
-                        case 1052:
-                            reject('Error: fields ambigue');
-                            
-                            break
-                    }
+                    console.log("ERR DB: ",err)
+                    reject('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:'');
+                    
                     /* if(err.errno==1451){//errore di foreign key
                         reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
                     }
                     if(err.errno==1054){
                         //errore di fields nella query
                     } */
-                    console.log("DB ERR: ",err);
+                    /* console.log("DB ERR: ",err);
                     
                     reject(new Error('DB ERROR !'));
-                    return false;
+                     */return false;
                 }
-                console.log("ROWS DB: ", rows);
+                //console.log("ROWS DB: ", rows);
                 resolve(JSON.parse(JSON.stringify(rows)));
             });
         });
@@ -180,9 +171,9 @@ class Database {
     }
 
     queryString(tblname, type='SELECT', where=false, fields=false, order=false, limit=false, offset=false, orderBy=false){
-        console.log("QUERY STRING: tbl",tblname, where, fields)
-        console.log("QUERY STRING: w",where)
-        console.log("QUERY STRING: f",fields)
+        //console.log("QUERY STRING: tbl",tblname, where, fields)
+        /* console.log("QUERY STRING: w",where)
+        console.log("QUERY STRING: f",fields) */
         var sql='';
 
         switch(type){
@@ -205,7 +196,7 @@ class Database {
         }
 
         sql+=' FROM '+tblname;
-        console.log("SQL: ",sql);
+        //console.log("SQL: ",sql);
 
         if(where){
             if(typeof(where)==='string') sql+=' WHERE '+where;
@@ -225,7 +216,7 @@ class Database {
 
     _deleteQueryString(tblname,where){
         var sql = this.queryString(tblname,'DELETE',where);
-        console.log("DEL SQL: ",sql);
+        //console.log("DEL SQL: ",sql);
         return sql;
     }
 
@@ -234,7 +225,7 @@ class Database {
         return await this.doQuery(sql);
     }
 
-    addUser(values){
+    /* addUser(values){
         console.log("ADD USER");
         console.log(values);
         return new Promise((resolve, reject)=>{
@@ -248,10 +239,10 @@ class Database {
             })
         })
     }
-
-    getUser(values){
+ */
+/*     getUser(values){
         return new Promise((resolve, reject)=>{
-            console.log(values);
+            //console.log(values);
             this.doQuery("SELECT * FROM USERS WHERE cod_id IN (?)",values)
             .then((result)=>{
                 resolve(result);
@@ -260,7 +251,7 @@ class Database {
                 reject(err);
             })
         })
-    }
+    } */
 
     describe(tblname){
         console.log("describe DB")
@@ -308,8 +299,8 @@ class Database {
     */
         async insertQueryString_(params,tblname){
             console.log("INSERT DB");
-            console.log(params,tblname);
-            console.log(typeof(params));
+            /* console.log(params,tblname);
+            console.log(typeof(params)); */
     
             if(typeof(params)==='object'){
                 //console.log("dentro obj");
@@ -351,8 +342,8 @@ class Database {
      */
     _insertQueryString(tblname,params){
         console.log("INSERT DB");
-        console.log(params,tblname);
-        console.log(typeof(params));
+        //console.log(params,tblname);
+        //console.log(typeof(params));
 
         if(typeof(params)==='object'){
             //console.log("dentro obj");
@@ -384,8 +375,8 @@ class Database {
         }
         //console.log(q1);
         var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
-        console.log("INSERT SQL: ",sql);
-        console.log("INSERT FIELDS: ",fields);
+        //console.log("INSERT SQL: ",sql);
+        //console.log("INSERT FIELDS: ",fields);
 
         var result = this.doQuery(sql,fields);  
         var myArr = [sql,fields];
@@ -420,7 +411,7 @@ class Database {
     }
 
     sanitizeUpdateParams(params){
-        console.log("XXXXX params" ,params);
+        //console.log("XXXXX params" ,params);
         var fields='';
         
         if(typeof(params)==='object'){
@@ -452,7 +443,7 @@ class Database {
             else condition = where;
         }
         var fields = this.sanitizeUpdateParams(params)
-        console.log(fields)
+        //console.log(fields)
         var sql='UPDATE '+tblname+' SET '+fields+' WHERE '+condition;
         console.log("UPDATE SQL: ",sql);
         return sql;

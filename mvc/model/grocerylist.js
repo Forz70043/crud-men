@@ -31,17 +31,17 @@ class Grocery extends Entity {
 
     async getAll(){
         //var fields = ['g.id', 'g.name','g.type_id as type_id',' t.name as type', 'g.bought'];
-        console.log("GROCERY FIELDS: ", this.getFields());
+        //console.log("GROCERY FIELDS: ", this.getFields());
 
         var result = await this.find(false,this.getFields());
-        console.log("GET ALL :", result);
+        //console.log("GET ALL :", result);
         return result;
     }
 
     async getWhere(where=false){
         console.log("get where: ");
         let result = await this.find(where,this.getFields());
-        console.log("GET where :", result);
+        //console.log("GET where :", result);
         return result;
     }
    /*  getGrocery(){
@@ -76,8 +76,8 @@ class Grocery extends Entity {
 	}
 
     async updateGrocery(params,where){
-        console.log(params);
-        console.log(where);
+        /* console.log(params);
+        console.log(where); */
         var condition='id='+where;
 
         var result = await this.update(params,condition);
@@ -86,9 +86,9 @@ class Grocery extends Entity {
     }
 
     async updateBought(params,where){
-        console.log(params);
+        /* console.log(params);
         console.log(where);
-        var condition='id='+where;
+ */        var condition='id='+where;
 
         var result = await this.update(params,condition);
         console.log(result);
@@ -96,7 +96,7 @@ class Grocery extends Entity {
     }
 
     async delete(params){
-        console.log(params);
+        //console.log(params);
         if(params!=undefined){
             var result = await this.deleteFromId(params)
             return result;

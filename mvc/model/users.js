@@ -43,12 +43,12 @@ class Users extends Entity {
     } 
 
     async add(params){
-        console.log("ADD USER: ",params);
+       /*  console.log("ADD USER: ",params); */
         var objKeys = Object.keys(params);
 		if(objKeys.length>0){
-			console.log("params >0");
+			/* console.log("params >0"); */
 			var result = await this.insertQuery(params);
-			console.log(" ADD: ",result);
+			/* console.log(" ADD: ",result); */
 			return result;
 		}
 		else console.log("params <0");    
@@ -62,17 +62,17 @@ class Users extends Entity {
     }
 
     async get(where){
-        console.log("GET WHERE: ",where);
+        /* console.log("GET WHERE: ",where); */
         var result = await this.find(where);
         //console.log("GET :",result);
         return result;
     }
 
     async getWhere(where=false){
-        console.log("get where: ");
+        /* console.log("get where: "); */
         let result = await this.find(where,this.getFields());
-        console.log("GET where :", result);
-        return result;
+/*         console.log("GET where :", result);
+ */        return result;
     }
 
     async add(params){		
