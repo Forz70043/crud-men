@@ -5,6 +5,8 @@ class Users extends Entity {
     constructor(){
         super();
         this.TBL='USERS';
+        this.TBLJOIN = 'u ';
+        
         this.setFields({
             'id':{
                 as: 'u.id',
@@ -16,13 +18,13 @@ class Users extends Entity {
                 as:'u.surname',
                 required:true },
             'email': {
-                as: 'u.bought',
+                as: 'u.email',
                 required: false },
             'password': {
                 as: 'u.password',
                 required: false },
             'phone': {
-                as: 'u.cod_id',
+                as: 'u.phone',
                 required: false },
             'role_id': {
                     as: 'u.role_id',
@@ -33,6 +35,12 @@ class Users extends Entity {
             }
         );
     }
+
+    async getAll(){
+        var result = await this.find();
+        //console.log("GET ALL :",result);
+        return result;
+    } 
 
     async add(params){
         console.log("ADD USER: ",params);
@@ -57,6 +65,13 @@ class Users extends Entity {
         console.log("GET WHERE: ",where);
         var result = await this.find(where);
         //console.log("GET :",result);
+        return result;
+    }
+
+    async getWhere(where=false){
+        console.log("get where: ");
+        let result = await this.find(where,this.getFields());
+        console.log("GET where :", result);
         return result;
     }
 

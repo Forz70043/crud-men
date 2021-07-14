@@ -19,7 +19,7 @@ router.get('/',async (req,res)=>{
 	tipi = await types.getAll();
 	rows = await grocery.getAll();
 
-	template.myRender(res,'home',['grocery list'],false,tipi,rows);
+	template.myRender(res,'groceries',['grocery'],false,tipi,rows);
 })
 
 router.post('/', async (req,res)=>{
@@ -64,8 +64,8 @@ router.get('/:id', async(req,res)=>{
 	console.log("grocery/id");
 	let spesa = await grocery.getWhere('g.id='+req.params.id);
 	let tipi = await types.getAll();
-	console.log(spesa);
-	template.myRender(res, 'home', ['grocery list'], false, tipi, spesa);
+	console.log(spesa,tipi);
+	template.myRender(res, 'grocery', ['grocery'], false, tipi, spesa);
 	//res.render(grocery.getIndexTemplate(),{login:0,filename:'home',links:['grocery list'],rows:spesa,types: tipi})
 	
 });

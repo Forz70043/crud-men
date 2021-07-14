@@ -22,7 +22,7 @@ router.get('/:id',async(req,res)=>{
 	console.log("types/id");
 	let tipo = await types.getWhere('id='+req.params.id);
 	console.log(tipo);
-	template.myRender(res,'types',['types'],false,tipo);
+	template.myRender(res,'type',['types'],false,tipo);
 });
 
 router.post('/', async(req, res)=>{

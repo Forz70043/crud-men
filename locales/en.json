@@ -20,5 +20,16 @@
 	"Grocery": "Grocery",
 	"Types": "Types",
 	"No data found!": "No data found!",
-	"You should addsome fields": "You should addsome fields"
+	"You should addsome fields": "You should addsome fields",
+	"Users": "Users",
+	"Add new User": "Add new User",
+	"Nome": "Nome",
+	"Surname": "Surname",
+	"Email": "Email",
+	"Phone": "Phone",
+	"Address": "Address",
+	"Year of Birth": "Year of Birth",
+	"Born Date": "Born Date",
+	"Edit element": "Edit element",
+	"Phone n°": "Phone n°"
 }

@@ -91,8 +91,8 @@ class Template {
         return params;
     }
 
-    getParams(filename=false, links=false, obj=false, types=false,rows=false){
-        return this.params(false,filename,links,types,rows,obj);
+    getParams(filename=false, links=false, obj=false, types=false,rows=false,users=false){
+        return this.params(false,filename,links,types,rows,obj,false,false,false,false,false,false,false,false,users);
     }
 
     /**
@@ -110,7 +110,7 @@ class Template {
             },
             {
                 'name': 'Grocery',
-                'link': '/home',
+                'link': '/groceries',
                 'active': true,
                 'onClick': "",
                 'icon': 'fas fa-home'
@@ -122,14 +122,14 @@ class Template {
                 'onClick': "",
                 'icon': 'fas fa-user-injured'
             },
-            /* {
-                'name': 'Prescription',
-                'link': '/prescriptions',
+            {
+                'name': 'Users',
+                'link': '/users',
                 'active': false,
                 'onClick': "",
                 'icon': 'fas fa-prescription-bottle-alt'
             },
-            {
+            /* {
                 'name': 'Appointments',
                 'link': '/appointments',
                 'active': false,
@@ -179,8 +179,8 @@ class Template {
         return navbar;
     }
 
-    myRender(res,filename,links,obj,types, rows) {
-        return res.render(this.getTemplateIndex(),this.getParams(filename,links,obj,types,rows));
+    myRender(res,filename,links,obj=false,types=false, rows=false, users=false) {
+        return res.render(this.getTemplateIndex(),this.getParams(filename,links,obj,types,rows, users));
     }
 
 };

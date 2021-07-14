@@ -18,5 +18,15 @@
 	"Close": "Chiudi",
 	"Delete element": "Elimina elemento",
 	"Add new Type": "Aggiungi un nuovo tipo",
-	"Bought": "Comprato"
+	"Bought": "Comprato",
+	"Grocery": "Spesa",
+	"Types": "Tipi",
+	"Users": "Utenti",
+	"Add new User": "Aggiungi nuovo Utente",
+	"Surname": "Cognome",
+	"Email": "Email",
+	"Phone n°": "Telefono n°",
+	"Address": "Indirizzo",
+	"Born Date": "Data di nascita",
+	"Phone": "Telefono"
 }

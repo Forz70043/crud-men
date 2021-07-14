@@ -5,10 +5,11 @@ const path = require('path');
 /**
  * REQUIRE ROUTES
  */
-var typesRouter = require('./routes/types');
-var groceryRoute = require('./routes/grocery');
-var authRoute = require('./routes/auth');
-var loginRoute = require('./routes/login');
+let typesRouter = require('./routes/types');
+let groceryRoute = require('./routes/grocery');
+let authRoute = require('./routes/auth');
+let loginRoute = require('./routes/login');
+let usersRoute = require('./routes/users');
 
 /**
  * REQUIRE MODEL CLASS
@@ -68,9 +69,10 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/
  * ROUTES
  */
 app.use('/types', typesRouter);
-app.use('/home', groceryRoute);
+app.use('/groceries', groceryRoute);
 app.use('/auth',authRoute);
 app.use('/login',loginRoute);
+app.use('/users',usersRoute);
 
 auth.serialize();
 auth.deserialize();
