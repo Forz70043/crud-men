@@ -4,7 +4,7 @@
         <%= __('Add new Element') %>
       </div>
       <div class="card-body">
-        <form action="/home" method="POST" class="was-validate pt-3">
+        <form action="/groceries" method="POST" class="was-validate pt-3">
           <div class="form-row">
             <div class="form-group col"></div>
             <div class="form-group col-5">
@@ -60,9 +60,9 @@
                     </div>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-warning" type="button" onclick="">
+                    <a class="btn btn-sm btn-warning" type="button" href="groceries/<%= row.id %>" >
                       <span class="fa fa-edit"></span>
-                    </button>
+                    </a>
                     <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenter">
                       <span class="fas fa-trash-alt"></span>
                     </button>

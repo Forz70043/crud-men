@@ -19,7 +19,7 @@ router.get('/',async (req,res)=>{
 	tipi = await types.getAll();
 	rows = await grocery.getAll();
 
-	template.myRender(res,'groceries',['grocery','list'],false,tipi,rows);
+	template.myRender(res,'groceries',['groceries','list'],false,tipi,rows);
 })
 
 router.get('/list', async(req, res)=>{
@@ -39,14 +39,14 @@ router.post('/', async (req,res)=>{
     {
 		var result = await grocery.add(req.body);
 		console.log("RES ADD: ",result);
-		if(result.insertId) res.redirect('home');
+		if(result.insertId) res.redirect('groceries');
 	}
 	else if(req.body.send==='delete'){
 		if(req.body.id){
             var result = await grocery.delete(req.body.id);
             console.log(result)
             if(result){
-                res.redirect('/home');
+                res.redirect('/groceries');
             }
         }
 	}
@@ -60,9 +60,14 @@ router.post('/', async (req,res)=>{
 				}
 			}
 		}
-		var result = grocery.updateBought({'bought':req.body.bought},req.body.id)
-        if(result){
-            res.redirect('/home');
+		else{
+			req.body.bought = (req.body.bought==='on'||req.body.bought==='yes' )?'yes':'no';
+		}
+		let params = (req.body.name && req.body.type_id) ? {'name':req.body.name,'type_id':req.body.type_id,'bought':req.body.bought} : {'bought':req.body.bought}; 
+		//var result = grocery.updateBought(params,req.body.id)
+        var result = grocery.updateGrocery(params,req.body.id)
+		if(result){
+            res.redirect('/groceries');
         }
 	}
 
@@ -73,7 +78,7 @@ router.get('/:id', async(req,res)=>{
 	let spesa = await grocery.getWhere('g.id='+req.params.id);
 	let tipi = await types.getAll();
 	console.log(spesa,tipi);
-	template.myRender(res, 'grocery', ['grocery'], false, tipi, spesa);
+	template.myRender(res, 'grocery', ['groceries'], false, tipi, spesa);
 	//res.render(grocery.getIndexTemplate(),{login:0,filename:'home',links:['grocery list'],rows:spesa,types: tipi})
 	
 });

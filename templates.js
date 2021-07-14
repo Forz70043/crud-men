@@ -55,8 +55,8 @@ class Template {
         if (!sidebar) sidebar = this.getSidebar();
         if (!login) login=false;
 
-        console.log("ARGS", arguments);
-        console.log("ARGS N°", arguments.length);
+        //console.log("ARGS", arguments);
+        //console.log("ARGS N°", arguments.length);
         var params = {
             login: login,
             filename: filename,
@@ -75,19 +75,19 @@ class Template {
             user: user,
             others: {}
         }
-        console.log(params);
+        //console.log(params);
         if (arguments.length > 5) {
             console.log("MAGGIOREEEEE DI 5");
             var i = 5
             var k = 0
             while (i == arguments.length - 1) {
-                console.log(arguments[i]);
+                //console.log(arguments[i]);
                 params['others'][k] = arguments[i];
                 i++; k++
             }
-            console.log("PARAMS: ", params)
+            //console.log("PARAMS: ", params)
         }
-        console.log("PARAMS: ", params)
+        //console.log("PARAMS: ", params)
         return params;
     }
 

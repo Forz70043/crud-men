@@ -75,6 +75,16 @@ class Grocery extends Entity {
         }
 	}
 
+    async updateGrocery(params,where){
+        console.log(params);
+        console.log(where);
+        var condition='id='+where;
+
+        var result = await this.update(params,condition);
+        console.log(result);
+        return result;
+    }
+
     async updateBought(params,where){
         console.log(params);
         console.log(where);
