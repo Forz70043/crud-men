@@ -26,7 +26,9 @@ router.get('/:id',async(req,res)=>{
 });
 
 router.post('/', async(req, res)=>{
-    console.log(req.body);
+    console.log("post");
+	console.log(req.body);
+	console.log("types");
 	var params = req.body;
 	console.log(params);
 	if(!req.body.send){
@@ -43,6 +45,13 @@ router.post('/', async(req, res)=>{
         if(result.serverStatus==2){
             res.redirect('types');
         }
+	}else if(req.body.send==='update'){
+		console.log("UPDTE")
+		console.log(params);
+		let result = await types.updateType({name:params.name},req.body.id);
+		if(result){
+			res.redirect('/types/'+params.id);
+		}
 	}
 });
 

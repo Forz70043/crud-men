@@ -32,6 +32,11 @@ class Types extends Entity {
         return result;
     } 
 
+    /**
+     * 
+     * @param {*} params 
+     * @returns 
+     */
     async add(params){		
 		console.log("TYPE ADD ",params);
 		//console.log(Object.keys(params).length);
@@ -54,9 +59,17 @@ class Types extends Entity {
         }
     }
 
-    update(params){
+    async updateType(params,where){
         console.log("UPD: ",params);
+        console.log(where);
+        var condition='id='+where;
 
+        var result = await this.update(params,condition);
+        if(result){
+            console.log(result);
+            return result;
+        }
+        else return false;
     }
 
 };

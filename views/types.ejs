@@ -38,9 +38,9 @@
                         <tr>
                             <td><a class="primary font-weight-bold" href="/types/<%= type.id %>"><%= type.name %></a></td>
                             <td>
-                                <button class="btn btn-sm btn-warning" type="button" onclick="">
+                                <a class="btn btn-sm btn-warning" href="/types/<%= type.id %>" onclick="">
                                     <span class="fa fa-edit"></span>
-                                </button>
+                                </a>
                                 <% type.action='/types'; %>
                                 <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(type)%>);" data-toggle="modal" data-target="#exampleModalCenter">
                                     <span class="fas fa-trash-alt"></span>
