@@ -1,4 +1,4 @@
-<div class="container mb-2">
+<div class="container mt-2 mb-2">
   <div class="card">
     <div class="card-header">
       <%= __('Edit element') %>
@@ -6,12 +6,12 @@
     <div class="card-body">
       <form action="/groceries" method="POST" class="was-validate pt-3">
         <div class="form-row">
-          <div class="form-group col"></div>
-          <div class="form-group col-5">
+          <input type="hidden" name="id" class="form-control" value="<%= rows[0].id%>"/>
+          <div class="form-group col">
             <label for="name" class="col-form-label"><%= __('Name') %></label>
               <input type="text" placeholder="Pizza" name="name" class="form-control" value="<%= rows[0].name%>" required/>
           </div>
-          <div class="form-group col-5">
+          <div class="form-group col">
             <label for="type_id" class="col-form-label"><%= __('Type') %></label>
             <select name="type_id" class="form-control custom-select" required>
               <option value=""></option>
@@ -27,7 +27,7 @@
               <% } %>
             </select>
           </div>
-          <div class="form-group col-5">
+          <div class="form-group col mt-4">
             <div class="custom-control custom-switch">
               <input type="checkbox" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
               class="custom-control-input" id="bought_<%=rows[0].id%>" name="bought" 
@@ -35,61 +35,10 @@
               <label class="custom-control-label" for="bought_<%=rows[0].id%>"><%= __('Bought') %></label>
             </div>
           </div>
-          <div class="form-group col"></div>
         </div>
+        <button class="btn btn-danger mb-2" type="submit" value="delete"><%= __('Delete') %></button>
         <button class="btn btn-primary mb-2" type="submit"><%= __('Submit') %></button>
       </form>
     </div>
   </div>
 </div></br>
-
-<!-- <div class="container">
-  <div class="card">
-    <div class="card-header">
-      <%= links %>
-    </div>
-    <div class="card-body">
-      <% if(rows && rows.length>0) { %>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col"><%= __('Name') %></th>
-            <th scope="col"><%= __('Type') %></th>
-            <th scope="col"><%= __('Bought') %></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-            <% rows.forEach(function(row) { %>
-              <% row.action='/home'; %>
-              <tr>
-                <td><a class="primary font-weight-bold" href="grocery/<%= row.id %>"><%= row.name %></a></td>
-                <td><a class="primary" href="types/<%= row.type_id %>"><%= row.type %></a></td>
-                <td>
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" onclick="updateBought(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
-                    class="custom-control-input" id="bought_<%=row.id%>" name="bought_<%=row.id%>" 
-                    <% if(row.bought==='yes'){ %> checked <% } %>/>
-                    <label class="custom-control-label" for="bought_<%=row.id%>"></label>
-                  </div>
-                </td>
-                <td>
-                  <button class="btn btn-sm btn-warning" type="button" onclick="">
-                    <span class="fa fa-edit"></span>
-                  </button>
-                  <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenter">
-                    <span class="fas fa-trash-alt"></span>
-                  </button>
-                </td>
-              </tr>
-            <% }); %>
-        </tbody>
-      </table>
-      <% }else{ %>
-      <%- include('nodata') %> 
-      <% } %>
-    </div>
-  </div>
-</div>
--->
-

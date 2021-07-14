@@ -19,7 +19,15 @@ router.get('/',async (req,res)=>{
 	tipi = await types.getAll();
 	rows = await grocery.getAll();
 
-	template.myRender(res,'groceries',['grocery'],false,tipi,rows);
+	template.myRender(res,'groceries',['grocery','list'],false,tipi,rows);
+})
+
+router.get('/list', async(req, res)=>{
+	console.log('list');
+})
+
+router.get('/group', async(req, res)=>{
+	console.log('list');
 })
 
 router.post('/', async (req,res)=>{

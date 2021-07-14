@@ -6,6 +6,7 @@
         <div class="card-body">
             <form action="/types" method="POST" class="was-validate pt-3">
                 <div class="form-row">
+                    <input type="hidden" name="id" class="form-control" value="<%= user[0].id %>"/>
                     <div class="form-group col">
                         <label for="name" class="col-form-label"><%= __('Name') %></label>
                         <input type="text" placeholder="Mario" name="name" class="form-control" value="<%= user[0].name %>" required/>
@@ -33,6 +34,7 @@
                         <input type="date" name="yearOfBirth" class="form-control" value="<%= user[0].yearOfBirth %>" required/>
                     </div>
                 </div>
+                <button class="btn btn-danger mb-2" type="submit" value="delete"><%= __('Delete') %></button>
                 <button class="btn btn-primary mb-2" type="submit"><%= __('Submit') %></button>
             </form>
         </div>
