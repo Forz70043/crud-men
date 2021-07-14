@@ -5,12 +5,25 @@ class Types extends Entity {
         super();
         this.TBL= 'TYPE';
         this.setFields({
-            'name':{required:true}
+            'id':{
+                as: 'id',
+                required:true
+            },
+            'name':{
+                as: 'name',
+                required:true }
         });
     }
 
     async get(){
         return await this.getAll();
+    }
+
+    async getWhere(where=false){
+        console.log("get where: ");
+        let result = await this.find(where,this.getFields());
+        console.log("GET where :", result);
+        return result;
     }
 
     async getAll(){

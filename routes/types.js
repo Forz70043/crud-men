@@ -13,6 +13,14 @@ router.get('/',async (req,res)=>{
 	res.render(types.getIndexTemplate(),{login:0,filename:'types',links:['types'],types:tipi })
 })
 
+
+router.get('/:id',async(req,res)=>{
+	console.log("types/id");
+	let tipo = await types.getWhere('id='+req.params.id);
+	console.log(tipo);
+	res.render(types.getIndexTemplate(),{login:0,filename:'types',links:['types'],types:tipo })
+});
+
 router.post('/', async(req, res)=>{
     console.log(req.body);
 	var params = req.body;

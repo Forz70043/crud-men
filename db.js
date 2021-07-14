@@ -58,14 +58,25 @@ class Database {
             this.connection.query(sql, args, (err, rows, fields)=>{
                 console.log("DB SQL: ",sql);
                 if(err){
-                    if(err.errno==1451){//errore di foreign key
+                    switch(err.errno){
+                        case '1451':
+                            reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo");
+                            break;
+                        case '1054':
+                            reject('Error: ');
+                            break;
+                        case '1052':
+                            reject('Error: fields ambigue');
+
+                    }
+                    /* if(err.errno==1451){//errore di foreign key
                         reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
                     }
                     if(err.errno==1054){
                         //errore di fields nella query
-                    }
+                    } */
                     console.log("DB ERR: ",err);
-                    reject(new Error(err));
+                    reject(new Error('DB ERROR !'));
                 }
                 console.log("ROWS DB: ", rows);
                 resolve(JSON.parse(JSON.stringify(rows)));

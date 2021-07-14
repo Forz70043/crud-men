@@ -1,6 +1,8 @@
 const Database = require('./db');
 
-
+/**
+ * 
+ */
 class Entity extends Database{
     constructor(){
         super();
@@ -46,7 +48,15 @@ class Entity extends Database{
         this.TBLJOIN = tblJoin;
     }
 
+    /**
+     * 
+     * @returns string TBL name (if TBLJOIN setted: TBL + TBLJOIN)
+     */
     getTblname(){
+        return this.TBL;
+    }
+
+    getFullTblname(){
         if(this.TBLJOIN) return this.TBL+' '+this.TBLJOIN;
         else return this.TBL;
     }
@@ -55,6 +65,11 @@ class Entity extends Database{
         this.fields = fields;
     }
 
+    /**
+     * 
+     * @param {boolean} required 
+     * @returns string fields
+     */
     getFields(required=false){
         let fields='';
         console.log("getFields Entity: ", this.fields);
@@ -82,7 +97,7 @@ class Entity extends Database{
     async find(where=false, fields=false){
         console.log("WHERE FIND: ",where);
         console.log("where fields: ",fields);
-        var sql=this.queryString(this.getTblname(), 'SELECT', where, fields);
+        var sql=this.queryString(this.getFullTblname(), 'SELECT', where, fields);
         console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
         console.log("XXX",JSON.parse(JSON.stringify(rows)));
@@ -90,10 +105,14 @@ class Entity extends Database{
     }
 
     async getAll(where=false){    
-        var sql = this.queryString(this.getTblname(), 'SELECT', (where) ? where : false);
+        var sql = this.queryString(this.getFullTblname(), 'SELECT', (where) ? where : false);
         return await this.doQuery(sql);         
     }
-    
+    /**
+     * 
+     * @param {*} params 
+     * @returns 
+     */
     async insertQuery(params){
         console.log("ENTITY INSERT QUERY: ",params)
         
