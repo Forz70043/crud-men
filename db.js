@@ -59,15 +59,16 @@ class Database {
                 console.log("DB SQL: ",sql);
                 if(err){
                     switch(err.errno){
-                        case '1451':
+                        case 1451:
                             reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo");
                             break;
-                        case '1054':
+                        case 1054:
                             reject('Error: ');
                             break;
-                        case '1052':
+                        case 1052:
                             reject('Error: fields ambigue');
-
+                            
+                            break
                     }
                     /* if(err.errno==1451){//errore di foreign key
                         reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
@@ -76,7 +77,9 @@ class Database {
                         //errore di fields nella query
                     } */
                     console.log("DB ERR: ",err);
+                    
                     reject(new Error('DB ERROR !'));
+                    return false;
                 }
                 console.log("ROWS DB: ", rows);
                 resolve(JSON.parse(JSON.stringify(rows)));

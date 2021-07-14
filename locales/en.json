@@ -16,5 +16,9 @@
 	"Close": "Close",
 	"Delete element": "Delete element",
 	"Add new Element": "Add new Element",
-	"Bought": "Bought"
+	"Bought": "Bought",
+	"Grocery": "Grocery",
+	"Types": "Types",
+	"No data found!": "No data found!",
+	"You should addsome fields": "You should addsome fields"
 }

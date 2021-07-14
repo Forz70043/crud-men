@@ -1,16 +1,20 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
+let Template = require('../templates');
+let template = new Template();
+
 let Utils = require('../utils');
-var utils = new Utils();
-var Types = require('../mvc/model/types');
-var types = new Types();
+let utils = new Utils();
+
+let Types = require('../mvc/model/types');
+let types = new Types();
 
 /**
  * get types
  */
 router.get('/',async (req,res)=>{
 	let tipi = await types.getAll();
-	res.render(types.getIndexTemplate(),{login:0,filename:'types',links:['types'],types:tipi })
+	template.myRender(res,'types',['types'],false,tipi);
 })
 
 
@@ -18,7 +22,7 @@ router.get('/:id',async(req,res)=>{
 	console.log("types/id");
 	let tipo = await types.getWhere('id='+req.params.id);
 	console.log(tipo);
-	res.render(types.getIndexTemplate(),{login:0,filename:'types',links:['types'],types:tipo })
+	template.myRender(res,'types',['types'],false,tipo);
 });
 
 router.post('/', async(req, res)=>{

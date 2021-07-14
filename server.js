@@ -13,8 +13,8 @@ var loginRoute = require('./routes/login');
 /**
  * REQUIRE MODEL CLASS
  */
-var Types = require('./mvc/model/types');
-var types = new Types();
+/* var Types = require('./mvc/model/types');
+var types = new Types(); */
 /* var Grocery = require('./mvc/model/grocerylist');
 var grocery = new Grocery();
 var Role = require('./mvc/model/role');
@@ -28,6 +28,9 @@ const i18n = new I18n({
 	locales: ['en','it'],
 	directory: path.join(__dirname, 'locales')
 });
+
+let Template = require('./templates');
+let template = new Template();
 
 //console.log(Object.getOwnPropertyNames(types));
 
@@ -86,7 +89,8 @@ app.get('/error', (req, res) => res.send("error logging in"));
  */
 app.get('/',function(req,res){
 	//inserire logica se già auth
-	res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
+	//res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
+	template.myRender(res);
 });
 
 app.listen(process.env.PORT,function(){

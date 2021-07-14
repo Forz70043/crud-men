@@ -4,10 +4,15 @@
     <a href="javascript:void(0)" class="closebtn" onclick="$('#sidebarCol').css('width','0%')">&times;</a>
     <!-- Overlay content -->
     <div class="overlay-content">
-        <a href="/"><%= __('Home') %></a>
-        <a href="/home"><%= __('Grocery List') %></a>
-        <a href="/types"><%= __('Types List') %></a>
-        <!--<a href="#">Clients</a>
-        <a href="#">Contact</a>-->
+        <% if (sidebar) { %>
+            <% sidebar.forEach(element=> { %>
+                <a href="<%= element.link %>"> <%= __(element.name) %></a>
+            <% }) %>
+        <% }else{ %>
+            <a href="/"><%= __('Home') %></a>
+            <a href="/home"><%= __('Grocery List') %></a>
+            <a href="/groups"><%= __('Grocery Group') %></a>
+            <a href="/types"><%= __('Types List') %></a>
+        <% } %>
     </div>
 </div>

@@ -1,33 +1,25 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 let Utils = require('../utils');
-var utils = new Utils();
-var Types = require('../mvc/model/types');
-var types = new Types();
-var Grocery = require('../mvc/model/grocerylist');
-var grocery = new Grocery();
-
+let utils = new Utils();
+let Types = require('../mvc/model/types');
+let types = new Types();
+let Grocery = require('../mvc/model/grocerylist');
+let grocery = new Grocery();
+let Template = require('../templates');
+let template = new Template();
 /**
  * get types & grocery
  */
 router.get('/',async (req,res)=>{
     if(req.user){
-        console.log("VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
+        console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
     }
     let rows,tipi;
 	tipi = await types.getAll();
 	rows = await grocery.getAll();
 
-	res.render(grocery.getIndexTemplate(),
-        {
-            login:0,
-            filename: 'home',
-            links: ['grocery list'],
-            rows:rows,
-            types:tipi
-        }
-    );
-
+	template.myRender(res,'home',['grocery list'],false,tipi,rows);
 })
 
 router.post('/', async (req,res)=>{
@@ -68,10 +60,13 @@ router.post('/', async (req,res)=>{
 
 });
 
-router.get('/:id',async(req,res)=>{
-	console.log("home/id");
-
-	console.log(req.body);
+router.get('/:id', async(req,res)=>{
+	console.log("grocery/id");
+	let spesa = await grocery.getWhere('g.id='+req.params.id);
+	let tipi = await types.getAll();
+	console.log(spesa);
+	template.myRender(res, 'home', ['grocery list'], false, tipi, spesa);
+	//res.render(grocery.getIndexTemplate(),{login:0,filename:'home',links:['grocery list'],rows:spesa,types: tipi})
 	
 });
 
