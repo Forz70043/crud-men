@@ -445,12 +445,11 @@ class Database {
      */
     updateQueryString(tblname,params,where=false){
         console.log("UPDATE ")
-        var condition='';
+        let condition='';
         if(where!=false){
             console.log("where vero")
-            if(typeof(where)==='string'){
-                var condition = where;
-            }else condition = where;
+            if(typeof(where)==='string') condition = where;
+            else condition = where;
         }
         var fields = this.sanitizeUpdateParams(params)
         console.log(fields)
