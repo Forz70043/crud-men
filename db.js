@@ -295,9 +295,12 @@ class Database {
             }
         }
     }
-    /*
-        params = { fields: valore}
-    */
+        /**
+         * Create sql string & do query
+         * @param {*} params params object
+         * @param {*} tblname string
+         * @returns result query insert
+         */
         async insertQueryString_(params,tblname){
             console.log("INSERT DB");
             /* console.log(params,tblname);
@@ -371,6 +374,10 @@ class Database {
                 fields.push(params[objKeys[i]]);
             }
         }
+        else {
+            console.log("PARAMS NOT OBJECT --------")
+            return false;
+        }
         //console.log(q1);
         var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
         //console.log("INSERT SQL: ",sql);
@@ -386,15 +393,18 @@ class Database {
      * Do insert query
      * @param {*} params object
      * @tblname {*} string   
-     * @returns result of insert query
+     * @returns result of insert query or false
      */
     async insertQuery(params,tblname){
         
         var res = this._insertQueryString(tblname,params)
-
-        var result = await this.doQuery(res[0],res[1]);  
-        console.log("RESULT INSERT: ",result);
-        return result;
+        if(res){
+            var result = await this.doQuery(res[0],res[1]);  
+            console.log("RESULT INSERT: ",result);
+            return result;
+        }
+        else return false;
+        
     }
     /**
      * 

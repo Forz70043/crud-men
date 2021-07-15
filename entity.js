@@ -29,21 +29,31 @@ class Entity extends Database{
         return this.data;
     }
 
+    /**
+     * 
+     * @returns TBL value
+     */
     getViewTable(){
-        if(this.TBLJOIN){
-            //console.log(Object.getOwnPropertyNames(this));
-            return this.TBL +=this.TBLJOIN;
-        }
+        return this.getTblname();
     }
-
+    /**
+     * 
+     * @param {*} name string TBL 
+     */
     setTblname(name){
         this.TBL = name;
     }
-    
+    /**
+     * 
+     * @returns string TBLJOIN
+     */
     getTblJoin(){
         return this.TBLJOIN;
     }
-
+    /**
+     * 
+     * @param {*} tblJoin string TBLJOIN
+     */
     setTblJoin(tblJoin){
         this.TBLJOIN = tblJoin;
     }
@@ -60,15 +70,18 @@ class Entity extends Database{
         if(this.TBLJOIN) return this.TBL+' '+this.TBLJOIN;
         else return this.TBL;
     }
-
+    /**
+     * 
+     * @param {*} fields array or object
+     */
     setFields(fields){
         this.fields = fields;
     }
 
     /**
      * 
-     * @param {boolean} required 
-     * @returns string fields
+     * @param {*} required boolean (Work in Progress)
+     * @returns string fields or false
      */
     getFields(required=false){
         let fields='';
@@ -83,16 +96,19 @@ class Entity extends Database{
             }
             fields = fields.slice(0,-1);
         }
-        else fields = ' * ';
-    
+        else{
+            console.log("ENTITY getFields fields false");
+            return false;
+        }
+        //else fields = ' * ';
         return fields;
     }
 
     /**
-     * 
+     * Create sql and run query
      * @param {String} where 
      * @param {Object} fields 
-     * @returns 
+     * @returns result of  query
      */
     async find(where=false, fields=false){
        /*  console.log("WHERE FIND: ",where);
@@ -104,18 +120,23 @@ class Entity extends Database{
         return rows;
     }
 
+    /**
+     * getAll => call find()
+     * @param {*} where string
+     * @returns result of query
+     */
     async getAll(where=false){    
-        var sql = this.queryString(this.getFullTblname(), 'SELECT', (where) ? where : false);
-        return await this.doQuery(sql);         
+        var sql = await this.find(where); //this.queryString(this.getFullTblname(), 'SELECT', (where) ? where : false);
+        return sql;
+        //return await this.doQuery(sql);         
     }
     /**
      * 
      * @param {*} params 
-     * @returns 
+     * @returns result of query
      */
     async insertQuery(params){
         //console.log("ENTITY INSERT QUERY: ",params)
-        
         var result = await this.insertQueryString_(params, this.getTblname());
         
         //console.log("SQL: ",sql);

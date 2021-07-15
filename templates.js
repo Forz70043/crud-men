@@ -9,7 +9,11 @@ class Template {
         this.navbar
         this.title = 'Shopping List'
     }
-
+    
+    /**
+     * 
+     * @returns title string
+     */
     getTitle() {
         return this.title;
     }
@@ -26,12 +30,22 @@ class Template {
 
     /**
      * 
-     * @param {* string of template file name} template 
-     * @param {* string name of cointainer} container
-     * @param {* array of sidebar object} sidebar 
-     * @param {* array of navbar object} navbar
-     * @param {* string of app name} title 
-     * @returns object
+     * @param {*} login boolean
+     * @param {*} filename string or false (filename of view)
+     * @param {*} links string or false (breakcrumbs)
+     * @param {*} types false or array of obj
+     * @param {*} rows false or array of obj
+     * @param {*} obj 
+     * @param {*} template 
+     * @param {*} container 
+     * @param {*} sidebar 
+     * @param {*} navbar 
+     * @param {*} title string of the page
+     * @param {*} countries 
+     * @param {*} job 
+     * @param {*} message 
+     * @param {*} user 
+     * @returns 
      */
     params(
         login = false,
@@ -76,17 +90,17 @@ class Template {
             others: {}
         }
         //console.log(params);
-        if (arguments.length > 5) {
+        /* if (arguments.length > 5) {
             console.log("MAGGIOREEEEE DI 5");
             var i = 5
             var k = 0
             while (i == arguments.length - 1) {
-                //console.log(arguments[i]);
+                console.log("ZZZZZ",arguments[i]);
                 params['others'][k] = arguments[i];
                 i++; k++
             }
             //console.log("PARAMS: ", params)
-        }
+        } */
         //console.log("PARAMS: ", params)
         return params;
     }
@@ -97,7 +111,7 @@ class Template {
 
     /**
      * 
-     * @returns Object Sidebar {Name, link, active(bool), icon }
+     * @returns sidebar array {name,link,active, onclick, icon}
      */
     getSidebar() {
         var sidebar = [
@@ -178,9 +192,19 @@ class Template {
         ]
         return navbar;
     }
-
+    /**
+     * 
+     * @param {*} res response object
+     * @param {*} filename string file name view
+     * @param {*} links 
+     * @param {*} obj 
+     * @param {*} types 
+     * @param {*} rows 
+     * @param {*} users 
+     * @returns res.render();
+     */
     myRender(res,filename,links,obj=false,types=false, rows=false, users=false) {
-        return res.render(this.getTemplateIndex(),this.getParams(filename,links,obj,types,rows, users));
+        return res.render(this.getTemplateIndex(), this.getParams(filename, links, obj, types, rows, users));
     }
 
 };
