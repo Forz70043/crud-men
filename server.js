@@ -75,6 +75,10 @@ app.use('/users',usersRoute);
 auth.serialize();
 auth.deserialize();
 
+app.get('/home', (req,res)=>{
+	template.myRender(res,'dashboard');
+})
+
 app.get('/register', (req,res)=>{ template.myRender(res,'register') });
 app.get('/login', (req, res)=>{ template.myRender(res, 'main')});
 
@@ -86,12 +90,14 @@ app.post('/register', (req, res)=>{
 
 app.post('/login', async(req, res)=>{
 	console.log("login");
+	console.log("login", req);
 	console.log("login",req.body);
 	let result = await auth.loginAuth({'email':req.body.email,'password':req.body.password})
 	if(result){
 		console.log(result);
+		//req['session']['logginIn']=true;
 		res.redirect('/home');
-	}
+	}else res.redirect('/login');
 })
 
 

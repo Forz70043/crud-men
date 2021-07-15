@@ -83,11 +83,16 @@ class Users extends Entity {
         return result;
     }
 
+    /**
+     * Call find with this.getFields()
+     * @param {*} where string
+     * @returns result wquery
+     */
     async getWhere(where=false){
         /* console.log("get where: "); */
         let result = await this.find(where,this.getFields());
-/*         console.log("GET where :", result);
- */        return result;
+        
+        return result;
     }
 }
 

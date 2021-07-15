@@ -1,5 +1,6 @@
-var Entity = require('../../entity');
-
+let Entity = require('../../entity');
+let User = require('./users');
+let users = new User();
 
 class Login extends Entity {
     constructor(){
@@ -16,13 +17,13 @@ class Login extends Entity {
 
     gitHubInfo(params){
         var userFields;
-        //console.log("INFO ",params);
+        console.log("INFO ",params);
         
         userFields={
             'name': params.displayName,
             'surname': params.username,
             'email': (params.email!=null) ? params.email : '',
-            'password': '',
+            'password': (params.password!=null) ? params.password : '',
             'piva': '0000000000',
             'phone': '0000000000',
             'address': '',

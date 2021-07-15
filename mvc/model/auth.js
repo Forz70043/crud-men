@@ -7,6 +7,7 @@ const Users = require('./users');
 let users = new Users();
 var Login = require('./login');
 var login = new Login();
+const bcrypt = require('bcrypt');
 
 class Auth extends Entity {
     constructor(service=false){
@@ -95,7 +96,7 @@ class Auth extends Entity {
         //   have a database of user records, the complete GitHub profile is serialized
         //   and deserialized.
         passport.serializeUser(async function(user, done) {
-            console.log("XXXXUSERS ", user);
+            console.log("XXXX SERIALIZE USERS ", user);
             done(null, user);
         });
     }
@@ -150,7 +151,6 @@ class Auth extends Entity {
             }));
     }
 
-
     gitHubAuth(){
         var userProfile;
         passport.use(new GitHubStrategy(
@@ -189,6 +189,40 @@ class Auth extends Entity {
                 return done(null, userProfile);
             }
         ));
+    }
+
+    async loginAuth(params){
+        console.log("session: ",params);
+        /*console.log("session_user: ",req.session.user); */
+        if(params){
+            let profile = await users.getWhere('email="'+params.email+'"');
+            console.log(profile);
+            if(profile){
+                var match = await bcrypt.compare(params.password, profile[0].password).then(function(result) {
+                    // result == true
+                    /* if(result){
+                        resolve(true);
+                        return true;
+                    } */
+    
+                    console.log("RESULT ",result);
+                    return result;
+                });
+                //const match = await bcrypt.compare(params.password, user.password);
+                if(match){
+                    
+                    console.log(" M ",match)
+                    //return users ?
+                    return true;
+                }
+                else {console.log("FALSE PASSWORD MATCXH?????", match); return false;}
+            }
+            else{ 
+                console.log("Nessun account con questa email");
+                return false;
+            }
+        }
+        else console.log("params false");
     }
 }
 
