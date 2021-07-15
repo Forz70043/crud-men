@@ -15,22 +15,34 @@
                 <%= __('Authentication') %>
             </div>
             <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group col"></div>
-                    <div class="form-group col">
-                        <label for="email" class="col-form-label"><%= __('Email') %></label>
-                        <input type="email" placeholder="mario_rossi@email.com" name="email" class="form-control" required/>
-                      </div>
-                    <div class="form-group col"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col"></div>
-                    <div class="form-group col">
-                        <label for="password" class="col-form-label"><%= __('Password') %></label>
-                        <input type="password" min="4" name="password" class="form-control" required/>
-                      </div>
-                    <div class="form-group col"></div>
-                </div>
+                <form action="/register" method="POST" class="was-validate pt-3">
+                    <div class="form-row">
+                        <div class="form-group col"></div>
+                        <div class="form-group col">
+                            <label for="email" class="col-form-label"><%= __('Email') %></label>
+                            <input type="email" placeholder="mario_rossi@email.com" name="email" class="form-control" required/>
+                        </div>
+                        <div class="form-group col"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col"></div>
+                        <div class="form-group col">
+                            <label for="password" class="col-form-label"><%= __('Password') %></label>
+                            <input type="password" min="4" name="password" class="form-control" required/>
+                        </div>
+                        <div class="form-group col"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <button type="submit" class="btn btn-primary" id="register" >
+                                <span class="fas fa-sign-in-alt"></span>
+                                Register
+                            </button> 
+                        </div>
+                    </div>
+                </form>
+                <div class="form-row"></div>
+                <div class="form-row"></div>
                 <div class="form-row">
                     <div class="form-group col"></div>
                     <div class="form-group col-10 mt-3">

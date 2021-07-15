@@ -78,6 +78,10 @@ class Entity extends Database{
         this.fields = fields;
     }
 
+    getFieldsArray(){
+        return this.fields;
+    }
+
     /**
      * 
      * @param {*} required boolean (Work in Progress)
@@ -106,8 +110,8 @@ class Entity extends Database{
 
     /**
      * Create sql and run query
-     * @param {String} where 
-     * @param {Object} fields 
+     * @param {*} where String
+     * @param {*} fields Object
      * @returns result of  query
      */
     async find(where=false, fields=false){
@@ -144,13 +148,24 @@ class Entity extends Database{
         //console.log("XXX ",result);
         return result;
     }
-
+    /**
+     * 
+     * @param {*} id fields
+     * @returns false or result query 
+     */
     async deleteFromId(id){
+        if(!id) return false;
+
         var condition = ' id='+id;
         var result = await this._deleteQuery(condition,this.getTblname());
         return result;
     }
-
+    /**
+     * 
+     * @param {*} params object
+     * @param {*} where string
+     * @returns result query
+     */
     async update(params,where){
         var result = await this._updateQuery(this.getTblname(),params,where);
         //console.log(result);

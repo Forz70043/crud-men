@@ -35,5 +35,6 @@
 	"Save": "Save",
 	"Authentication": "Authentication",
 	"Password": "Password",
-	"Login": "Login"
+	"Login": "Login",
+	"Logout": "Logout"
 }

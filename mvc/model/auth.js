@@ -229,6 +229,21 @@ class Auth extends Entity {
         }
         else console.log("params false");
     }
+
+    async registerAuth(params){
+        console.log("session: ",params);
+        if(params){
+            let result = await users.add(params);
+            console.log("result");
+            console.log(result);
+            if(result) return result;
+            else return false;
+        }
+
+    }
+
+
+
 }
 
 module.exports = Auth;

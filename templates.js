@@ -143,14 +143,14 @@ class Template {
                 'onClick': "",
                 'icon': 'fas fa-prescription-bottle-alt'
             },
-            /* {
-                'name': 'Appointments',
-                'link': '/appointments',
+            {
+                'name': 'Logout',
+                'link': '/logout',
                 'active': false,
                 'onClick': "",
                 'icon': 'fas fa-calendar-check'
             },
-            {
+            /*{
                 'name': 'Request Analysis',
                 'link': '/req-analysis',
                 'active': false,

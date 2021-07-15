@@ -4,6 +4,9 @@ const path = require('path');
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
 
+
+/* let Session = require('./mvc/model/session');
+ */
 /**
  * REQUIRE ROUTES
  */
@@ -95,11 +98,19 @@ app.get('/logout',(req,res) => {
     res.redirect('/');
 });
 
-app.post('/register', (req, res)=>{
-	console.log("login");
-	console.log("login",req.body);
-
-})
+app.post('/register', async(req, res)=>{
+	console.log("register");
+	console.log("register",req.body);
+	let result = await auth.registerAuth(req.body);
+	if(result){
+		console.log("result post ");
+		console.log(result);
+		req.session.user = result[0];
+		req.session.loggedIn = true;
+		res.redirect('/home');
+	}
+	else res.redirect('/login');
+});
 
 app.post('/login', async(req, res)=>{
 	console.log("login");
@@ -114,7 +125,7 @@ app.post('/login', async(req, res)=>{
 })
 
 
-
+/** */
 app.get('/success', (req, res) =>{
 	console.log("SUSSES: ",req.user)
 	res.send(req.user);

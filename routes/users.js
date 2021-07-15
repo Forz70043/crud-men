@@ -11,8 +11,11 @@ let Users = require('../mvc/model/users');
 let users = new Users();
 
 router.get('/',async (req,res)=>{
-	let utenti = await users.getAll();
-	template.myRender(res,'users',['users'],false,false,false,utenti);
+	if(req.session.loggedIn){
+		let utenti = await users.getAll();
+		template.myRender(res,'users',['users'],false,false,false,utenti);
+	}
+	else res.redirect('/login');
 })
 
 

@@ -24,7 +24,9 @@ router.get('/',async (req,res)=>{
 
 router.get('/:id',async(req,res)=>{
 	console.log("types/id");
-	if(req.session.loggedIn){
+	if(req.session.loggedIn){        
+		console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
+
 		let tipo = await types.getWhere('id='+req.params.id);
 		console.log(tipo);
 		template.myRender(res,'type',['types'],false,tipo);

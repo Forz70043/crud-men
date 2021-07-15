@@ -59,7 +59,7 @@ class Database {
                 console.log("DB SQL: ",sql);
                 if(err){
                     console.log("ERR DB: ",err)
-                    reject('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:'');
+                    reject(new Error('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:''));
                     
                     /* if(err.errno==1451){//errore di foreign key
                         reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
@@ -70,7 +70,8 @@ class Database {
                     /* console.log("DB ERR: ",err);
                     
                     reject(new Error('DB ERROR !'));
-                     */return false;
+                     */
+                    return false;
                 }
                 //console.log("ROWS DB: ", rows);
                 resolve(JSON.parse(JSON.stringify(rows)));
