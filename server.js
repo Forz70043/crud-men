@@ -11,16 +11,6 @@ let authRoute = require('./routes/auth');
 let loginRoute = require('./routes/login');
 let usersRoute = require('./routes/users');
 
-/**
- * REQUIRE MODEL CLASS
- */
-/* var Types = require('./mvc/model/types');
-var types = new Types(); */
-/* var Grocery = require('./mvc/model/grocerylist');
-var grocery = new Grocery();
-var Role = require('./mvc/model/role');
-var role = new Role(); */
-
 let Auth = require('./mvc/model/auth');
 let auth = new Auth();
 
@@ -81,6 +71,11 @@ app.get('/home', (req,res)=>{
 
 app.get('/register', (req,res)=>{ template.myRender(res,'register') });
 app.get('/login', (req, res)=>{ template.myRender(res, 'main')});
+
+app.get('/logout',(req,res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
 
 app.post('/register', (req, res)=>{
 	console.log("login");
