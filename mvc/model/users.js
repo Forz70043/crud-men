@@ -35,13 +35,21 @@ class Users extends Entity {
             }
         );
     }
-
+    /**
+     * 
+     * @returns Users result query
+     */
     async getAll(){
         var result = await this.find();
         //console.log("GET ALL :",result);
         return result;
     } 
 
+    /**
+     * 
+     * @param {object} params {param1:value1, param2: value2} 
+     * @returns result of query
+     */
     async add(params){
        /*  console.log("ADD USER: ",params); */
         var objKeys = Object.keys(params);
@@ -51,7 +59,10 @@ class Users extends Entity {
 			/* console.log(" ADD: ",result); */
 			return result;
 		}
-		else console.log("params <0");    
+		else {
+            console.log("params length<0");
+            return false;
+        }    
     }
 
     async getFromCode(code){
@@ -60,7 +71,11 @@ class Users extends Entity {
         //console.log("GET ALL :",result);
         return result;
     }
-
+    /**
+     * 
+     * @param {*} where string
+     * @returns result of query
+     */
     async get(where){
         /* console.log("GET WHERE: ",where); */
         var result = await this.find(where);
@@ -74,21 +89,6 @@ class Users extends Entity {
 /*         console.log("GET where :", result);
  */        return result;
     }
-
-    async add(params){		
-		//console.log(" ADD ",params);
-		//console.log(Object.keys(params).length);
-
-		var objKeys = Object.keys(params);
-		if(objKeys.length>0){
-			//console.log("params >0");
-			var result = await this.insertQuery(params);
-			//console.log(" ADD: ",result);
-			return result;
-		}
-		else console.log("params <0");
-	}
-
 }
 
 
