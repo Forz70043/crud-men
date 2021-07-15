@@ -1,13 +1,13 @@
-const Entity = require('../../entity');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GitHubStrategy = require('passport-github2').Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
-const Users = require('./users');
+let Entity = require('../../entity');
+let passport = require('passport');
+let GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+let GitHubStrategy = require('passport-github2').Strategy;
+let FacebookStrategy = require('passport-facebook').Strategy;
+let Users = require('./users');
 let users = new Users();
-var Login = require('./login');
-var login = new Login();
-const bcrypt = require('bcrypt');
+let Login = require('./login');
+let login = new Login();
+let bcrypt = require('bcrypt');
 
 class Auth extends Entity {
     constructor(service=false){

@@ -13,16 +13,23 @@ let types = new Types();
  * get types
  */
 router.get('/',async (req,res)=>{
-	let tipi = await types.getAll();
-	template.myRender(res,'types',['types'],false,tipi);
+	if(req.session.loggedIn){
+        console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
+		let tipi = await types.getAll();
+		template.myRender(res,'types',['types'],false,tipi);
+	}
+	else res.redirect('/login');
 })
 
 
 router.get('/:id',async(req,res)=>{
 	console.log("types/id");
-	let tipo = await types.getWhere('id='+req.params.id);
-	console.log(tipo);
-	template.myRender(res,'type',['types'],false,tipo);
+	if(req.session.loggedIn){
+		let tipo = await types.getWhere('id='+req.params.id);
+		console.log(tipo);
+		template.myRender(res,'type',['types'],false,tipo);
+	}
+	else res.redirect('/login');
 });
 
 router.post('/', async(req, res)=>{

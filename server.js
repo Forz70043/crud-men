@@ -1,6 +1,8 @@
 const env = require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
 
 /**
  * REQUIRE ROUTES
@@ -31,6 +33,16 @@ app.set('view engine', 'ejs');
 app.set('port',process.env.PORT);
 app.set('templateIndex','index');
 
+const oneDay = 1000 * 60 * 60 * 24;
+const oneMinute = 1000 * 60;
+
+app.use(sessions({
+    secret: "admin",
+    saveUninitialized: true,
+    cookie: { maxAge: oneMinute },
+    resave: false 
+}));
+
 //req from body => body-parser included into express core from v>4.16
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -38,6 +50,9 @@ app.use(express.json());
 app.use(i18n.init);
 app.use(auth.init());
 app.use(auth.session());
+
+// cookie parser middleware
+app.use(cookieParser());
 
 /**
  * 	servers static files js,css
@@ -66,7 +81,10 @@ auth.serialize();
 auth.deserialize();
 
 app.get('/home', (req,res)=>{
-	template.myRender(res,'dashboard');
+	console.log("req.sess: ",req.session);
+
+	if(req.session.loggedIn) template.myRender(res,'dashboard');
+	else res.redirect('/login');
 })
 
 app.get('/register', (req,res)=>{ template.myRender(res,'register') });
@@ -85,14 +103,14 @@ app.post('/register', (req, res)=>{
 
 app.post('/login', async(req, res)=>{
 	console.log("login");
-	console.log("login", req);
-	console.log("login",req.body);
 	let result = await auth.loginAuth({'email':req.body.email,'password':req.body.password})
 	if(result){
-		console.log(result);
-		//req['session']['logginIn']=true;
+		req.session.user = result[0];
+		req.session.loggedIn = true;
+		
 		res.redirect('/home');
-	}else res.redirect('/login');
+	}
+	else res.redirect('/login');
 })
 
 

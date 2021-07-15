@@ -12,14 +12,15 @@ let template = new Template();
  * get types & grocery
  */
 router.get('/',async (req,res)=>{
-    if(req.user){
+    if(req.session.loggedIn){
         console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
-    }
-    let rows,tipi;
-	tipi = await types.getAll();
-	rows = await grocery.getAll();
+		let rows,tipi;
+		tipi = await types.getAll();
+		rows = await grocery.getAll();
 
-	template.myRender(res,'groceries',['groceries','list'],false,tipi,rows);
+		template.myRender(res,'groceries',['groceries','list'],false,tipi,rows);
+    }
+	else res.redirect('/login');
 })
 
 router.get('/list', async(req, res)=>{
