@@ -21,8 +21,8 @@ var grocery = new Grocery();
 var Role = require('./mvc/model/role');
 var role = new Role(); */
 
-var Auth = require('./mvc/model/auth');
-var auth = new Auth();
+let Auth = require('./mvc/model/auth');
+let auth = new Auth();
 
 const { I18n } = require('i18n');
 const i18n = new I18n({
@@ -32,8 +32,6 @@ const i18n = new I18n({
 
 let Template = require('./templates');
 let template = new Template();
-
-//console.log(Object.getOwnPropertyNames(types));
 
 const app = express();
 
@@ -92,7 +90,7 @@ app.get('/error', (req, res) => res.send("error logging in"));
 app.get('/',function(req,res){
 	//inserire logica se già auth
 	//res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
-	template.myRender(res);
+	template.myRender(res,'main');
 });
 
 app.listen(process.env.PORT,function(){
