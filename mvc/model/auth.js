@@ -191,6 +191,11 @@ class Auth extends Entity {
         ));
     }
 
+    /**
+     * 
+     * @param {*} params Object: email string, password string 
+     * @returns result query user or false
+     */
     async loginAuth(params){
         console.log("session: ",params);
         /*console.log("session_user: ",req.session.user); */
@@ -213,7 +218,7 @@ class Auth extends Entity {
                     
                     console.log(" M ",match)
                     //return users ?
-                    return true;
+                    return profile;
                 }
                 else {console.log("FALSE PASSWORD MATCXH?????", match); return false;}
             }
