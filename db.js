@@ -141,7 +141,7 @@ class Database {
      * @returns where condition string
      */
     whereCriteria(where,bool=' AND '){
-        console.log("CONDITION");
+        console.log("WHERE CRITERIA CONDITION ",where);
         var condition='';
 
         if(where.length<=0) return condition;
@@ -163,17 +163,34 @@ class Database {
 
     async describe(tblname){
         console.log("describe DB")    
-        if(tblname===false || tblname==='') reject(new Error("DB Error: tblname empty!"));
+        if(tblname===false || tblname==='') { 
+            console.log("DB ERROR: funct. describe tblname empty or false"); 
+            return false;
+            //reject(new Error("DB Error: tblname empty!"));
+        }
         if(typeof(tblname)==='string'){
            var descr = await this.doQuery("DESCRIBE "+tblname)
            return descr ; 
         }
     }
 
-    queryString(tblname, type='SELECT', where=false, fields=false, order=false, limit=false, offset=false, orderBy=false){
+    /**
+     * Create query string
+     * @param {*} tblname string
+     * @param {*} type string (SELECT or DELETE)
+     * @param {*} where string or object
+     * @param {*} fields false or array {false: *; array }
+     * @param {*} order false or string (ASC or DESC ) => (false: default id ASC) 
+     * @param {*} orderBy false or string (orderBy:'name')
+     * @param {*} limit false or string
+     * @param {*} offset (false or string for range: offeset,limit )
+     * @returns sql string
+     */
+    queryString(tblname, type='SELECT', where=false, fields=false, order=false, orderBy=false, limit=false, offset=false){
         //console.log("QUERY STRING: tbl",tblname, where, fields)
-        /* console.log("QUERY STRING: w",where)
-        console.log("QUERY STRING: f",fields) */
+        /* console.log("QUERY STRING: w",where)*/
+        console.log("QUERY STRING: fileds",fields);
+
         var sql='';
 
         switch(type){
@@ -208,7 +225,10 @@ class Database {
                 if(offset!==false){ sql+=offset+','+limit; }
                 else sql+=' LIMIT '+limit;
             }
-            if(orderBy!==false){ sql+=' '+orderBy; }
+            if(order!==false){
+                if(orderBy!==false) sql+=' ORDER BY '+orderBy+' '+order;
+            }
+            else sql+=' ORDER BY id ASC ';
         }
         console.log("SQL END: ",sql);
         return sql;
@@ -252,25 +272,6 @@ class Database {
             })
         })
     } */
-
-    describe(tblname){
-        console.log("describe DB")
-            
-        if(tblname===false || tblname==='') reject(new Error("DB Error: tblname empty!"));
-        
-        if(typeof(tblname)==='string'){
-
-            this.doQuery("DESCRIBE "+tblname)
-            .then((result)=>{
-                //console.log(result);
-                return result ;
-            })
-            .catch((err)=>{
-                console.log(err);
-                return new Error(err);
-            })
-        }
-    }
 
     insertQueryString(tblname,params,fields){
         
@@ -335,10 +336,10 @@ class Database {
         }
 
     /**
-     * 
-     * @param {*} tblname 
-     * @param {*} params 
-     * @returns string sql
+     * Create insert query and array of fields
+     * @param {*} tblname string
+     * @param {*} params object of paramas
+     * @returns array: array[0]=sql string; array[1]=fields
      */
     _insertQueryString(tblname,params){
         console.log("INSERT DB");
@@ -360,16 +361,13 @@ class Database {
                 q2 +='?';
                 
                 //console.log(q1, q2);
-
                 //console.log(i,objKeys.length);
-
                 //console.log(i,objKeys.length);
                 if(i!==(objKeys.length-1)){
                     //console.log("diversi");
                     q1 += ',';
                     q2 += ',';
                 }
-
                 fields.push(params[objKeys[i]]);
             }
         }
@@ -378,16 +376,17 @@ class Database {
         //console.log("INSERT SQL: ",sql);
         //console.log("INSERT FIELDS: ",fields);
 
-        var result = this.doQuery(sql,fields);  
+        //var result = this.doQuery(sql,fields);
+        
         var myArr = [sql,fields];
         return myArr;
     }
 
     /**
-     * 
-     * @param {*} params 
-     * @tblname {*} String   
-     * @returns 
+     * Do insert query
+     * @param {*} params object
+     * @tblname {*} string   
+     * @returns result of insert query
      */
     async insertQuery(params,tblname){
         
@@ -397,12 +396,21 @@ class Database {
         console.log("RESULT INSERT: ",result);
         return result;
     }
-
+    /**
+     * 
+     * @param {*} field string
+     * @returns string field => `field`
+     */
     quoteFields(field){
         var str ='`'+field+'`';
         return str;
     }
 
+    /**
+     * 
+     * @param {*} value string
+     * @returns value string: 'value'
+     */
     quoteValue(value){
         if(typeof(value)==='string') var val ="'"+value+"'";
         else val = value;
@@ -430,31 +438,44 @@ class Database {
 
     /**
      * 
-     * @param {* string TBL } tblname 
-     * @param {* oggetto {nome_fields:valore}} params 
-     * @param {* string condition (ex id=3)} where 
+     * @param {*} tblname  string  TBL
+     * @param {*} params  oggetto {nome_fields:valore}
+     * @param {*} where  string condition (ex id=3)
+     * @returns false or sql string
      */
     updateQueryString(tblname,params,where=false){
         console.log("UPDATE ")
+        if(!tblname || !params) return false;
+        let fields = this.sanitizeUpdateParams(params);
+        let sql='UPDATE '+tblname+' SET '+fields+'';
+
         let condition='';
         if(where!=false){
             console.log("where vero")
-            if(typeof(where)==='string') condition = where;
+            if(typeof(where)==='string') sql+=' WHERE '+ where;
             else condition = where;
         }
-        var fields = this.sanitizeUpdateParams(params)
+       
         //console.log(fields)
-        var sql='UPDATE '+tblname+' SET '+fields+' WHERE '+condition;
+        //var sql='UPDATE '+tblname+' SET '+fields+' WHERE '+condition;
         console.log("UPDATE SQL: ",sql);
         return sql;
     }
-
+    /**
+     * 
+     * @param {} tblname 
+     * @param {*} params 
+     * @param {*} where 
+     * @returns 
+     */
     async _updateQuery(tblname, params, where){
         var sql = this.updateQueryString(tblname,params,where);
-
-        var result = await this.doQuery(sql);
-        console.log(result);
-        return result;
+        if(sql){
+            let result = await this.doQuery(sql);
+            console.log(result);
+            return result;
+        }
+        return false;
     }
 
 };
