@@ -34,11 +34,12 @@ router.post('/profile', async(req, res)=>{
         result = await users.updateUser(params, req.body.id);
         console.log("result", result);
         if(result){
-            if(req.session.user.id==result.req.body.id){
+            if(req.session.user.id==req.body.id){
                 //
                 console.log("AGGGIORNARE DATI UTENTE IN SESSIONE ????");
             }
-            template.myRender(res,'profile',false,false,false,false,false,req.session.user);
+            //template.myRender(res,'profile',false,false,false,false,false,req.session.user);
+            res.redirect('/home/profile')
         } 
         else console.log("result false");
     }
@@ -47,7 +48,8 @@ router.post('/profile', async(req, res)=>{
         console.log("DELETE USER PI§ AVANTI");
     }
     
-    if(result) template.myRender(res,'profile',false,false,false,false,false,req.session.user);
+    if(result) res.redirect('/home/profile')
+    /* template.myRender(res,'profile',false,false,false,false,false,req.session.user); */
     else return false;
 })
 

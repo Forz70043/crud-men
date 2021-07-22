@@ -130,8 +130,14 @@ app.post('/login', async(req, res)=>{
 app.get('/',function(req,res){
 	//inserire logica se già auth
 	//res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
-	template.myRender(res,'main');
+	template.myRender(res,'main',false,false,false,false,false,req.session.user?req.session.user:false);
 });
+
+
+app.get('*', (req,res)=>{
+	res.sendStatus(404);
+})
+
 
 app.listen(process.env.PORT,function(){
 	console.log(`app listen on: http://localhost:${process.env.PORT}`);
