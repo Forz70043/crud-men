@@ -120,8 +120,10 @@ class Entity extends Database{
         var sql=this.queryString(this.getFullTblname(), 'SELECT', where, fields);
         //console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
+        console.log("FIND ENTITY ",rows);
+        if(rows && rows[0].id) return rows
         //console.log("XXX",JSON.parse(JSON.stringify(rows)));
-        return rows;
+        return false;
     }
 
     /**

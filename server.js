@@ -15,6 +15,8 @@ let groceryRoute = require('./routes/grocery');
 let authRoute = require('./routes/auth');
 let loginRoute = require('./routes/login');
 let usersRoute = require('./routes/users');
+let homeRoute = require('./routes/home');
+
 
 let Auth = require('./mvc/model/auth');
 let auth = new Auth();
@@ -76,19 +78,15 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/
  */
 app.use('/types', typesRouter);
 app.use('/groceries', groceryRoute);
-app.use('/auth',authRoute);
-app.use('/login',loginRoute);
-app.use('/users',usersRoute);
+app.use('/auth', authRoute);
+app.use('/login', loginRoute);
+app.use('/users', usersRoute);
+app.use('/home', homeRoute);
+
 
 auth.serialize();
 auth.deserialize();
 
-app.get('/home', (req,res)=>{
-	console.log("req.sess: ",req.session);
-
-	if(req.session.loggedIn) template.myRender(res,'dashboard');
-	else res.redirect('/login');
-})
 
 app.get('/register', (req,res)=>{ template.myRender(res,'register') });
 app.get('/login', (req, res)=>{ template.myRender(res, 'main')});

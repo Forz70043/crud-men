@@ -1,0 +1,42 @@
+<div class="container mb-2">
+    <div class="card">
+        <div class="card-header">
+            <%= __('Edit') %>
+        </div>
+        <div class="card-body">
+            <form action="/types" method="POST" class="was-validate pt-3">
+                <div class="form-row">
+                    <input type="hidden" name="id" class="form-control" value="<%= profile.id %>"/>
+                    <div class="form-group col">
+                        <label for="name" class="col-form-label"><%= __('Name') %></label>
+                        <input type="text" placeholder="Mario" name="name" class="form-control" value="<%= profile .name %>" required/>
+                    </div>
+                    <div class="form-group col">
+                        <label for="surname" class="col-form-label"><%= __('Surname') %></label>
+                        <input type="text" placeholder="Rossi" name="surname" class="form-control" value="<%= profile.surname %>" required/>
+                    </div>
+                    <div class="form-group col">
+                        <label for="email" class="col-form-label"><%= __('Email') %></label>
+                        <input type="email" placeholder="myEmail@something.com" name="email" class="form-control" value="<%= profile.email %>" required/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="phone" class="col-form-label"><%= __('Phone n°') %></label>
+                        <input type="text" placeholder="333 333 3333" name="phone" class="form-control" value="<%= profile.phone %>" required/>
+                    </div>
+                    <div class="form-group col">
+                        <label for="address" class="col-form-label"><%= __('Address') %></label>
+                        <input type="text" placeholder="Str Home sweet Home" name="address" class="form-control" value="<%= profile.address %>" required/>
+                    </div>
+                    <div class="form-group col">
+                        <label for="yearOfBirth" class="col-form-label"><%= __('Born Date') %></label>
+                        <input type="date" name="yearOfBirth" class="form-control" value="<%= profile.yearOfBirth %>" required/>
+                    </div>
+                </div>
+                <button class="btn btn-danger mb-2" type="submit" value="delete"><%= __('Delete') %></button>
+                <button class="btn btn-primary mb-2" type="submit"><%= __('Save') %></button>
+            </form>
+        </div>
+    </div>
+</div></br>

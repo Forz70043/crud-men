@@ -62,7 +62,8 @@ class Template {
         countries = false, 
         job = false, 
         message = false, 
-        user = false
+        user = false,
+        profile = profile,
         ) {
         if (!title) title = this.getTitle();
         if (!navbar) navbar = this.getNavbar();
@@ -87,6 +88,7 @@ class Template {
             job: job,
             message: message,
             user: user,
+            profile: profile,
             others: {}
         }
         //console.log(params);
@@ -105,8 +107,8 @@ class Template {
         return params;
     }
 
-    getParams(filename=false, links=false, obj=false, types=false,rows=false,users=false){
-        return this.params(false,filename,links,types,rows,obj,false,false,false,false,false,false,false,false,users);
+    getParams(filename=false, links=false, obj=false, types=false,rows=false,users=false,profile=false){
+        return this.params(false,filename,links,types,rows,obj,false,false,false,false,false,false,false,false,users, profile);
     }
 
     /**
@@ -201,10 +203,11 @@ class Template {
      * @param {*} types 
      * @param {*} rows 
      * @param {*} users 
+     * @param {*} profile 
      * @returns res.render();
      */
-    myRender(res,filename,links,obj=false,types=false, rows=false, users=false) {
-        return res.render(this.getTemplateIndex(), this.getParams(filename, links, obj, types, rows, users));
+    myRender(res,filename,links,obj=false,types=false, rows=false, users=false, profile=false) {
+        return res.render(this.getTemplateIndex(), this.getParams(filename, links, obj, types, rows, users, profile));
     }
 
 };
