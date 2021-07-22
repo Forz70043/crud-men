@@ -4,7 +4,15 @@ class Role extends Entity {
     constructor(){
         super();
         this.TBL='ROLE';
-        this.fields={'name':{}};
+        this.setFields({
+            'id':{
+                as: 'u.id',
+                required:true },
+            'name':{
+                as: 'u.name',
+                required:true },
+            }
+        );
     }
 
     async get(){

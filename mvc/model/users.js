@@ -5,7 +5,7 @@ class Users extends Entity {
     constructor(){
         super();
         this.TBL='USERS';
-        this.TBLJOIN = 'u ';
+        this.TBLJOIN = 'u LEFT JOIN ROLE r ON r.id=u.role_id';
         
         this.setFields({
             'id':{
@@ -29,6 +29,10 @@ class Users extends Entity {
             'role_id': {
                     as: 'u.role_id',
                     required: false },
+            'role':{
+                as:'r.name',
+                required:false
+            },
             'address': {
                 as: 'u.address',
                 required: false },
@@ -141,7 +145,7 @@ class Users extends Entity {
      * @returns Users result query
      */
     async getAll(){
-        var result = await this.find();
+        var result = await this.find(false,this.getFields());
         //console.log("GET ALL :",result);
         return result;
     } 
