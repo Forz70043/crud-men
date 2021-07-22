@@ -52,4 +52,16 @@ router.post('/profile', async(req, res)=>{
 })
 
 
+router.get('/settings', async(req, res)=>{
+	console.log('profile');
+    console.log("RQ sess", req.session);
+
+
+    if(req.session.loggedIn && req.session.user) template.myRender(res,'settings',false,false,false,false,false,req.session.user);
+    else res.redirect('/login');
+});
+  
+
+
+
 module.exports = router;
