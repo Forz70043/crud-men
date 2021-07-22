@@ -336,6 +336,9 @@ class Database {
     
             var result = await this.doQuery(sql,fields);  
             console.log("RESULT INSERT: ",result);
+            if(result){
+                return {'affectedRows':result.affectedRows, 'insertId': result.insertId};
+            }
             return result;
         }
 
