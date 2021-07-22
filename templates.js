@@ -1,6 +1,9 @@
 let Entity = require('./entity');
 let entity = new Entity();
 
+let User = require('./mvc/model/users');
+let users = new User();
+
 class Template {
     constructor() {
         this.sidebar
@@ -26,6 +29,21 @@ class Template {
 
     getTemplateIndex() {
         return 'index';
+    }
+
+    /**
+     * 
+     * @param {*} user id
+     */
+    async isAdmin(userId){
+        if(userId){
+            let user = await users.get(userId);
+            if(user){
+                if(user.role=="admin") return true
+                else return false
+            }
+        }
+        return false
     }
 
     /**
@@ -69,6 +87,10 @@ class Template {
         if (!navbar) navbar = this.getNavbar();
         if (!sidebar) sidebar = this.getSidebar();
         if (!login) login=false;
+        
+        if(profile){
+
+        }
 
         //console.log("ARGS", arguments);
         //console.log("ARGS N°", arguments.length);
