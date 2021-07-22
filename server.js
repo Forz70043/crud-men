@@ -3,10 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
+const { I18n } = require('i18n');
 
+let Template = require('./templates');
+let template = new Template();
 
-/* let Session = require('./mvc/model/session');
- */
 /**
  * REQUIRE ROUTES
  */
@@ -17,34 +18,33 @@ let loginRoute = require('./routes/login');
 let usersRoute = require('./routes/users');
 let homeRoute = require('./routes/home');
 
-
+//MODELS
 let Auth = require('./mvc/model/auth');
 let auth = new Auth();
 
-const { I18n } = require('i18n');
+//i18n
 const i18n = new I18n({
 	locales: ['en','it'],
 	directory: path.join(__dirname, 'locales')
 });
 
-let Template = require('./templates');
-let template = new Template();
-
 const app = express();
 
 app.set('appName','Shopping List');
+
 //template engine
 app.set('view engine', 'ejs');
-app.set('port',process.env.PORT);
-app.set('templateIndex','index');
+app.set('port', process.env.PORT);
+app.set('templateIndex', 'index');
 
 const oneDay = 1000 * 60 * 60 * 24;
+const tenMinutes = 1000 * 60 * 10;
 const oneMinute = 1000 * 60;
 
 app.use(sessions({
     secret: "admin",
     saveUninitialized: true,
-    cookie: { maxAge: oneMinute },
+    cookie: { maxAge: tenMinutes },
     resave: false 
 }));
 
@@ -121,14 +121,6 @@ app.post('/login', async(req, res)=>{
 	}
 	else res.redirect('/login');
 })
-
-
-/** */
-app.get('/success', (req, res) =>{
-	console.log("SUSSES: ",req.user)
-	res.send(req.user);
-});
-app.get('/error', (req, res) => res.send("error logging in"));
 
 
 /*

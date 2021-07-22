@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<%- include('head'); %>
+		<%- include('./component/head'); %>
 	</head>
 	<body>
 
-		<%- include('navbar'); %>	
+		<%- include('./component/navbar'); %>	
 
-		<%- include('sidebar'); %>
-		
+		<%- include('./component/sidebar'); %>
 			<div class="container mb-5">
 					<div class="row">
 							<div class="col">
 								<% if (links) { %>
 									<div class="row">
-										<%- include('breadcrumb'); %>
+										<%- include('./component/breadcrumb'); %>
 									</div>
 								<% } %>
 
@@ -26,6 +25,7 @@
 								<%} else if(filename !=false) { %>
 									
 									<%- include(filename); %>
+									
 								<% } %> 
 							
 							
@@ -34,7 +34,7 @@
 			</div>
 
 
-		<%- include('footer'); %>
-		<%- include('lib-script'); %>
+		<%- include('./component/footer'); %>
+		<%- include('./component/lib-script'); %>
 	</body>
 </html>
