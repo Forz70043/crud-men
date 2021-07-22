@@ -36,5 +36,6 @@
 	"Authentication": "Authentication",
 	"Password": "Password",
 	"Login": "Login",
-	"Logout": "Logout"
+	"Logout": "Logout",
+	"Edit": "Edit"
 }

@@ -200,6 +200,20 @@ class Users extends Entity {
         
         return result;
     }
+
+    async updateUser(params, where){
+        console.log("UPD: ",params);
+        console.log(where);
+        var condition='id='+where;
+
+        var result = await this.update(params,condition);
+        if(result){
+            //console.log(result);
+            return result;
+        }
+        else return false;
+    }
+
 }
 
 
