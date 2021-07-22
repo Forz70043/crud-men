@@ -27,10 +27,28 @@ router.get('/profile', async(req, res)=>{
 router.post('/profile', async(req, res)=>{
     console.log('profile');
     console.log("RQ sess", req.session);
-    console.log("RQ sess", req.params);
-
-
-
+    console.log("RQ params", req.body);
+    let result;
+    if(req.body.update){
+        let params = {'name':req.body.name,'surname':req.body.surname,'email':req.body.email, 'phone':req.body.phone, 'address':req.body.address, 'yearOfBirth':req.body.yearOfBirth}
+        result = await users.updateUser(params, req.body.id);
+        console.log("result", result);
+        if(result){
+            if(req.session.user.id==result.req.body.id){
+                //
+                console.log("AGGGIORNARE DATI UTENTE IN SESSIONE ????");
+            }
+            template.myRender(res,'profile',false,false,false,false,false,req.session.user);
+        } 
+        else console.log("result false");
+    }
+    else if(req.body.delete){
+        //
+        console.log("DELETE USER PI§ AVANTI");
+    }
+    
+    if(result) template.myRender(res,'profile',false,false,false,false,false,req.session.user);
+    else return false;
 })
 
 

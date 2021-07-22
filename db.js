@@ -487,7 +487,8 @@ class Database {
         if(sql){
             let result = await this.doQuery(sql);
             console.log(result);
-            return result;
+            let success = {'affectedRows':result.affectedRows, 'serverStatus':result.serverStatus,'message':result.message,'changedRows':result.changedRows};
+            return success;
         }
         return false;
     }
