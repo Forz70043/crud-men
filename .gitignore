@@ -2,5 +2,6 @@
 node_modules/
 .env
 .github
+tests
 doc/dbinit.sql
 package-lock.json
