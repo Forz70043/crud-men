@@ -13,7 +13,7 @@ let users = new Users();
 router.get('/',async (req,res)=>{
 	if(req.session.loggedIn){
 		let utenti = await users.getAll();
-		template.myRender(res,'users',['users'],false,false,false,utenti);
+		template.myRender(res,'users',['users'],false,false,false,utenti,req.session.user);
 	}
 	else res.redirect('/login');
 })
@@ -23,7 +23,7 @@ router.get('/:id',async(req,res)=>{
 	console.log("users/id");
 	let user = await users.getWhere('u.id='+req.params.id);
 	console.log(user);
-	template.myRender(res,'user',['users'],false,false,false,user);
+	template.myRender(res,'user',['users'],false,false,false,user,req.session.user);
 });
 
 

@@ -16,7 +16,7 @@ router.get('/',async (req,res)=>{
 	if(req.session.loggedIn){
         console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
 		let tipi = await types.getAll();
-		template.myRender(res,'types',['types'],false,tipi);
+		template.myRender(res,'types',['types'],false,tipi,false,false,req.session.user);
 	}
 	else res.redirect('/login');
 })
@@ -29,7 +29,7 @@ router.get('/:id',async(req,res)=>{
 
 		let tipo = await types.getWhere('id='+req.params.id);
 		console.log(tipo);
-		template.myRender(res,'type',['types'],false,tipo);
+		template.myRender(res,'type',['types'],false,tipo,false,false,req.session.user);
 	}
 	else res.redirect('/login');
 });
