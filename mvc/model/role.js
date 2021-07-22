@@ -21,9 +21,13 @@ class Role extends Entity {
         return result;
     }
 
+    async getRole(role_id){
+        let role = await this.find('role_id='+role_id)
+        if(role){    return role.name;}
+        else return false
+    }
+
     async add(params){
-        //console.log(" ADD ",params);
-		//console.log(Object.keys(params).length);
 
 		var objKeys = Object.keys(params);
 		if(objKeys.length>0){

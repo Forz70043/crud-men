@@ -8,30 +8,30 @@
 		<%- include('./component/navbar'); %>	
 
 		<%- include('./component/sidebar'); %>
-			<div class="container mb-5">
-					<div class="row">
-							<div class="col">
-								<% if (links) { %>
-									<div class="row">
-										<%- include('./component/breadcrumb'); %>
-									</div>
-								<% } %>
+		<div class="container mb-5">
+			<div class="row">
+				<div class="col">
+					<% if (links) { %>
+						<div class="row">
+							<%- include('./component/breadcrumb'); %>
+						</div>
+					<% } %>
 
 
 
-								<% if (login) { %>
-									<%- include('main'); %>
+					<% if (login) { %>
+						<%- include('main'); %>
 
-								<%} else if(filename !=false) { %>
-									
-									<%- include(filename); %>
-									
-								<% } %> 
-							
-							
-							</div>
-					</div>
+					<%} else if(filename !=false) { %>
+						
+						<%- include(filename); %>
+						
+					<% } %> 
+				
+				
+				</div>
 			</div>
+		</div>
 
 
 		<%- include('./component/footer'); %>

@@ -1,0 +1,41 @@
+
+<div class="container mb-5">
+    <div class="card">
+        <div class="card-header">
+            <%= links %>
+        </div>
+        <div class="card-body">
+            <% if(roles && roles.length>0) { %>
+            <table class="table table-hover table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col"><%= __('Roles') %></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% roles.forEach(function(role) { %> 
+                        <tr>
+                            <td><a class="primary font-weight-bold" href="/roles/<%= role.id %>"><%= role.name %></a></td>
+                            <td>
+                                <a class="btn btn-sm btn-warning" href="/roles/<%= role.id %>" onclick="">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+                                <% role.action='/roles'; %>
+                                <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(role)%>);" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <span class="fas fa-trash-alt"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <% }else{ %>
+                <%- include('./component/nodata') %> 
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('modal') %> 
