@@ -59,7 +59,7 @@ router.get('/settings', async(req, res)=>{
     console.log("RQ sess", req.session);
 
 
-    if(req.session.loggedIn && req.session.user) template.myRender(res,'settings',false,false,false,req.session.user);
+    if(req.session.loggedIn && req.session.user) template.myRender(res,'settings',false,false,req.session.user);
     else res.redirect('/login');
 });
   

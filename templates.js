@@ -5,7 +5,6 @@ class Template {
     constructor() {
         this.sidebar
         this.template = this.getTemplateIndex()
-        //this.params
         this.navbar
         this.title = 'Shopping List'
         this.obj = {
@@ -65,7 +64,10 @@ class Template {
         }
         return false
     }
-
+    /**
+     * 
+     * @param {*} params obj {'nome1':valore1, etc..}
+     */
     setObj(params){
 
         console.log("P: ",params);
@@ -233,7 +235,7 @@ class Template {
         let sidebar = [
             {
                 'name': 'Home',
-                'link': '/',
+                'link': '/home',
                 'active': true,
                 'onClick': "",
                 'icon': 'fas fa-home'
@@ -243,7 +245,7 @@ class Template {
                 'link': '/groceries',
                 'active': true,
                 'onClick': "",
-                'icon': 'fas fa-home'
+                'icon': 'fas fa-shopping-basket'
             },
             {
                 'name': 'Types',
@@ -257,14 +259,14 @@ class Template {
                 'link': '/users',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-prescription-bottle-alt'
+                'icon': 'fas fa-users'
             },
             {
                 'name': 'Logout',
                 'link': '/logout',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-calendar-check'
+                'icon': 'fas fa-sign-out-alt'
             },
             /*{
                 'name': 'Request Analysis',

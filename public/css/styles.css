@@ -103,7 +103,9 @@ div.overlay-content a {
 div.overlay-content a:hover, div.overlay-content a:focus {
     color: #ffffff;
 }
-
+div.overlay-content a.active {
+    
+}
 /****************************************/
 .card-body {
     padding: 0;
