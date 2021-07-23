@@ -20,7 +20,7 @@ router.get('/profile', async(req, res)=>{
     console.log("RQ sess", req.session);
 
 
-    if(req.session.loggedIn && req.session.user) template.myRender(res,'profile',false,false,req.session.user);
+    if(req.session.loggedIn && req.session.user) template.myRender(res,'profile',['home'],false,req.session.user);
     else res.redirect('/login');
 });
 

@@ -193,35 +193,35 @@ class Template {
                 'link': '/groceries',
                 'active': true,
                 'onClick': "",
-                'icon': 'fas fa-home'
+                'icon': 'fas fa-shopping-basket'
             },
             {
                 'name': 'Types',
                 'link': '/types',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-user-injured'
+                'icon': 'fas bread-slice'
             },
             {
                 'name': 'Users',
                 'link': '/users',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-prescription-bottle-alt'
+                'icon': 'fas fa-users'
             },
             {
                 'name': 'Roles',
                 'link': '/roles',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-prescription-bottle-alt'
+                'icon': 'fas user-tag'
             },
             {
                 'name': 'Logout',
                 'link': '/logout',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-calendar-check'
+                'icon': 'fas fa-sign-out-alt'
             }
         ]
         return sidebar;
@@ -252,7 +252,7 @@ class Template {
                 'link': '/types',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-user-injured'
+                'icon': 'fas bread-slice'
             },
             {
                 'name': 'Users',
