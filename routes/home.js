@@ -10,11 +10,44 @@ let Users = require('../mvc/model/users');
 let users = new Users();
 
 
-router.get('/', (req,res)=>{
+router.get('/', async (req,res)=>{
 	console.log("req.sess: ",req.session);
 	console.log("req.sess user: ",req.session.user);
+    let rolesLabel=dataRoles=[];
+	if(req.session.loggedIn && req.session.user){
+        let ruoli = await roles.get();
+        console.log("RRR:",ruoli);
 
-	if(req.session.loggedIn && req.session.user) template.myRender(res,'dashboard',false,false,req.session.user);
+        let countUserRole = await roles.getRoleCountUsers();
+        console.log("CCCCCC",countUserRole);
+        for(let i=0;i<ruoli.length;i++){
+            console.log(ruoli[i]);
+            rolesLabel[i]=ruoli[i]['name'];
+            console.log(countUserRole[i]);
+            if(i<=countUserRole.length){
+                if(ruoli[i]['name']==countUserRole[i]['name']) dataRoles[i]=countUserRole[i]['n_users']
+                else dataRoles[i]=0;
+            }
+            
+        }
+        
+        let chart = {
+            'type': 'doughnut',
+            'data':{
+                'labels': rolesLabel,
+                'datasets':{
+                    label: '# of Votes',
+                    data: dataRoles,
+                }
+            }
+        }
+        dashboards = {
+            'charts': chart
+            
+        }
+        
+        template.myRender(res,'dashboard',false,false,req.session.user,dashboards);
+    }
 	else res.redirect('/login');
 })
 

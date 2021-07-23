@@ -32,6 +32,14 @@ class Role extends Entity {
         else return false
     }
 
+    async getRoleCountUsers(){
+        let result = await this.doQueryEntity('SELECT COUNT(u.surname) as n_users, r.name as name FROM USERS u LEFT JOIN ROLE r ON r.id=u.role_id group by name');
+        if(result){
+            return result;
+        }
+        else return false;
+    }
+
     async add(params){
 
 		var objKeys = Object.keys(params);

@@ -124,6 +124,12 @@ class Entity extends Database{
         return false;
     }
 
+    async doQueryEntity(sql){
+        var rows = await this.doQuery(sql);
+        console.log("XXX",JSON.parse(JSON.stringify(rows)));
+        return rows;
+    }
+
     /**
      * getAll => call find()
      * @param {*} where string
@@ -131,8 +137,7 @@ class Entity extends Database{
      */
     async getAll(where=false){    
         var sql = await this.find(where); //this.queryString(this.getFullTblname(), 'SELECT', (where) ? where : false);
-        return sql;
-        //return await this.doQuery(sql);         
+        return sql;    
     }
     /**
      * 
@@ -140,12 +145,7 @@ class Entity extends Database{
      * @returns result of query
      */
     async insertQuery(params){
-        //console.log("ENTITY INSERT QUERY: ",params)
         var result = await this.insertQueryString_(params, this.getTblname());
-        
-        //console.log("SQL: ",sql);
-        //var result = await this.doQuery(sql,);
-        //console.log("XXX ",result);
         return result;
     }
     /**

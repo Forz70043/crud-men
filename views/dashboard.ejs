@@ -6,6 +6,7 @@
 
 
 <div class="row">
+    
     <div class="col">
         
         <div class="card">
@@ -13,17 +14,19 @@
                 A<%= links %>
             </div>
             <div class="card-body">
-                <canvas id="myChart" width="400" height="400"></canvas>
+                <canvas id="myChart" width="250" height="250"></canvas>
             </div>
         </div>
+
     </div>
+
     <div class="col">
         <div class="card">
             <div class="card-header">
                 B<%= links %>
             </div>
             <div class="card-body">
-                <canvas id="myChart_<%= links %>" width="400" height="400"></canvas>
+                <canvas id="myChart_<%= links %>" width="250" height="250"></canvas>
             </div>
         </div>
     </div>
@@ -33,7 +36,7 @@
                 C<%= links %>
             </div>
             <div class="card-body">
-                <canvas id="myChartC" width="400" height="400"></canvas>
+                <canvas id="myChartC" width="250" height="250"></canvas>
             </div>
         </div>
     </div>
@@ -57,7 +60,7 @@
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ['Red', 'Blue'],
             datasets: [{
                 label: '# of Votes',
                 data: [12, 19, 3, 5, 2, 3],

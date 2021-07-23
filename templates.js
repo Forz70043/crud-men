@@ -157,7 +157,7 @@ class Template {
      * @param {*} user 
      * @returns 
      */
-    async params(
+    /* async params(
         login = false,
         filename = false,
         links = false,
@@ -206,7 +206,7 @@ class Template {
             others: {}
         }
         //console.log(params);
-        /* if (arguments.length > 5) {
+        if (arguments.length > 5) {
             console.log("MAGGIOREEEEE DI 5");
             var i = 5
             var k = 0
@@ -216,14 +216,14 @@ class Template {
                 i++; k++
             }
             //console.log("PARAMS: ", params)
-        } */
+        }
         console.log("PARAMS: ", params)
         return params;
     }
 
     async getParams(filename=false, links=false, types=false, rows=false, users=false, profile=false){
         return await this.params(false,filename,links,types,rows,false,false,false,false,false,false,false,false,users, profile);
-    }
+    } */
 
     
     getLogOutSidebar(){
@@ -250,7 +250,34 @@ class Template {
 
     getLoggedInSidebar(){
         let sidebar = [
-
+            {
+                'name': 'Home',
+                'link': '/home',
+                'active': true,
+                'onClick': "",
+                'icon': 'fas fa-home'
+            },
+            {
+                'name': 'Grocery',
+                'link': '/groceries',
+                'active': true,
+                'onClick': "",
+                'icon': 'fas fa-shopping-basket'
+            },
+            {
+                'name': 'Types',
+                'link': '/types',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas bread-slice'
+            },
+            {
+                'name': 'Logout',
+                'link': '/logout',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-sign-out-alt'
+            }
         ]
         return sidebar;
 
@@ -344,28 +371,7 @@ class Template {
                 'active': false,
                 'onClick': "",
                 'icon': 'fas fa-sign-out-alt'
-            },
-            /*{
-                'name': 'Request Analysis',
-                'link': '/req-analysis',
-                'active': false,
-                'onClick': "",
-                'icon': 'fas fa-file-invoice'
-            },
-            {
-                'name': 'Request Vaccines',
-                'link': '/vaccines',
-                'active': false,
-                'onClick': "",
-                'icon': 'fas fa-syringe'
-            },
-            {
-                'name': 'Profile',
-                'link': '/profile',
-                'active': false,
-                'onClick': "",
-                'icon': 'fas fa-id-badge'
-            }, */
+            }
         ]
         return sidebar;
     }
@@ -396,10 +402,10 @@ class Template {
      * @param {*} profile 
      * @returns res.render();
      */
-    async myRender(res, filename=false, links=false, rows=false, profile=false) {
-        this.setObj({'profile':profile, 'rows':rows, 'links':links, 'filename':filename});
+    async myRender(res, filename=false, links=false, rows=false, profile=false,dashboards=false) {
+        this.setObj({'profile':profile, 'rows':rows, 'links':links, 'filename':filename,'dashboards':dashboards});
         let obj = this.getObj();
-        //console.log("XXX OBJ",obj)
+        console.log("XXX OBJ",obj)
         return res.render(this.getTemplateIndex(), obj);
     }
 
