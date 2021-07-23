@@ -17,6 +17,7 @@ let authRoute = require('./routes/auth');
 let loginRoute = require('./routes/login');
 let usersRoute = require('./routes/users');
 let homeRoute = require('./routes/home');
+let rolesRoute = require('./routes/roles');
 
 //MODELS
 let Auth = require('./mvc/model/auth');
@@ -82,7 +83,7 @@ app.use('/auth', authRoute);
 app.use('/login', loginRoute);
 app.use('/users', usersRoute);
 app.use('/home', homeRoute);
-
+app.use('/roles', rolesRoute);
 
 auth.serialize();
 auth.deserialize();

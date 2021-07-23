@@ -64,30 +64,41 @@ class Template {
         }
         return false
     }
+
+    checkAdmin(role_id){
+        if(role_id==1) return true
+        else return false;
+    }
+
     /**
      * 
      * @param {*} params obj {'nome1':valore1, etc..}
      */
     setObj(params){
-
-        console.log("P: ",params);
-        console.log("OBJ: ",this.obj)
+        //console.log("P: ",params);
+        //console.log("OBJ: ",this.obj)
         let keyParams = Object.keys(params)
         console.log("KP:",keyParams);
         for(let i = 0; i<keyParams.length; i++){
-            console.log(keyParams[i]);
-            console.log(params[keyParams[i]]);
+            this.obj[keyParams[i]] = params[keyParams[i]];
+
             if(keyParams[i]==='rows'){
                 console.log("CHE FACCIO CON LE ROWS ??");
             }
-            this.obj[keyParams[i]] = params[keyParams[i]];
+            if(keyParams[i]==='login'){
+                if(params['login']){}
+            }
+            if(keyParams[i]==='profile'){
+                if(this.checkAdmin(params[keyParams[i]]['role_id'])){
+                    console.log("ADMIN _________________________________________________________")
+                    this.obj['sidebar']=this.getFullSidebar();
+                }
+            }
         }
-        console.log("OBJ MOD:",this.obj);
-        //return this.obj;
+        //console.log("OBJ MOD:",this.obj);
     }
 
     getObj(){
-        console.log(this.obj);
         return this.obj;
     }
 
@@ -179,6 +190,36 @@ class Template {
     }
 
     
+    getLogOutSidebar(){
+
+        let sidebar = [
+            {
+                'name': 'Login',
+                'link': '/login',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-sign-in'
+            },
+            {
+                'name': 'Register',
+                'link': '/register',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-sign-in'
+            },
+        ]
+
+        return sidebar;
+    }
+
+    getLoggedInSidebar(){
+        let sidebar = [
+
+        ]
+        return sidebar;
+
+    }
+
     getFullSidebar(){
         let sidebar = [
             {
@@ -214,7 +255,7 @@ class Template {
                 'link': '/roles',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas user-tag'
+                'icon': 'fas fa-user-tag'
             },
             {
                 'name': 'Logout',
@@ -322,7 +363,7 @@ class Template {
     async myRender(res, filename=false, links=false, rows=false, profile=false) {
         this.setObj({'profile':profile, 'rows':rows, 'links':links, 'filename':filename});
         let obj = this.getObj();
-        console.log("XXX OBJ",obj)
+        //console.log("XXX OBJ",obj)
         return res.render(this.getTemplateIndex(), obj);
     }
 

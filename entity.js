@@ -115,8 +115,6 @@ class Entity extends Database{
      * @returns result of  query
      */
     async find(where=false, fields=false){
-       /*  console.log("WHERE FIND: ",where);
-        console.log("where fields: ",fields); */
         var sql=this.queryString(this.getFullTblname(), 'SELECT', where, fields);
         //console.log("FIND ",sql);
         var rows = await this.doQuery(sql);

@@ -59,8 +59,8 @@ class Database {
                 console.log("DB SQL: ",sql);
                 if(err){
                     console.log("ERR DB: ",err)
-                    reject(new Error('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:''));
-                    
+                    //reject(new Error('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:''));
+                    console.log({'result':false,'DB_Error':(err.errno)?err.errno:'','MSG':(err.sqlMessage)?err.sqlMessage:'','code':err.code,'sql':err.sql}) //('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:''));
                     /* if(err.errno==1451){//errore di foreign key
                         reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
                     }

@@ -21,6 +21,11 @@ class Role extends Entity {
         return result;
     }
 
+    async getWhere(where){
+        let result = await this.find(where);
+        return result;
+    }
+
     async getRole(role_id){
         let role = await this.find('role_id='+role_id)
         if(role){    return role.name;}
