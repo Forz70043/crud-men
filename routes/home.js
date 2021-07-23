@@ -3,6 +3,9 @@ let router = express.Router();
 let Template = require('../templates');
 let template = new Template();
 
+let Roles = require('../mvc/model/role');
+let roles = new Roles();
+
 let Users = require('../mvc/model/users');
 let users = new Users();
 
@@ -20,7 +23,10 @@ router.get('/profile', async(req, res)=>{
     console.log("RQ sess", req.session);
 
 
-    if(req.session.loggedIn && req.session.user) template.myRender(res,'profile',['home'],false,req.session.user);
+    if(req.session.loggedIn && req.session.user){
+        let ruoli = await roles.get();
+        template.myRender(res,'profile',['home'],{'roles':ruoli},req.session.user);
+    }
     else res.redirect('/login');
 });
 

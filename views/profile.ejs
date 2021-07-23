@@ -34,6 +34,20 @@
                         <input type="date" name="yearOfBirth" class="form-control" value="<%= profile.yearOfBirth %>" required/>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="type_id" class="col-form-label"><%= __('Role') %></label>
+                        <select name="type_id" class="form-control custom-select" required>
+                        <option value=""></option>
+                        <% if(rows.roles) { %>
+                            <% rows.roles.forEach(function(role) { %> 
+                            <option value="<%= role.id%>" <% if(role.id==profile.role_id) { %>selected<%}%>><%= role.name%></option>
+                            <% }) %>
+                        <% } %>
+                        </select>
+                        
+                    </div>
+                </div>
                 <button class="btn btn-danger mb-2" type="submit" name="delete" value="1"><%= __('Delete') %></button>
                 <button class="btn btn-primary mb-2" type="submit" name="update" value="1"><%= __('Save') %></button>
             </form>
