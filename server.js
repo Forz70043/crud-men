@@ -130,7 +130,8 @@ app.post('/login', async(req, res)=>{
 app.get('/',function(req,res){
 	//inserire logica se già auth
 	//res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
-	template.myRender(res,'main',false,false,false,false,false,req.session.user?req.session.user:false);
+	console.log(req.session)
+	template.myRender(res,'main');
 });
 
 
