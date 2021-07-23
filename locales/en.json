@@ -39,5 +39,16 @@
 	"Logout": "Logout",
 	"Edit": "Edit",
 	"Update": "Update",
-	"Update element": "Update element"
+	"Update element": "Update element",
+	"fas fa-home": "fas fa-home",
+	"fas fa-shopping-basket": "fas fa-shopping-basket",
+	"fas fa-user-injured": "fas fa-user-injured",
+	"fas fa-users": "fas fa-users",
+	"fas fa-sign-out-alt": "fas fa-sign-out-alt",
+	"fas bread-slice": "fas bread-slice",
+	"Role": "Role",
+	"fas user-tag": "fas user-tag",
+	"Roles": "Roles",
+	"fas fa-user-tag": "fas fa-user-tag",
+	"Add new Role": "Add new Role"
 }

@@ -55,6 +55,7 @@
                         <th scope="col"><%= __('Phone') %></th>
                         <th scope="col"><%= __('Address') %></th>
                         <th scope="col"><%= __('Born Date') %></th>
+                        <th scope="col"><%= __('Role') %></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -67,6 +68,12 @@
                             <td><a class="primary font-weight-bold" href="/users/<%= u.id %>"><%= u.phone %></a></td>
                             <td><a class="primary font-weight-bold" href="/users/<%= u.id %>"><%= u.address %></a></td>
                             <td><a class="primary font-weight-bold" href="/users/<%= u.id %>"><%= u.yearOfBirth %></a></td>
+                            <td>
+                                <a class="primary font-weight-bold" href="/users/<%= u.role_id %>">
+                                    <span class="badge badge-<% if(u.role_id==1){%>primary<%}else{%>info<%}%>"> <%= u.role %></span>
+                                   
+                                </a>
+                            </td>
                             <td>
                                 <button class="btn btn-sm btn-warning" type="button" onclick="">
                                     <span class="fa fa-edit"></span>
