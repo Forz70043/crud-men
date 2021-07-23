@@ -72,8 +72,8 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 app.use('/css', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/js')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd')));
-
-
+app.use('/js', express.static(path.join(__dirname, 'node_modules/chart.js/dist')));
+var Chart = require('chart.js');
 /**
  * ROUTE
  */
