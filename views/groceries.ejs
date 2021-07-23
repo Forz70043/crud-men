@@ -15,8 +15,8 @@
             <label for="type_id" class="col-form-label"><%= __('Type') %></label>
             <select name="type_id" class="form-control custom-select" required>
               <option value=""></option>
-              <% if(types) { %>
-                <% types.forEach(function(type) { %> 
+              <% if(rows.types) { %>
+                <% rows.types.forEach(function(type) { %> 
                   <option value="<%= type.id%>"><%= type.name%></option>
                   <% }) %>
               <% } %>
@@ -37,7 +37,7 @@
         <%= links %>
       </div>
       <div class="card-body">
-        <% if(rows && rows.length>0) { %>
+        <% if(rows && rows.groceries.length>0) { %>
         <table class="table table-hover table-borderless">
           <thead>
             <tr>
@@ -48,7 +48,7 @@
             </tr>
           </thead>
           <tbody>
-              <% rows.forEach(function(row) { %>
+              <% rows.groceries.forEach(function(row) { %>
                 <% row.action='/groceries'; %>
                 <tr>
                   <td><a class="primary font-weight-bold" href="groceries/<%= row.id %>"><%= row.name %></a></td>

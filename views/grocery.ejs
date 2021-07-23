@@ -6,19 +6,19 @@
     <div class="card-body">
       <form action="/groceries" method="POST" class="was-validate pt-3">
         <div class="form-row">
-          <input type="hidden" name="id" class="form-control" value="<%= rows[0].id%>"/>
+          <input type="hidden" name="id" class="form-control" value="<%= rows.groceries[0].id%>"/>
           <div class="form-group col">
             <label for="name" class="col-form-label"><%= __('Name') %></label>
-              <input type="text" placeholder="Pizza" name="name" class="form-control" value="<%= rows[0].name%>" required/>
+              <input type="text" placeholder="Pizza" name="name" class="form-control" value="<%= rows.groceries[0].name%>" required/>
           </div>
           <div class="form-group col">
             <label for="type_id" class="col-form-label"><%= __('Type') %></label>
             <select name="type_id" class="form-control custom-select" required>
               <option value=""></option>
-              <% if(types) { %>
-                <% types.forEach(function(type) { %> 
+              <% if(rows.types) { %>
+                <% rows.types.forEach(function(type) { %> 
                   <option value="<%= type.id%>" 
-                    <% if(type.id==rows[0].type_id) { %> 
+                    <% if(type.id==rows.groceries[0].type_id) { %> 
                       selected 
                     <% } %> >
                       <%= type.name%>
@@ -31,7 +31,7 @@
             <div class="custom-control custom-switch">
               <input type="checkbox" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
               class="custom-control-input" id="bought" name="bought" 
-              <% if(rows[0].bought==='yes'){ %> checked <% } else { %> <% } %>/>
+              <% if(rows.groceries[0].bought==='yes'){ %> checked <% } else { %> <% } %>/>
               <label class="custom-control-label" for="bought"><%= __('Bought') %></label>
             </div>
           </div>

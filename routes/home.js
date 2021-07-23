@@ -11,7 +11,7 @@ router.get('/', (req,res)=>{
 	console.log("req.sess: ",req.session);
 	console.log("req.sess user: ",req.session.user);
 
-	if(req.session.loggedIn && req.session.user) template.myRender(res,'dashboard',false,false,false,false,false,req.session.user);
+	if(req.session.loggedIn && req.session.user) template.myRender(res,'dashboard',false,false,req.session.user);
 	else res.redirect('/login');
 })
 
@@ -20,7 +20,7 @@ router.get('/profile', async(req, res)=>{
     console.log("RQ sess", req.session);
 
 
-    if(req.session.loggedIn && req.session.user) template.myRender(res,'profile',false,false,false,false,false,req.session.user);
+    if(req.session.loggedIn && req.session.user) template.myRender(res,'profile',false,false,req.session.user);
     else res.redirect('/login');
 });
 
@@ -59,7 +59,7 @@ router.get('/settings', async(req, res)=>{
     console.log("RQ sess", req.session);
 
 
-    if(req.session.loggedIn && req.session.user) template.myRender(res,'settings',false,false,false,false,false,req.session.user);
+    if(req.session.loggedIn && req.session.user) template.myRender(res,'settings',false,false,false,req.session.user);
     else res.redirect('/login');
 });
   

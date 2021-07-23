@@ -45,7 +45,7 @@
             <%= links %>
         </div>
         <div class="card-body">
-            <% if(user && user.length>0) { %>
+            <% if(rows.users && rows.users.length>0) { %>
             <table class="table table-hover table-borderless table-responsive">
                 <thead>
                     <tr>
@@ -59,7 +59,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% user.forEach(function(u) { %> 
+                    <% rows.users.forEach(function(u) { %> 
                         <tr>
                             <td><a class="primary font-weight-bold" href="/users/<%= u.id %>"><%= u.name %></a></td>
                             <td><a class="primary font-weight-bold" href="/users/<%= u.id %>"><%= u.surname %></a></td>
@@ -71,7 +71,7 @@
                                 <button class="btn btn-sm btn-warning" type="button" onclick="">
                                     <span class="fa fa-edit"></span>
                                 </button>
-                                <% user.action='/users'; %>
+                                <% u.action='/users'; %>
                                 <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(u)%>);" data-toggle="modal" data-target="#exampleModalCenter">
                                     <span class="fas fa-trash-alt"></span>
                                 </button>

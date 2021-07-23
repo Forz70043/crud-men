@@ -25,7 +25,7 @@
             <%= links %>
         </div>
         <div class="card-body">
-            <% if(types && types.length>0) { %>
+            <% if(rows && rows.types.length>0) { %>
             <table class="table table-hover table-borderless">
                 <thead>
                     <tr>
@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% types.forEach(function(type) { %> 
+                    <% rows.types.forEach(function(type) { %> 
                         <tr>
                             <td><a class="primary font-weight-bold" href="/types/<%= type.id %>"><%= type.name %></a></td>
                             <td>

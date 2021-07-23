@@ -1,6 +1,3 @@
-let Entity = require('./entity');
-let entity = new Entity();
-
 let User = require('./mvc/model/users');
 let users = new User();
 
@@ -8,9 +5,32 @@ class Template {
     constructor() {
         this.sidebar
         this.template = this.getTemplateIndex()
-        this.params
+        //this.params
         this.navbar
         this.title = 'Shopping List'
+        this.obj = {
+            'profile': false,
+            'rows': {
+                'types': {},
+                'users': {},
+                'groceries': {},
+                'countries': {},
+            },
+            
+            'login': false,
+
+            'filename': false,
+            'links': false,
+            
+            'sidebar': this.getSidebar(),
+            'navbar': this.getNavbar(),
+            'title': this.getTitle(),
+            
+            'templateIndex': this.getTemplateIndex(),
+            
+            'message': false,
+            'container': false,
+        }
     }
     
     /**
@@ -37,13 +57,36 @@ class Template {
      */
     async isAdmin(userId){
         if(userId){
-            let user = await users.get(userId);
+            let user = await users.get('u.id='+userId);
             if(user){
                 if(user.role=="admin") return true
                 else return false
             }
         }
         return false
+    }
+
+    setObj(params){
+
+        console.log("P: ",params);
+        console.log("OBJ: ",this.obj)
+        let keyParams = Object.keys(params)
+        console.log("KP:",keyParams);
+        for(let i = 0; i<keyParams.length; i++){
+            console.log(keyParams[i]);
+            console.log(params[keyParams[i]]);
+            if(keyParams[i]==='rows'){
+                console.log("CHE FACCIO CON LE ROWS ??");
+            }
+            this.obj[keyParams[i]] = params[keyParams[i]];
+        }
+        console.log("OBJ MOD:",this.obj);
+        //return this.obj;
+    }
+
+    getObj(){
+        console.log(this.obj);
+        return this.obj;
     }
 
     /**
@@ -65,7 +108,7 @@ class Template {
      * @param {*} user 
      * @returns 
      */
-    params(
+    async params(
         login = false,
         filename = false,
         links = false,
@@ -81,24 +124,24 @@ class Template {
         job = false, 
         message = false, 
         user = false,
-        profile = profile,
+        profile = false,
         ) {
         if (!title) title = this.getTitle();
         if (!navbar) navbar = this.getNavbar();
-        if (!sidebar) sidebar = this.getSidebar();
         if (!login) login=false;
         
+        console.log(profile);
         if(profile){
+            let roleAdmin = await users.isAdmin(profile.role_id)
+            if(roleAdmin){ sidebar = this.getFullSidebar(); }
 
         }
+        if (!sidebar) sidebar = this.getSidebar();
 
-        //console.log("ARGS", arguments);
-        //console.log("ARGS N°", arguments.length);
         var params = {
             login: login,
             filename: filename,
             links: links,
-            obj: obj,
             types: types,
             rows: rows,
             title: title,
@@ -125,12 +168,61 @@ class Template {
             }
             //console.log("PARAMS: ", params)
         } */
-        //console.log("PARAMS: ", params)
+        console.log("PARAMS: ", params)
         return params;
     }
 
-    getParams(filename=false, links=false, obj=false, types=false,rows=false,users=false,profile=false){
-        return this.params(false,filename,links,types,rows,obj,false,false,false,false,false,false,false,false,users, profile);
+    async getParams(filename=false, links=false, types=false, rows=false, users=false, profile=false){
+        return await this.params(false,filename,links,types,rows,false,false,false,false,false,false,false,false,users, profile);
+    }
+
+    
+    getFullSidebar(){
+        let sidebar = [
+            {
+                'name': 'Home',
+                'link': '/',
+                'active': true,
+                'onClick': "",
+                'icon': 'fas fa-home'
+            },
+            {
+                'name': 'Grocery',
+                'link': '/groceries',
+                'active': true,
+                'onClick': "",
+                'icon': 'fas fa-home'
+            },
+            {
+                'name': 'Types',
+                'link': '/types',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-user-injured'
+            },
+            {
+                'name': 'Users',
+                'link': '/users',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-prescription-bottle-alt'
+            },
+            {
+                'name': 'Roles',
+                'link': '/roles',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-prescription-bottle-alt'
+            },
+            {
+                'name': 'Logout',
+                'link': '/logout',
+                'active': false,
+                'onClick': "",
+                'icon': 'fas fa-calendar-check'
+            }
+        ]
+        return sidebar;
     }
 
     /**
@@ -138,7 +230,7 @@ class Template {
      * @returns sidebar array {name,link,active, onclick, icon}
      */
     getSidebar() {
-        var sidebar = [
+        let sidebar = [
             {
                 'name': 'Home',
                 'link': '/',
@@ -221,15 +313,15 @@ class Template {
      * @param {*} res response object
      * @param {*} filename string file name view
      * @param {*} links 
-     * @param {*} obj 
-     * @param {*} types 
      * @param {*} rows 
-     * @param {*} users 
      * @param {*} profile 
      * @returns res.render();
      */
-    myRender(res,filename,links,obj=false,types=false, rows=false, users=false, profile=false) {
-        return res.render(this.getTemplateIndex(), this.getParams(filename, links, obj, types, rows, users, profile));
+    async myRender(res, filename=false, links=false, rows=false, profile=false) {
+        this.setObj({'profile':profile, 'rows':rows, 'links':links, 'filename':filename});
+        let obj = this.getObj();
+        console.log("XXX OBJ",obj)
+        return res.render(this.getTemplateIndex(), obj);
     }
 
 };

@@ -16,9 +16,9 @@ router.get('/',async (req,res)=>{
         console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
 		let rows,tipi;
 		tipi = await types.getAll();
-		rows = await grocery.getAll();
+		lista = await grocery.getAll();
 
-		template.myRender(res,'groceries',['groceries','list'],false,tipi,rows, false,req.session.user);
+		template.myRender(res,'groceries',['groceries','list'],{'types':tipi,'groceries':lista}, req.session.user);
     }
 	else res.redirect('/login');
 })
@@ -79,8 +79,7 @@ router.get('/:id', async(req,res)=>{
 	let spesa = await grocery.getWhere('g.id='+req.params.id);
 	let tipi = await types.getAll();
 	console.log(spesa,tipi);
-	template.myRender(res, 'grocery', ['groceries'], false, tipi, spesa, false,req.session.user);
-	//res.render(grocery.getIndexTemplate(),{login:0,filename:'home',links:['grocery list'],rows:spesa,types: tipi})
+	template.myRender(res, 'grocery', ['groceries'], {'types':tipi,'groceries':spesa},req.session.user);
 	
 });
 
