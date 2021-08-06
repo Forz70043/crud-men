@@ -1,15 +1,10 @@
 <script type="application/javascript" src="/js/chart.js"></script>
 
-
-
-
-
-
-<div class="row">
+<div class="row mt-2">
     
     <div class="col">
         
-        <div class="card">
+        <div class="card mb-2">
             <div class="card-header">
                 A<%= links %>
             </div>
@@ -21,7 +16,7 @@
     </div>
 
     <div class="col">
-        <div class="card">
+        <div class="card mb-2">
             <div class="card-header">
                 B<%= links %>
             </div>
@@ -31,7 +26,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="card">
+        <div class="card mb-2">
             <div class="card-header">
                 C<%= links %>
             </div>
@@ -58,7 +53,7 @@
     var ctx = document.getElementById('myChart');
     console.log(ctx);
     var myChart = new Chart(ctx, {
-        type: 'doughnut',
+        type: <%= dashboards.charts.type %>,
         data: {
             labels: ['Red', 'Blue'],
             datasets: [{
