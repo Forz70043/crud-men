@@ -1,10 +1,8 @@
 # crud-men
 [![Build Status](https://travis-ci.com/Forz70043/crud-men.svg?branch=master)](https://travis-ci.com/Forz70043/crud-men)
 
-mysql - express - node
+NodeJS - Mysql - Express - EJS
 
-just clone or fork this project 
+`npm install`
 
-then run `npm install`
-
-run dev with nodemon : `npm start`
+`npm start`
