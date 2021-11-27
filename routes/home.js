@@ -20,15 +20,19 @@ router.get('/', async (req,res)=>{
 
         let countUserRole = await roles.getRoleCountUsers();
         console.log("CCCCCC",countUserRole);
-        for(let i=0;i<ruoli.length;i++){
-            console.log(ruoli[i]);
+        
+        for(let i=0; i<ruoli.length; i++){
+            console.log("ruoli: ", ruoli[i]);
             rolesLabel[i]=ruoli[i]['name'];
-            console.log(countUserRole[i]);
-            if(i<=countUserRole.length){
-                if(ruoli[i]['name']==countUserRole[i]['name']) dataRoles[i]=countUserRole[i]['n_users']
-                else dataRoles[i]=0;
+            console.log("XXXX", countUserRole[i]);
+            if(countUserRole[i] !== undefined){
+                
+                if(i <= countUserRole.length){
+                    if(ruoli[i]['name']==countUserRole[i]['name']) dataRoles[i]=countUserRole[i]['n_users']
+                    else dataRoles[i]=0;
+                }
+
             }
-            
         }
         
         let chart = {
