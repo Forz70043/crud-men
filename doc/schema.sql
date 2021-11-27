@@ -4,9 +4,12 @@ CREATE TABLE `GROCERY`(
     `name` VARCHAR(128) NOT NULL,
     `type_id` INT(6) DEFAULT NULL,
     `bought` ENUM('yes','no') DEFAULT 'no',
+    `grocery_grp_id` int(21) unsigned not null,
     PRIMARY KEY(`id`)
 );
 ALTER TABLE `GROCERY` ADD FOREIGN KEY(`type_id`) REFERENCES `TYPE`(`id`);
+ALTER TABLE `GROCERY` ADD FOREIGN KEY(`grocery_grp_id`) REFERENCES `GROCERY_GRP`(`id`);
+ALTER TABLE `GROCERY` ADD COLUMN `grocery_grp_id` int(21) unsigned not null;
 
 CREATE TABLE `TYPE`(
     `id` INT(6) NOT NULL AUTO_INCREMENT,

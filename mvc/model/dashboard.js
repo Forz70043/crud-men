@@ -4,6 +4,7 @@ const Entity = require('../../entity');
 class Dashboard extends Entity {
     constructor(){
         super();
+        
         this.COLORS = [
             '#4dc9f6',
             '#f67019',
