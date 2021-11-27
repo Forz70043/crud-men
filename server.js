@@ -45,7 +45,7 @@ const oneMinute = 1000 * 60;
 app.use(sessions({
     secret: "admin",
     saveUninitialized: true,
-    cookie: { maxAge: tenMinutes },
+    cookie: { maxAge: oneDay },
     resave: false 
 }));
 
@@ -131,8 +131,19 @@ app.post('/login', async(req, res)=>{
 app.get('/',function(req,res){
 	//inserire logica se già auth
 	//res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
-	console.log(req.session)
-	template.myRender(res,'main');
+	//console.log("/ session ", req.session)
+	let filenameTemp = 'main';
+	let userSessionTemp = false;
+	if(req.session.loggedIn){
+		if(req.session.user){
+			console.log("/ session USER ", req.session.user)
+			console.log("/ session USER ID ", req.session.user.id)
+			if(parseInt(req.session.user.id)) userSessionTemp = req.session.user;
+			filenameTemp = 'dashboard';
+		}		
+	}
+	
+	template.myRender(res, filenameTemp, false, false, userSessionTemp);
 });
 
 

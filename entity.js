@@ -3,7 +3,7 @@ const Database = require('./db');
 /**
  * 
  */
-class Entity extends Database{
+class Entity extends Database {
     constructor(){
         super();
         this.TBL = '';

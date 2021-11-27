@@ -114,12 +114,12 @@ class Template {
         //console.log("P: ",params);
         //console.log("OBJ: ",this.obj)
         let keyParams = Object.keys(params)
-        console.log("KP:",keyParams);
+        console.log("Templates setObj() KeyParams: ",keyParams);
         for(let i = 0; i<keyParams.length; i++){
             this.obj[keyParams[i]] = params[keyParams[i]];
 
             if(keyParams[i]==='rows'){
-                console.log("CHE FACCIO CON LE ROWS ??");
+                //console.log("QUI OPERARE ROWS .....");
             }
             if(keyParams[i]==='login'){
                 if(params['login']){}
@@ -405,7 +405,7 @@ class Template {
     async myRender(res, filename=false, links=false, rows=false, profile=false,dashboards=false) {
         this.setObj({'profile':profile, 'rows':rows, 'links':links, 'filename':filename,'dashboards':dashboards});
         let obj = this.getObj();
-        console.log("XXX OBJ",obj)
+        //console.log("XXX OBJ",obj)
         return res.render(this.getTemplateIndex(), obj);
     }
 
