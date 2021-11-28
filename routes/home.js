@@ -19,14 +19,20 @@ let groceries = new Groceries();
 router.get('/', async (req,res)=>{
 	console.log("/GET HOME ROUTE SESSION ", req.session);
 	//console.log("req.sess user: ",req.session.user);
-    let rolesLabel = [];
-    let dataRoles = [];
+    //let rolesLabel = [];
+    //let dataRoles = [];
 	if(req.session.loggedIn && req.session.user){
-        
-        let grocerie = await groceries.getAll();
-        console.log("GR ",grocerie);
-        let myGroceries = await groceries.getWhere(' u.id='+req.session.user.id);
-        console.log("mygroceries: "+myGroceries);
+        let isAdmin = await template.isAdmin(req.session.user);
+        //console.log("isAdmin: ", isAdmin);
+        let grocerie;
+        if(isAdmin){
+            grocerie = await groceries.getAll();
+            console.log("is Admin GR ",grocerie);
+        }
+        else{
+            grocerie = await groceries.getWhere(' u.id='+req.session.user.id);
+            console.log("mygroceries: "+grocerie);
+        }
 
         template.myRender(res,'groceries2',['groceries'],{'groceries': grocerie},req.session.user);
         

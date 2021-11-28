@@ -91,7 +91,11 @@ class Template {
      * @param {*} user id
      */
     async isAdmin(userId){
-        if(userId){
+        if(typeof(userId) === 'object'){
+            if(userId.role == 'admin') return true;
+            else return false;
+        }
+        else if(parseInt(userId) >0){
             let user = await users.get('u.id='+userId);
             if(user){
                 if(user.role=="admin") return true
