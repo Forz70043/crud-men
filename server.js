@@ -18,6 +18,7 @@ let loginRoute = require('./routes/login');
 let usersRoute = require('./routes/users');
 let homeRoute = require('./routes/home');
 let rolesRoute = require('./routes/roles');
+let groceriesRoute = require('./routes/groceries');
 
 //MODELS
 let Auth = require('./mvc/model/auth');
@@ -74,16 +75,18 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/@fortawesome/fo
 app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/chart.js/dist')));
 var Chart = require('chart.js');
+
 /**
  * ROUTE
  */
 app.use('/types', typesRouter);
-app.use('/groceries', groceryRoute);
+app.use('/grocery', groceryRoute);
 app.use('/auth', authRoute);
 app.use('/login', loginRoute);
 app.use('/users', usersRoute);
 app.use('/home', homeRoute);
 app.use('/roles', rolesRoute);
+app.use('/groceries', groceriesRoute);
 
 auth.serialize();
 auth.deserialize();
