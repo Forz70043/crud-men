@@ -71,9 +71,11 @@ class Database {
                     
                     reject(new Error('DB ERROR !'));
                      */
-                    return false;
+                    let er = {'result':false,'DB_Error':(err.errno)?err.errno:'','MSG':(err.sqlMessage)?err.sqlMessage:'','code':err.code,'sql':err.sql}
+                    return er;
                 }
-                //console.log("ROWS DB: ", rows);
+                console.log("ROWS DB: ", rows);
+                console.log("ROWS DB: JSON.parse(JSON.stringify(rows))", JSON.parse(JSON.stringify(rows)));
                 resolve(JSON.parse(JSON.stringify(rows)));
             });
         });
@@ -122,7 +124,7 @@ class Database {
 
     whereFields(fields){
         console.log("where fields: ", fields);
-        var sql='';
+        let sql='';
         if(typeof(fields)==='object'){
             for(var i=0; i<fields.length; i++){
                 console.log(fields[i]);
@@ -143,7 +145,7 @@ class Database {
      */
     whereCriteria(where,bool=' AND '){
         console.log("WHERE CRITERIA CONDITION ",where);
-        var condition='';
+        let condition='';
 
         if(where.length<=0) return condition;
 
@@ -164,13 +166,14 @@ class Database {
 
     async describe(tblname){
         console.log("describe DB")    
-        if(tblname===false || tblname==='') { 
+        if(tblname === false || tblname === '') { 
             console.log("DB ERROR: funct. describe tblname empty or false"); 
+            console.warn("DB ERROR: funct. describe tblname empty or false"); 
             return false;
-            //reject(new Error("DB Error: tblname empty!"));
         }
-        if(typeof(tblname)==='string'){
-           var descr = await this.doQuery("DESCRIBE "+tblname)
+        if(typeof(tblname) === 'string'){
+           let descr = await this.doQuery("DESCRIBE "+tblname)
+           console.log('descr: ', descr);
            return descr ; 
         }
     }
@@ -192,7 +195,7 @@ class Database {
         /* console.log("QUERY STRING: w",where)*/
         console.log("QUERY STRING: fileds",fields);
 
-        var sql='';
+        let sql='';
 
         switch(type){
             case 'SELECT':
@@ -236,43 +239,15 @@ class Database {
     }
 
     _deleteQueryString(tblname,where){
-        var sql = this.queryString(tblname,'DELETE',where);
+        let sql = this.queryString(tblname,'DELETE',where);
         //console.log("DEL SQL: ",sql);
         return sql;
     }
 
     async _deleteQuery(params,tblname){
-        var sql = this._deleteQueryString(tblname,params);
+        let sql = this._deleteQueryString(tblname,params);
         return await this.doQuery(sql);
     }
-
-    /* addUser(values){
-        console.log("ADD USER");
-        console.log(values);
-        return new Promise((resolve, reject)=>{
-            this.doQuery('INSERT INTO USERS (name, surname, email, cod_id) VALUES (?,?,?,?)',values)
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch((err)=>{
-                console.log(new Error(err));
-                reject(err);
-            })
-        })
-    }
- */
-/*     getUser(values){
-        return new Promise((resolve, reject)=>{
-            //console.log(values);
-            this.doQuery("SELECT * FROM USERS WHERE cod_id IN (?)",values)
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch((err)=>{
-                reject(err);
-            })
-        })
-    } */
 
     insertQueryString(tblname,params,fields){
         
@@ -304,9 +279,10 @@ class Database {
          */
         async insertQueryString_(params,tblname){
             console.log("INSERT DB");
-            /* console.log(params,tblname);
-            console.log(typeof(params)); */
-    
+            /* 
+                console.log(params,tblname);
+                console.log(typeof(params)); 
+            */
             if(typeof(params)==='object'){
                 //console.log("dentro obj");
                 var objKeys = Object.keys(params);

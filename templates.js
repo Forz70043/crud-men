@@ -129,106 +129,33 @@ class Template {
                 if(params['login']){}
             }
             if(keyParams[i]==='profile'){
-                if(this.checkAdmin(params[keyParams[i]]['role_id'])){
+                if(this.obj[keyParams[i]]['role'] == 'admin'){
+                //if(this.checkAdmin(params[keyParams[i]]['role_id'])){
                     console.log("ADMIN _________________________________________________________")
-                    this.obj['sidebar']=this.getFullSidebar();
+                    this.obj['sidebar'] = this.getFullSidebar();
                 }
+                //(this.obj['profile']['id']) ? this.obj['login'] = true : this.obj['login'] = false ;
             }
         }
+        //(this.obj['login'] == false ) ?  this.obj['sidebar'] = this.getLogOutSidebar() : this.obj['sidebar'] = this.getLoggedInSidebar() ;
+        /*
+        if(this.obj['profile']){
+            if(this.obj['profile']['role'] == 'admin') this.obj['sidebar']=this.getFullSidebar();
+            else this.obj['sidebar'] = this.getSidebar();
+            
+            this.obj['login'] = true;
+        }
+        else{
+            this.obj['sidebar'] = this.getLogOutSidebar();
+            this.obj['login']= false ;
+        }
+        */
         //console.log("OBJ MOD:",this.obj);
     }
 
     getObj(){
         return this.obj;
     }
-
-    /**
-     * 
-     * @param {*} login boolean
-     * @param {*} filename string or false (filename of view)
-     * @param {*} links string or false (breakcrumbs)
-     * @param {*} types false or array of obj
-     * @param {*} rows false or array of obj
-     * @param {*} obj 
-     * @param {*} template 
-     * @param {*} container 
-     * @param {*} sidebar 
-     * @param {*} navbar 
-     * @param {*} title string of the page
-     * @param {*} countries 
-     * @param {*} job 
-     * @param {*} message 
-     * @param {*} user 
-     * @returns 
-     */
-    /* async params(
-        login = false,
-        filename = false,
-        links = false,
-        types = false,
-        rows =false,
-        obj = false,
-        template = false, 
-        container = false, 
-        sidebar = false, 
-        navbar = false, 
-        title = false, 
-        countries = false, 
-        job = false, 
-        message = false, 
-        user = false,
-        profile = false,
-        ) {
-        if (!title) title = this.getTitle();
-        if (!navbar) navbar = this.getNavbar();
-        if (!login) login=false;
-        
-        console.log(profile);
-        if(profile){
-            let roleAdmin = await users.isAdmin(profile.role_id)
-            if(roleAdmin){ sidebar = this.getFullSidebar(); }
-
-        }
-        if (!sidebar) sidebar = this.getSidebar();
-
-        var params = {
-            login: login,
-            filename: filename,
-            links: links,
-            types: types,
-            rows: rows,
-            title: title,
-            container: container,
-            template: template,
-            sidebar: sidebar,
-            navbar: navbar,
-            countries: countries,
-            job: job,
-            message: message,
-            user: user,
-            profile: profile,
-            others: {}
-        }
-        //console.log(params);
-        if (arguments.length > 5) {
-            console.log("MAGGIOREEEEE DI 5");
-            var i = 5
-            var k = 0
-            while (i == arguments.length - 1) {
-                console.log("ZZZZZ",arguments[i]);
-                params['others'][k] = arguments[i];
-                i++; k++
-            }
-            //console.log("PARAMS: ", params)
-        }
-        console.log("PARAMS: ", params)
-        return params;
-    }
-
-    async getParams(filename=false, links=false, types=false, rows=false, users=false, profile=false){
-        return await this.params(false,filename,links,types,rows,false,false,false,false,false,false,false,false,users, profile);
-    } */
-
     
     getLogOutSidebar(){
 
@@ -238,14 +165,14 @@ class Template {
                 'link': '/login',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-sign-in'
+                'icon': ' fa-sign-in-alt'
             },
             {
                 'name': 'Register',
                 'link': '/register',
                 'active': false,
                 'onClick': "",
-                'icon': 'fas fa-sign-in'
+                'icon': ' fa-sign-in-alt'
             },
         ]
 
@@ -336,7 +263,6 @@ class Template {
     }
 
     /**
-     * 
      * @returns sidebar array {name,link,active, onclick, icon}
      */
     getSidebar() {
@@ -349,7 +275,7 @@ class Template {
                 'icon': 'fas fa-home'
             },
             {
-                'name': 'Grocery',
+                'name': 'Groceries',
                 'link': '/groceries',
                 'active': true,
                 'onClick': "",
@@ -363,13 +289,6 @@ class Template {
                 'icon': 'fas bread-slice'
             },
             {
-                'name': 'Users',
-                'link': '/users',
-                'active': false,
-                'onClick': "",
-                'icon': 'fas fa-users'
-            },
-            {
                 'name': 'Logout',
                 'link': '/logout',
                 'active': false,
@@ -381,7 +300,6 @@ class Template {
     }
 
     /**
-     * 
      * @returns Object Navbar {Name, link }
      */
     getNavbar() {
@@ -397,8 +315,8 @@ class Template {
         ]
         return navbar;
     }
+
     /**
-     * 
      * @param {*} res response object
      * @param {*} filename string file name view
      * @param {*} links 
