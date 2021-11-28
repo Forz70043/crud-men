@@ -1,0 +1,51 @@
+
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <%= links %>
+      </div>
+      <div class="card-body">
+        <% if(rows && rows.groceries.length>0) { %>
+        <table class="table table-hover table-borderless">
+          <thead>
+            <tr>
+              <th scope="col"><%= __('Name') %></th>
+              
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+              <% rows.groceries.forEach(function(row) { %>
+                <% row.action='/groceries'; %>
+                <tr>
+                  <td><a class="primary font-weight-bold" href="groceries/<%= row.id %>"><%= row.name %></a></td>
+                  <td><a class="primary" href="groceries/<%= row.id %>"><%= row.name %></a></td>
+                  <td>
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" onclick="updateBought(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
+                      class="custom-control-input" id="bought_<%=row.id%>" name="bought_<%=row.id%>" 
+                      <% if(row.bought==='yes'){ %> checked <% } %>/>
+                      <label class="custom-control-label" for="bought_<%=row.id%>"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <a class="btn btn-sm btn-warning" type="button" href="groceries/<%= row.id %>" >
+                      <span class="fa fa-edit"></span>
+                    </a>
+                    <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenter">
+                      <span class="fas fa-trash-alt"></span>
+                    </button>
+                  </td>
+                </tr>
+              <% }); %>
+          </tbody>
+        </table>
+        <% }else{ %>
+        <%- include('./component/nodata') %> 
+        <% } %>
+      </div>
+    </div>
+</div>
+  
+  <%- include('modal_update') %> 
+  <%- include('modal'); %>

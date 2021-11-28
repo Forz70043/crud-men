@@ -1,18 +1,25 @@
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb mt-2">
-    <% if(links){ %>
-      <% links.forEach(function(link) { %> 
-          
-        <li class="breadcrumb-item active" aria-current="page">
-          <a class="primary" href="/<%= link %>"> 
-            <% capitalLink=link[0].toUpperCase() + link.substring(1); %>
-              <%= capitalLink %>
-          </a>
-        </li>
 
-      <% }); %>
-   
-    <% } %>
-
-  </ol>
-</nav>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <% if(links){ %>
+        <% links.forEach(function(link) { %> 
+            
+          <li class="breadcrumb-item active" aria-current="page">
+            <a class="primary" href="/<%= link %>"> 
+              <% capitalLink=link[0].toUpperCase() + link.substring(1); %>
+                <%= capitalLink %>
+            </a>
+          </li>
+  
+        <% }); %>
+     
+      <% } %>
+  
+    </ol>
+  </nav>  
+<div class="col"></div>
+<% if(links){ %>
+<div class="col mt-2">
+  <div class="btn btn-sm btn-success" alt="Add"><span class="fa fa-plus"></span> <a class="aNo" href="/<%= links[0] %>/add">Add</a></div>
+</div>
+<% } %>
