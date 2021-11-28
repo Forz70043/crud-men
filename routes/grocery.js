@@ -10,6 +10,7 @@ let Template = require('../templates');
 let template = new Template();
 /**
  * get types & grocery
+ * get /grocery
  */
 router.get('/',async (req,res)=>{
     if(req.session.loggedIn){

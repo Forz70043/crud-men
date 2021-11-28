@@ -6,7 +6,7 @@
     <div class="overlay-content">
         <% if (sidebar) { %>
             <% sidebar.forEach(element=> { %>
-                <a href="<%= element.link %>"><span class="fas <%= __(element.icon) %>"></span> <%= __(element.name) %></a>
+                <a href="<%= element.link %>"><span class="fa <%= __(element.icon) %>"></span> <%= __(element.name) %></a>
             <% }) %>
         <% }else{ %>
             <!-- <a href="/"><%= __('Home') %></a>

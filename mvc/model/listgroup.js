@@ -46,15 +46,19 @@ class ListGroup extends Entity {
         var objKeys = Object.keys(params);
 
 		if(objKeys.length>0){
-			var result = await this.insertQuery(params);
-            console.log("result: ", result);
-            
-			return result;
+            if(parseInt(params.grocery_grp_id) && parseInt(params.user_id)){
+                params = {'grocery_grp_id':parseInt(params.grocery_grp_id),'user_id':parseInt(params.user_id) }
+			    var result = await this.insertQuery(params);
+                console.log("result: ", result);
+			    return result;
+            }
 		}
 		else{
             //errori
             console.log("params <0");
+            return {'result':false, 'errMsg': 'PARAMS LENGTH <= 0'};
         }
+        return false;
     }
 
 }

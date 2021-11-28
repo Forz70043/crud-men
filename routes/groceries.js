@@ -21,13 +21,15 @@ let grocery = new Grocery();
 router.get('/',async (req,res)=>{
     if(req.session.loggedIn){
         //console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
+		let liste = false;
         if(req.session.user.id){
-            let liste; 
-            //let tipi;
             //tipi = await types.getAll();
-            liste = await groceries.getWhere('lg.user_id='+req.session.user.id);
-            console.log("liste: ", liste);
+			if(req.session.user.role == 'admin') liste = await groceries.getAll();
+			else liste = await groceries.getWhere('lg.user_id='+req.session.user.id);
+        
+			console.log("liste: ", liste);
         }
+		
 		
 		template.myRender(res,'groceries2',['groceries'],{'types':false,'groceries':liste}, req.session.user);
     }
@@ -56,13 +58,21 @@ router.post('/add', async (req,res)=>{
 	if(req.body)
     {
 		console.log("req.body >0");
-		groceries.startTransaction();
+		//groceries.startTransaction();
 		var result = await groceries.add(req.body.name);
 		console.log("RES ADD: ",result);
 		let results = await listGroup.add({'grocery_grp_id':result.insertId, 'user_id':req.body.user_id});
 		console.log("RES ADD: ",results);
-		if(results) groceries.commit();
-		else groceries.rollback();
+		
+		if(result && results){
+			//template.myRender(res, 'groceries2', )
+			res.redirect('/groceries');
+		}
+		if(results) return results; //true//groceries.commit();
+		else return false;//groceries.rollback();
+		
+		
+		
 		if(results.insertId) res.redirect('home');
 	}
 	/*
@@ -108,6 +118,10 @@ router.get('/:id', async(req,res)=>{
 	
 });
 
+router.get('/:id/grocery', async(req, res)=>{
+	console.log("req ",req);
+	console.log("res: ", res);
+})
 
 
 module.exports = router;
