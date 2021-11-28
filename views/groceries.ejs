@@ -47,6 +47,7 @@
               <th scope="col"><%= __('Name') %></th>
               <th scope="col"><%= __('Type') %></th>
               <th scope="col"><%= __('Bought') %></th>
+              <th scope="col"><%= __('List Group') %></th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -56,6 +57,7 @@
                 <tr>
                   <td><a class="primary font-weight-bold" href="groceries/<%= row.id %>"><%= row.name %></a></td>
                   <td><a class="primary" href="types/<%= row.type_id %>"><%= row.type %></a></td>
+                  
                   <td>
                     <div class="custom-control custom-switch">
                       <input type="checkbox" onclick="updateBought(<%= JSON.stringify(row)%>);" data-toggle="modal" data-target="#exampleModalCenterUpdate" 
@@ -64,6 +66,7 @@
                       <label class="custom-control-label" for="bought_<%=row.id%>"></label>
                     </div>
                   </td>
+                  <td><a class="primary" href="types/<%= row.grocery_grp_id %>"><%= row.name_group %></a></td>
                   <td>
                     <a class="btn btn-sm btn-warning" type="button" href="groceries/<%= row.id %>" >
                       <span class="fa fa-edit"></span>

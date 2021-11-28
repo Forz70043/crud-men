@@ -8,7 +8,10 @@ let Groceries = require('../mvc/model/groceries');
 let groceries = new Groceries();
 let Template = require('../templates');
 let template = new Template();
-
+let ListGroup = require('../mvc/model/listgroup');
+let listGroup = new ListGroup();
+let Grocery = require('../mvc/model/grocerylist');
+let grocery = new Grocery();
 
 
 
@@ -34,21 +37,74 @@ router.get('/',async (req,res)=>{
 
 router.get('/add', async(req,res)=>{
 	console.log("groceries/add ");
-	//let spesa = await grocery.getWhere('g.id='+req.params.id);
-	//let tipi = await types.getAll();
-	//console.log(spesa,tipi);
-	template.myRender(res, 'groceriesAdd', ['groceries'], false, req.session.user);
-	
+	if(req.session.loggedIn){
+		//let spesa = await grocery.getWhere('g.id='+req.params.id);
+		//let tipi = await types.getAll();
+		console.log(req.session.user.id);
+		template.myRender(res, 'groceriesAdd', ['groceries'], {'user_id': req.session.user.id}, req.session.user);
+	}
+	else res.redirect('/login');
+
 });
 
 
+router.post('/add', async (req,res)=>{
+	console.log("post ADD");
+	console.log(req.body);
+	
+	//if(!(req.body.name && req.body.type_id)) res.render('home');	
+	if(req.body)
+    {
+		console.log("req.body >0");
+		groceries.startTransaction();
+		var result = await groceries.add(req.body.name);
+		console.log("RES ADD: ",result);
+		let results = await listGroup.add({'grocery_grp_id':result.insertId, 'user_id':req.body.user_id});
+		console.log("RES ADD: ",results);
+		if(results) groceries.commit();
+		else groceries.rollback();
+		if(results.insertId) res.redirect('home');
+	}
+	/*
+	else if(req.body.send==='delete'){
+		if(req.body.id){
+            var result = await grocery.delete(req.body.id);
+            console.log(result)
+            if(result){
+                res.redirect('/groceries');
+            }
+        }
+	}
+	else if(req.body.send==='update'){
+		if(!req.body.bought){
+			for(key in req.body){
+				console.log(req.body[key]);
+				console.log(key);
+				if(key==='bought_'+req.body.id){
+					req.body.bought=(req.body[key]==='on')?'yes':'no';
+				}
+			}
+		}
+		else{
+			req.body.bought = (req.body.bought==='on'||req.body.bought==='yes' )?'yes':'no';
+		}
+		let params = (req.body.name && req.body.type_id) ? {'name':req.body.name,'type_id':req.body.type_id,'bought':req.body.bought} : {'bought':req.body.bought}; 
+		//var result = grocery.updateBought(params,req.body.id)
+        var result = grocery.updateGrocery(params,req.body.id)
+		if(result){
+            res.redirect('/groceries');
+        }
+	}
+	*/
+});
 
 router.get('/:id', async(req,res)=>{
 	console.log("groceries/id");
+	let spesaGruppo = await grocery.getWhere('g.grocery_grp_id='+req.params.id); 
 	//let spesa = await grocery.getWhere('g.id='+req.params.id);
-	//let tipi = await types.getAll();
-	//console.log(spesa,tipi);
-	//template.myRender(res, 'grocery', ['groceries'], {'types':tipi,'groceries':spesa},req.session.user);
+	let tipi = await types.getAll();
+	console.log(spesaGruppo);
+	template.myRender(res, 'grocerieslist', ['groceries'], {'types':tipi,'groceries':spesaGruppo},req.session.user);
 	
 });
 

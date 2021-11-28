@@ -6,7 +6,7 @@ class Grocery extends Entity {
     constructor(){
         super();
         this.TBL = 'GROCERY';
-        this.TBLJOIN=' g LEFT JOIN TYPE t ON t.id=g.type_id';
+        this.TBLJOIN=' g LEFT JOIN TYPE t ON t.id=g.type_id LEFT JOIN GROCERY_GRP grp ON grp.id=g.grocery_grp_id ';
 
         this.setFields({
             'id':{
@@ -32,8 +32,11 @@ class Grocery extends Entity {
             'grocery_grp_id': {
                 as: 'g.grocery_grp_id',
                 required: false 
-            } 
-
+            },
+            'name_group': {
+                as: 'grp.name',
+                required: false 
+            }
         });
     }
 

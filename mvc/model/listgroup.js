@@ -1,29 +1,26 @@
 const Entity = require('../../entity');
 
-class Groceries extends Entity {
+class ListGroup extends Entity {
+
     constructor(){
         super();
-        this.TBL = 'GROCERY_GRP ';
-        this.TBLJOIN = 'grp LEFT JOIN LIST_GROUP lg ON lg.grocery_grp_id=grp.id LEFT JOIN USERS u ON u.id=lg.user_id ';
-    
+        this.TBL = 'LIST_GROUP ';
+        this.TBLJOIN = 'lg LEFT JOIN GROCERY_GRP grp ON lg.grocery_grp_id=grp.id LEFT JOIN USERS u ON u.id=lg.user_id ';
+
         this.setFields({
-            'id':{
-                as: 'grp.id',
+            'user_id':{
+                as: 'lg.user_id',
                 required:true 
             },
             'name':{
                 as: 'grp.name',
                 required:true 
             },
-            'user_id':{
-                as: 'lg.user_id',
-                required:true 
-            },
             'user':{
                 as: "CONCAT(u.name,' ',u.surname)",
                 required:true
             }
-        });
+        });    
     }
 
 
@@ -43,21 +40,24 @@ class Groceries extends Entity {
         return result;
     }
 
+
     async add(params){
         console.log("ADD params: ", params);
         var objKeys = Object.keys(params);
 
 		if(objKeys.length>0){
-			var result = await this.insertQuery({'name':params});
+			var result = await this.insertQuery(params);
             console.log("result: ", result);
-            return result;
+            
+			return result;
 		}
 		else{
             //errori
             console.log("params <0");
-            return false;
         }
     }
 
 }
-module.exports = Groceries;
+
+
+module.exports = ListGroup;
