@@ -15,18 +15,26 @@ class Grocery extends Entity {
             },
             'name':{
                 as: 'g.name',
-                required:true },
+                required:true 
+            },
             'type_id':{ 
                 as:'g.type_id',
-                required:true },
+                required:true 
+            },
             'type':{ 
                 as:'t.name',
-                required:true },
+                required:true 
+            },
             'bought': {
                 as: 'g.bought',
-                required: false } 
-            }
-        );
+                required: false 
+            },
+            'grocery_grp_id': {
+                as: 'g.grocery_grp_id',
+                required: false 
+            } 
+
+        });
     }
 
     async getAll(){

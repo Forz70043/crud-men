@@ -118,15 +118,14 @@ class Entity extends Database {
         var sql=this.queryString(this.getFullTblname(), 'SELECT', where, fields);
         //console.log("FIND ",sql);
         var rows = await this.doQuery(sql);
-        console.log("FIND ENTITY ",rows);
-        if(rows && rows[0].id) return rows
-        //console.log("XXX",JSON.parse(JSON.stringify(rows)));
+        //console.log("FIND ENTITY ROWS",rows);
+        if(rows && rows.length > 0) return rows;
         return false;
     }
 
     async doQueryEntity(sql){
         var rows = await this.doQuery(sql);
-        console.log("XXX",JSON.parse(JSON.stringify(rows)));
+        console.log("doQueryEntity ",JSON.parse(JSON.stringify(rows)));
         return rows;
     }
 
@@ -136,7 +135,7 @@ class Entity extends Database {
      * @returns result of query
      */
     async getAll(where=false){    
-        var sql = await this.find(where); //this.queryString(this.getFullTblname(), 'SELECT', (where) ? where : false);
+        var sql = await this.find(where);
         return sql;    
     }
     /**

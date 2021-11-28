@@ -13,8 +13,9 @@ let template = new Template();
  */
 router.get('/',async (req,res)=>{
     if(req.session.loggedIn){
-        console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
-		let rows,tipi;
+        //console.log(" REQ USERS VEROOOOOOOOOOOOOOOOOOOOOOOOOO")
+		let lista; 
+		let tipi;
 		tipi = await types.getAll();
 		lista = await grocery.getAll();
 
