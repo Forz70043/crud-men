@@ -2,46 +2,42 @@
 
 <div class="row mt-2">
     
-    <div class="col">
-        
-        <div class="card mb-2">
-            <div class="card-header">
-                A<%= links %>
+    <% if(links) { %>
+        <% links.forEach(function(link) { %>
+            <div class="col">                    
+                <div class="card mb-2"> 
+                    <div class="card-header">
+                        <%= link %>
+                    </div>
+                
+                    <div class="card-body">
+                        <canvas id="myChart_<%= link %>" width="250" height="250"></canvas>
+                    </div>
+                
+                </div>
             </div>
-            <div class="card-body">
-                <canvas id="myChart" width="250" height="250"></canvas>
-            </div>
-        </div>
+        <% }) %>
+    <% } %>
 
-    </div>
-
+    
     <div class="col">
         <div class="card mb-2">
             <div class="card-header">
-                B<%= links %>
-            </div>
-            <div class="card-body">
-                <canvas id="myChart_<%= links %>" width="250" height="250"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card mb-2">
-            <div class="card-header">
-                C<%= links %>
+                C
             </div>
             <div class="card-body">
                 <canvas id="myChartC" width="250" height="250"></canvas>
             </div>
         </div>
     </div>
+    
     <div class="col">
         <div class="card">
             <div class="card-header">
                 D<%= links %>
             </div>
             <div class="card-body">
-                <canvas id="myChartD" width="400" height="400"></canvas>
+                <canvas id="myChart" width="400" height="400"></canvas>
             </div>
         </div>
     </div>
@@ -50,8 +46,81 @@
 
 
 <script>
+    
+
     var ctx = document.getElementById('myChart');
     console.log(ctx);
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data : {
+            labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [10,20,60,80],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Doughnut Chart'
+                }
+            }
+        },
+    });
+
+
+    var ctx = document.getElementById('myChartC');
+    console.log(ctx);
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data : {
+            labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [10,20,60,80],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Doughnut Chart'
+                }
+            }
+        },
+    });
+
+
+    /*
     var myChart = new Chart(ctx, {
         type: <%= dashboards.charts.type %>,
         data: {
@@ -86,4 +155,24 @@
             }
         }
     });
+    */
+    /*
+    <% if(links) { %>
+        <% links.forEach(function(link) { %>
+            var ctx = document.getElementById('myChartC');
+            console.log(ctx);
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: [{
+                    label: 'My First Dataset',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            });
+        
+        <% }) %>
+    <% } %>
+    */
     </script>

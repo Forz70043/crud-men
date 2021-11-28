@@ -9,32 +9,45 @@ let roles = new Roles();
 let Users = require('../mvc/model/users');
 let users = new Users();
 
+let Dashboard = require('../mvc/model/dashboard');
+let dashboards = new Dashboard();
+
+let Groceries = require('../mvc/model/groceries');
+let groceries = new Groceries();
+
 
 router.get('/', async (req,res)=>{
-	console.log("req.sess: ",req.session);
-	console.log("req.sess user: ",req.session.user);
-    let rolesLabel=dataRoles=[];
+	console.log("/GET HOME ROUTE SESSION ", req.session);
+	//console.log("req.sess user: ",req.session.user);
+    let rolesLabel = [];
+    let dataRoles = [];
 	if(req.session.loggedIn && req.session.user){
-        let ruoli = await roles.get();
-        console.log("RRR:",ruoli);
-
-        let countUserRole = await roles.getRoleCountUsers();
-        console.log("CCCCCC",countUserRole);
         
+        let grocerie = await groceries.getAll();
+        console.log("GR ",grocerie);
+        let myGroceries = await groceries.getWhere(' u.id='+req.session.user.id);
+        console.log("mygroceries: "+myGroceries);
+
+        template.myRender(res,'groceries2',['groceries'],{'groceries': grocerie},req.session.user);
+        
+        /*
+        //DASHBOARD VIEWS
+        let ruoli = await roles.get();
+        console.log("Ruoli: ",ruoli);
+        let countUserRole = await roles.getRoleCountUsers();
+        console.log("countUserRole ",countUserRole);
         for(let i=0; i<ruoli.length; i++){
-            console.log("ruoli: ", ruoli[i]);
+            console.log("ruoli [i]: ", ruoli[i]);
             rolesLabel[i]=ruoli[i]['name'];
-            console.log("XXXX", countUserRole[i]);
+            //console.log("XXXX", countUserRole[i]);
             if(countUserRole[i] !== undefined){
-                
                 if(i <= countUserRole.length){
                     if(ruoli[i]['name']==countUserRole[i]['name']) dataRoles[i]=countUserRole[i]['n_users']
                     else dataRoles[i]=0;
                 }
-
             }
         }
-        
+        //roles
         let chart = {
             'type': 'doughnut',
             'data':{
@@ -45,15 +58,20 @@ router.get('/', async (req,res)=>{
                 }
             }
         }
-        dashboards = {
+        dashboard = {
             'charts': chart
             
         }
-        
-        template.myRender(res,'dashboard',false,false,req.session.user,dashboards);
+        console.log('dashboard object: ', dashboard);
+        template.myRender(res,'dashboard',false,false,req.session.user,dashboard);
+        */
+
     }
 	else res.redirect('/login');
 })
+
+
+
 
 router.get('/profile', async(req, res)=>{
 	console.log('profile');
