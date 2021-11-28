@@ -30,7 +30,6 @@ router.get('/',async (req,res)=>{
 			console.log("liste: ", liste);
         }
 		
-		
 		template.myRender(res,'groceries2',['groceries'],{'types':false,'groceries':liste}, req.session.user);
     }
 	else res.redirect('/login');
@@ -118,7 +117,7 @@ router.get('/:id', async(req,res)=>{
 	
 });
 
-router.get('/:id/grocery', async(req, res)=>{
+router.get('/:id/add', async(req, res)=>{
 	console.log("req ",req);
 	console.log("res: ", res);
 })

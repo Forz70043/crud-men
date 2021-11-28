@@ -130,14 +130,13 @@ class Template {
             }
             if(keyParams[i]==='profile'){
                 if(this.obj[keyParams[i]]['role'] == 'admin'){
-                //if(this.checkAdmin(params[keyParams[i]]['role_id'])){
                     console.log("ADMIN _________________________________________________________")
                     this.obj['sidebar'] = this.getFullSidebar();
                 }
                 //(this.obj['profile']['id']) ? this.obj['login'] = true : this.obj['login'] = false ;
             }
         }
-        //(this.obj['login'] == false ) ?  this.obj['sidebar'] = this.getLogOutSidebar() : this.obj['sidebar'] = this.getLoggedInSidebar() ;
+        (this.obj['profile'] == false || this.obj['profile'] == null || this.obj['profile'] == undefined) ?  this.obj['sidebar'] = this.getLogOutSidebar() : this.obj['sidebar'] = this.getLoggedInSidebar() ;
         /*
         if(this.obj['profile']){
             if(this.obj['profile']['role'] == 'admin') this.obj['sidebar']=this.getFullSidebar();
@@ -172,7 +171,7 @@ class Template {
                 'link': '/register',
                 'active': false,
                 'onClick': "",
-                'icon': ' fa-sign-in-alt'
+                'icon': ' fa-sign-out-alt'
             },
         ]
 
