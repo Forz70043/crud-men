@@ -87,11 +87,11 @@ class Entity extends Database {
      * @param {*} required boolean (Work in Progress)
      * @returns string fields or false
      */
-    getFields(required=false){
+    getFields(required = false){
         let fields='';
-        console.log("getFields Entity: ", this.fields);
+        //console.log("getFields Entity: ", this.fields);
         if(this.fields){
-            console.log("this.fields vera");
+            //console.log("this.fields vera");
             for(var i in this.fields){
                 /* console.log(i);
                 console.log(this.fields[i].as); */

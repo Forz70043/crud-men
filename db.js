@@ -66,16 +66,14 @@ class Database {
                     }
                     if(err.errno==1054){
                         //errore di fields nella query
-                    } */
-                    /* console.log("DB ERR: ",err);
-                    
-                    reject(new Error('DB ERROR !'));
-                     */
+                    }
+                    console.log("DB ERR: ",err);                    
+                    */
                     let er = {'result':false,'DB_Error':(err.errno)?err.errno:'','MSG':(err.sqlMessage)?err.sqlMessage:'','code':err.code,'sql':err.sql}
                     return er;
                 }
-                console.log("ROWS DB: ", rows);
-                console.log("ROWS DB: JSON.parse(JSON.stringify(rows))", JSON.parse(JSON.stringify(rows)));
+                //console.log("ROWS DB: ", rows);
+                //console.log("ROWS DB: JSON.parse(JSON.stringify(rows))", JSON.parse(JSON.stringify(rows)));
                 resolve(JSON.parse(JSON.stringify(rows)));
             });
         });
@@ -193,7 +191,7 @@ class Database {
     queryString(tblname, type='SELECT', where=false, fields=false, order=false, orderBy=false, limit=false, offset=false){
         //console.log("QUERY STRING: tbl",tblname, where, fields)
         /* console.log("QUERY STRING: w",where)*/
-        console.log("QUERY STRING: fileds",fields);
+        //console.log("DB QUERY STRING: fields",fields);
 
         let sql='';
 
@@ -271,52 +269,53 @@ class Database {
             }
         }
     }
-        /**
-         * Create sql string & do query
-         * @param {*} params params object
-         * @param {*} tblname string
-         * @returns result query insert
-         */
-        async insertQueryString_(params,tblname){
-            console.log("INSERT DB");
-            /* 
-                console.log(params,tblname);
-                console.log(typeof(params)); 
-            */
-            if(typeof(params)==='object'){
-                //console.log("dentro obj");
-                var objKeys = Object.keys(params);
-                //console.log("CHIAVI: ",objKeys);
-                //console.log("LENGTH: ",objKeys.length);
-                var q1 = ''; 
-                var q2 = '';
-                var fields = [];
-                for(var i=0; i<objKeys.length; i++){
-                    //console.log("FOR obj",objKeys[i]);
-                    q1 += objKeys[i];
-                    q2 +='?';
-                    //console.log(q1, q2);
-                    //console.log(i,objKeys.length);
-                    if(i!==(objKeys.length-1)){
-                        //console.log("diversi");
-                        q1 += ',';
-                        q2 += ',';
-                    }
-                    fields.push(params[objKeys[i]]);
+
+    /**
+     * Create sql string & do query
+     * @param {*} params params object
+     * @param {*} tblname string
+     * @returns result query insert
+     */
+    async insertQueryString_(params,tblname){
+        console.log("INSERT DB");
+        /* 
+            console.log(params,tblname);
+            console.log(typeof(params)); 
+        */
+        if(typeof(params)==='object'){
+            //console.log("dentro obj");
+            var objKeys = Object.keys(params);
+            //console.log("CHIAVI: ",objKeys);
+            //console.log("LENGTH: ",objKeys.length);
+            var q1 = ''; 
+            var q2 = '';
+            var fields = [];
+            for(var i=0; i<objKeys.length; i++){
+                //console.log("FOR obj",objKeys[i]);
+                q1 += objKeys[i];
+                q2 +='?';
+                //console.log(q1, q2);
+                //console.log(i,objKeys.length);
+                if(i!==(objKeys.length-1)){
+                    //console.log("diversi");
+                    q1 += ',';
+                    q2 += ',';
                 }
+                fields.push(params[objKeys[i]]);
             }
-            //console.log(q1);
-            var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
-            console.log("INSERT SQL: ",sql);
-            console.log("INSERT FIELDS: ",fields);
-    
-            var result = await this.doQuery(sql,fields);  
-            console.log("RESULT INSERT: ",result);
-            if(result){
-                return {'affectedRows':result.affectedRows, 'insertId': result.insertId};
-            }
-            return result;
         }
+        //console.log(q1);
+        var sql="INSERT INTO "+tblname+"("+q1+") VALUES("+q2+")";
+        console.log("INSERT SQL: ",sql);
+        console.log("INSERT FIELDS: ",fields);
+
+        var result = await this.doQuery(sql,fields);  
+        console.log("RESULT INSERT: ",result);
+        if(result){
+            return {'affectedRows':result.affectedRows, 'insertId': result.insertId};
+        }
+        return result;
+    }
 
     /**
      * Create insert query and array of fields

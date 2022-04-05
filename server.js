@@ -117,11 +117,17 @@ app.post('/register', async(req, res)=>{
 app.post('/login', async(req, res)=>{
 	console.log("login");
 	let result = await auth.loginAuth({'email':req.body.email,'password':req.body.password})
+	console.log("LOGIN POST result: ",result);
 	if(result){
-		req.session.user = result[0];
-		req.session.loggedIn = true;
+		if(!result.result && result.notice){
+			template.myRender(res, 'main',false, false,false,false,{'notice':true,'msg':result.msg});
+		}
+		else{
+			req.session.user = result[0];
+			req.session.loggedIn = true;
 		
-		res.redirect('/home');
+			res.redirect('/home');
+		}
 	}
 	else res.redirect('/login');
 })
@@ -132,7 +138,6 @@ app.post('/login', async(req, res)=>{
  * get data
  */
 app.get('/',function(req,res){
-	//inserire logica se già auth
 	//res.render(app.get('templateIndex'),{login: 1, filename:false, links: false/*['home']*/});
 	//console.log("/ session ", req.session)
 	let filenameTemp = 'main';
