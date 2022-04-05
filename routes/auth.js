@@ -9,7 +9,10 @@ var Facebook = new Auth('facebook');
 router.get('/google', 
 	Google.authenticateCallBack(),
   	function(req, res) {
-		console.log(req.user); 
+		console.log("GOOGLE AUTH: ",req.user)  
+		req.session.loggedIn = true;
+		req.session.user = req.user;
+		//console.log(req.user); 
 		//console.log(res);
 		// Successful authentication, redirect success.
     	res.redirect('/home');
@@ -20,8 +23,9 @@ router.get('/google',
 router.get('/github', 
   	GitHub.authenticateCallBack(),
   	function(req, res) {
-		console.log("REQ: ",req.user);
-
+		console.log("GITHUB AUTH USER: ",req.user);
+		req.session.loggedIn = true;
+		req.session.user = req.user;
 		res.redirect('/home');
   	}
 );
