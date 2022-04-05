@@ -29,6 +29,12 @@ div#nodata {
 .v-none {
     visibility: hidden;
 }
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+  }
 /*********** NAVBAR ***************/
 
 /* pulsante hamburger navbar sempre visibile */
