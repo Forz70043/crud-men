@@ -159,12 +159,12 @@ class Auth extends Entity {
                 clientSecret: process.env.GITHUB_CLIENT_SECRET,
                 callbackURL: process.env.GITHUB_REDIRECT_url//"http://127.0.0.1:3000/auth/github/"
             },
-            async function(accessToken, refreshToken, profile, done) {
+            function(accessToken, refreshToken, profile, done) {
                 console.log("NELLA FUNZ ");
                 //console.log(accessToken, refreshToken, profile);
-                //console.log(profile);
-                userProfile= profile;
-                var myUser = await login.get('cod_id='+profile.id);
+                console.log("GITHUB LOGIN: ",profile);
+                userProfile = profile;
+                /*var myUser = await login.get('cod_id='+profile.id);
                 console.log("MY USERS: ",myUser);
                 if(myUser.length<=0){
                     console.log("<=0");
@@ -184,7 +184,7 @@ class Auth extends Entity {
                     console.log(myUser[0].user_id);
                     userProfile = await users.get('id='+myUser[0].user_id);
                     console.log(userProfile);
-                }
+                }*/
                 //userProfile = profile;  
                 return done(null, userProfile);
             }
@@ -224,7 +224,7 @@ class Auth extends Entity {
             }
             else{ 
                 console.log("NOTICE: Nessun account con questa email");
-                return false;
+                return {'result':false, 'notice':true, 'msg':'Nessun account con questa email'};
             }
         }
         else console.log("params false");
