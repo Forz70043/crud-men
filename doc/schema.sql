@@ -82,11 +82,17 @@ CREATE TABLE `USERS`(
     `email` varchar(256) not null,
     `password` varchar(256) not null,
     `photo` text default null,
+    'phone' varchar(13) default null,
+    `role_id` INT(21) DEFAULT NULL,
     `gender` tinyint(0),
     `yearOfBirth` DATE not null,
     `params` varchar(512) default null,
     PRIMARY KEY(`id`)
 );
+ALTER TABLE `USERS` ADD COLUMN `role_id` int(21) unsigned not null;
+ALTER TABLE `USERS` ADD COLUMN `address` varchar(255) default null;
+ALTER TABLE `USERS` ADD FOREIGN KEY(`role_id`) REFERENCES `ROLE`(`id`);
+
 
 CREATE TABLE `COUNTRY`(
   `id` int unsigned NOT NULL AUTO_INCREMENT,
