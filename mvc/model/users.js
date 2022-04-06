@@ -39,15 +39,15 @@ class Users extends Entity {
             'yearOfBirth': {
                 as: 'u.yearOfBirth',
                 required: false },
-            'job_id': {
+            /*'job_id': {
                 as: 'u.job_id',
-                required: false },
+                required: false },*/
             }
         );
         this.saltRounds = 10;
     }
+    
     /**
-     * 
      * @returns saltRounds password
      */
     getSaltRounds(){
@@ -99,11 +99,11 @@ class Users extends Entity {
                     if(fieldsKeys[i]==='role_id') realParams[fieldsKeys[i]]='4';
                     if(fieldsKeys[i]==='address') realParams[fieldsKeys[i]]='Via le mani dal naso';
                     if(fieldsKeys[i]==='yearOfBirth') realParams[fieldsKeys[i]]='2021-01-21';
-                    if(fieldsKeys[i]==='job_id') realParams[fieldsKeys[i]]='2';
+                    //if(fieldsKeys[i]==='job_id') realParams[fieldsKeys[i]]='2';
                 }
             }
             if(Object.keys(fields).includes(paramsKeys[i])){
-
+                console.log("INCLUDE ??");
             }
         }
         else{
