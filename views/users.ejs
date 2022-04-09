@@ -75,9 +75,9 @@
                                 </a>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-warning" type="button" onclick="">
+                                <a class="btn btn-sm btn-warning" type="button" href="/users/<%= u.id %>">
                                     <span class="fa fa-edit"></span>
-                                </button>
+                                </a>
                                 <% u.action='/users'; %>
                                 <button class="btn btn-sm btn-danger" type="button" onclick="pushInfoElement(<%= JSON.stringify(u)%>);" data-toggle="modal" data-target="#exampleModalCenter">
                                     <span class="fas fa-trash-alt"></span>
