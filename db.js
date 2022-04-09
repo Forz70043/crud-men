@@ -58,18 +58,9 @@ class Database {
             this.connection.query(sql, args, (err, rows, fields)=>{
                 console.log("DB SQL: ",sql);
                 if(err){
-                    console.log("ERR DB: ",err)
-                    //reject(new Error('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:''));
                     console.log({'result':false,'DB_Error':(err.errno)?err.errno:'','MSG':(err.sqlMessage)?err.sqlMessage:'','code':err.code,'sql':err.sql}) //('DB Error: N°: '+(err.errno)?err.errno:''+' MSG: '+(err.sqlMessage)?err.sqlMessage:''));
-                    /* if(err.errno==1451){//errore di foreign key
-                        reject("Error: Assicurati di cancellare prima gli Elementi con questo tipo")
-                    }
-                    if(err.errno==1054){
-                        //errore di fields nella query
-                    }
-                    console.log("DB ERR: ",err);                    
-                    */
                     let er = {'result':false,'DB_Error':(err.errno)?err.errno:'','MSG':(err.sqlMessage)?err.sqlMessage:'','code':err.code,'sql':err.sql}
+                    //reject(err);
                     return er;
                 }
                 //console.log("ROWS DB: ", rows);
@@ -123,11 +114,11 @@ class Database {
     whereFields(fields){
         console.log("where fields: ", fields);
         let sql='';
-        if(typeof(fields)==='object'){
+        if(typeof(fields) === 'object'){
             for(var i=0; i<fields.length; i++){
                 console.log(fields[i]);
                 sql+=fields[i];
-                if(i!=fields.length-1) sql+=',';
+                if(i != fields.length-1 ) sql+=',';
             }
         }
         else sql=fields; 
@@ -194,20 +185,22 @@ class Database {
         //console.log("DB QUERY STRING: fields",fields);
 
         let sql='';
+        console.log(typeof fields)
+        /* if(typeof fields === 'object'){
+            fields = fields.map((field)=>{
+                 
+            })
+        } */
 
         switch(type){
             case 'SELECT':
                 sql = 'SELECT ';
                 if(fields){
-                    //sql += this.whereFields(fields);
-                    sql += fields;
+                    sql += this.whereFields(fields);
+                    ///sql += fields;
                     console.log("fields!=false ", fields);
                 }
-                else{
-                    console.log("fields flase");
-                    sql += ' * ';
-
-                }
+                else sql += ' * ';
                 break;
             case 'DELETE':
                 sql='DELETE ';
