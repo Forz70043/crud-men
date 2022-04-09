@@ -61,5 +61,7 @@
 	" fa-sign-in": " fa-sign-in",
 	" fa-sign-in-alt": " fa-sign-in-alt",
 	"Groceries": "Groceries",
-	" fa-sign-out-alt": " fa-sign-out-alt"
+	"Sign up with Google": "Sign up with Google",
+	"Sign up with GitHub": "Sign up with GitHub",
+	"Sign up with Facebook": "Sign up with Facebook"
 }
