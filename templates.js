@@ -15,18 +15,13 @@ class Template {
                 'groceries': {},
                 'countries': {},
             },
-            
             'login': false,
-
             'filename': false,
             'links': false,
-            
-            'sidebar': this.getSidebar(),
+            'sidebar': false,
             'navbar': this.getNavbar(),
             'title': this.getTitle(),
-            
             'templateIndex': this.getTemplateIndex(),
-            
             'message': false,
             'container': false,
             'dashboards':{
@@ -118,7 +113,7 @@ class Template {
         //console.log("P: ",params);
         //console.log("OBJ: ",this.obj)
         let keyParams = Object.keys(params)
-        console.log("Templates setObj() KeyParams: ",keyParams);
+        //console.log("Templates setObj() KeyParams: ",keyParams);
         for(let i = 0; i<keyParams.length; i++){
             this.obj[keyParams[i]] = params[keyParams[i]];
 
@@ -130,26 +125,14 @@ class Template {
             }
             if(keyParams[i]==='profile'){
                 if(this.obj[keyParams[i]]['role'] == 'admin'){
-                    console.log("ADMIN _________________________________________________________")
+                    //console.log("ADMIN _________________________________________________________")
                     this.obj['sidebar'] = this.getFullSidebar();
+                    //console.log("ADMIN sidebar: ", this.obj)
                 }
-                //(this.obj['profile']['id']) ? this.obj['login'] = true : this.obj['login'] = false ;
+                else this.obj['sidebar'] = this.getLoggedInSidebar();
             }
         }
-        (this.obj['profile'] == false || this.obj['profile'] == null || this.obj['profile'] == undefined) ?  this.obj['sidebar'] = this.getLogOutSidebar() : this.obj['sidebar'] = this.getLoggedInSidebar() ;
-        /*
-        if(this.obj['profile']){
-            if(this.obj['profile']['role'] == 'admin') this.obj['sidebar']=this.getFullSidebar();
-            else this.obj['sidebar'] = this.getSidebar();
-            
-            this.obj['login'] = true;
-        }
-        else{
-            this.obj['sidebar'] = this.getLogOutSidebar();
-            this.obj['login']= false ;
-        }
-        */
-        //console.log("OBJ MOD:",this.obj);
+        if(!this.obj['profile']) this.obj['sidebar'] = this.getLogOutSidebar();
     }
 
     getObj(){
